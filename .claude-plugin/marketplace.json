@@ -1,0 +1,16 @@
+{
+  "name": "claudekit",
+  "metadata": {
+    "description": "A collection of plugins for Claude Code used by Aotokitsuruya."
+  },
+  "owner": {
+    "name": "Aotokitsuruya"
+  },
+  "plugins": [
+    {
+      "name": "dependabot",
+      "source": "./plugins/dependabot",
+      "description": "Commands to interact with Dependabot on GitHub repositories."
+    }
+  ]
+}

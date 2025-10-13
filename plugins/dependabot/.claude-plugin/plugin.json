@@ -1,0 +1,8 @@
+{
+  "name": "dependabot",
+  "description": "Commands to interact with Dependabot on GitHub repositories.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Aotokitsuruya"
+  }
+}
