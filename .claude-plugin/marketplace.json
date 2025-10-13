@@ -1,10 +1,10 @@
 {
   "name": "claudekit",
-  "metadata": {
-    "description": "A collection of plugins for Claude Code used by Aotokitsuruya."
-  },
   "owner": {
     "name": "Aotokitsuruya"
+  },
+  "metadata": {
+    "description": "A collection of plugins for Claude Code used by Aotokitsuruya."
   },
   "plugins": [
     {
