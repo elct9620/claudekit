@@ -4,23 +4,20 @@ description: Automatically approve and merge Dependabot pull requests in current
 ---
 
 # Rule
+
 The `<execute>ARGUMENTS</execute>` will execute the main procedure.
 
 # Role
+
 You are a DevOps automation specialist with expertise in dependency management and GitHub workflow automation.
 
-# PPL Definitions
+# Definition
 
-<function name="check_authentication">
-    <description>Verify GitHub CLI authentication and permissions</description>
-    <step>1. Run gh auth status to check authentication and get current username</step>
-    <step>2. Extract logged-in username from gh auth status output</step>
-    <step>3. Get latest commit author from git log</step>
-    <step>4. Compare GitHub username with commit author</step>
-    <step>5. If mismatch, warn user and ask for confirmation</step>
-    <step>6. Verify write access to the repository</step>
-    <step>7. Select appropriate account if multiple available</step>
-    <return>Authentication status and selected account</return>
+<function name="check_permissions">
+    <description>Get repository permissions for the authenticated user</description>
+    <step>1. Run `gh auth status --active` to get authentication status</step>
+    <step>2. Run `gh repo view --json viewerPermission` to get permission level</step>
+    <return>Permission level (admin/write/read/none)</return>
 </function>
 
 <function name="is_major_update">
@@ -34,82 +31,71 @@ You are a DevOps automation specialist with expertise in dependency management a
 <function name="check_pr_status">
     <parameters>pr_number</parameters>
     <description>Get PR status and determine next action</description>
-    <step>1. Fetch PR details including state, mergeable, and CI status</step>
-    <step>2. Analyze and return actionable state (completed/conflict/waiting/ready)</step>
+    <step>1. Use `gh pr checks {pr_number} --watch` to wait for checks to complete</step>
+    <step>2. Use `gh pr view {pr_number} --json state,mergeable,commits,reviewDecision,labels` to get PR details</step>
     <return>PR state and metadata</return>
 </function>
 
 <function name="enable_auto_merge">
     <parameters>pr_number</parameters>
     <description>Enable auto-merge on a PR</description>
-    <step>1. Enable auto-merge with squash (gh pr merge {pr_number} --auto --squash)</step>
-    <step>2. Check command result</step>
-    <step>3. Handle already enabled or error cases</step>
+    <step>1. Use `gh pr merge {pr_number} --auto --squash` to enable auto-merge</step>
+    <condition if="Squash merge not supported">
+        <step>2. Use `gh pr merge {pr_number} --auto --merge` as fallback</step>>
+    </condition>
+    <step>3. Use `gh pr view {pr_number} --json autoMergeRequest` to confirm auto-merge is enabled</step>
     <return>Auto-merge enablement status</return>
 </function>
 
 <function name="approve_pr">
     <parameters>pr_number</parameters>
     <description>Approve a single Dependabot PR</description>
-    <step>1. Approve PR (gh pr review {pr_number} --approve)</step>
+    <step>1. Use `gh pr review {pr_number} --approve` to approve the PR</step>
     <step>2. Check approval status</step>
-    <step>3. Handle already approved cases</step>
     <return>Approval result</return>
 </function>
 
-<function name="handle_pr_issue">
-    <parameters>pr_number, issue_type</parameters>
-    <description>Handle PR issues (conflicts, CI failures, etc.)</description>
-    <step>1. If conflict, trigger @dependabot rebase</step>
-    <step>2. If CI failure or pending, wait appropriately</step>
-    <step>3. Return whether to retry</step>
-    <return>Retry decision</return>
-</function>
-
-<procedure name="process_pr_with_retry">
-    <parameters>pr_number, pr_title</parameters>
-    <description>Process PR with retry handling</description>
-    <step>1. Skip if major version update</step>
-    <step>2. Retry up to 5 times with exponential backoff:</step>
-    <step>   a. Check PR status</step>
-    <step>   b. If completed, return success</step>
-    <step>   c. If has issues, handle and wait</step>
-    <step>   d. If ready, proceed</step>
-    <step>3. Handle rebased PRs by re-enabling auto-merge</step>
-    <return>Processing result</return>
+<procedure name="merge">
+    <parameters>pr_number</parameters>
+    <description>Merge a single Dependabot PR</description>
+    <condition if="is_major_update(pr_title)">
+        <step>1. Skip major version updates for manual review</step>
+        <return>"Skipped major update PR #{pr_number} for manual review"</return>
+    </condition>
+    <step>2. Call <execute function="enable_auto_merge">{pr_number}</execute> to enable auto-merge</step>
+    <step>3. Call <execute function="approve_pr">{pr_number}</execute> to approve the PR</step>
+    <step>4. Monitor PR status using <execute function="check_pr_status">{pr_number}</execute> until merged or closed</step>
+    <condition if="PR closed without merging">
+        <step>5. Log and skip to next PR</step>
+        <return>"PR #{pr_number} was closed without merging"</return>
+    </condition>
+    <condition if="PR has conflicts">
+        <step>6. Comment "@dependabot rebase" to trigger rebase</step>
+        <step>7. Monitor PR status again</step>
+        <step>8. Re-enable auto-merge and re-approve if needed</step>
+        <step>9. Monitor until merged or closed</step>
+    </condition>
+    <return>"PR #{pr_number} merged successfully"</return>
 </procedure>
 
-<procedure name="batch_process">
+<procedure name="merge_in_parallel">
     <parameters>pr_list</parameters>
-    <description>Process PRs in two phases</description>
-    <step>1. Phase 1: Enable auto-merge on all open PRs</step>
-    <step>2. Wait 30 seconds</step>
-    <step>3. Phase 2: For each PR:</step>
-    <step>   a. Process with retry logic</step>
-    <step>   b. Approve if ready</step>
-    <step>   c. Wait 60 seconds before next</step>
-    <return>Processing results</return>
+    <description>Process multiple PRs in parallel with retry logic</description>
+    <step>1. For each PR in {pr_list}, spawn a separate process to call <execute procedure="merge">{pr_number}</execute></step>
+    <step>2. Implement retry logic with exponential backoff for transient failures (max 5 attempts)</step>
+    <return>List of merge results for each PR</return>
 </procedure>
 
 <procedure name="main">
     <step>1. <execute function="check_authentication"></execute></step>
-    <step>2. List all Dependabot PRs</step>
-    <step>3. <execute procedure="batch_process">{pr_list}</execute></step>
-    <step>4. Generate summary report</step>
-    <return>Processing summary</return>
+    <step>2. Use `gh pr list --author dependabot[bot] --state open --json number,title` to get list of open Dependabot PRs</step>
+    <condition if="No open Dependabot PRs">
+        <return>"No open Dependabot PRs found"</return>
+    </condition>
+    <step>3. Call <execute procedure="merge_in_parallel">{pr_list}</execute> to process PRs</step>
+    <return>Summary of merge results</return>
 </procedure>
 
-# Guidelines
-- Skip major version updates for manual review
-- Use squash merge for clean commit history
-- Enable auto-merge BEFORE approving to avoid approval reset on rebase
-- Continuously check PR status to handle closed/rebased PRs
-- Wait between PR approvals to allow merges to complete
-- Handle conflicts by triggering @dependabot rebase
-- Re-enable auto-merge and re-approve if PR was rebased
-- Maximum 5 retry attempts per PR with exponential backoff
-- IMPORTANT: Never add any messages to ANY GitHub operations (review, merge, comment, etc.)
-- Only exception: Direct @dependabot commands (e.g., @dependabot rebase, @dependabot recreate)
-
 # Task
+
 <execute procedure="main">$ARGUMENTS</execute>
