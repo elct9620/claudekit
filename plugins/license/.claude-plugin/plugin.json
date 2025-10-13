@@ -1,0 +1,8 @@
+{
+  "name": "license",
+  "description": "Commands to configure open source licenses for projects.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Aotokitsuruya"
+  }
+}

@@ -16,6 +16,11 @@
       "name": "git",
       "source": "./plugins/git",
       "description": "Common repository operations for git"
+    },
+    {
+      "name": "license",
+      "source": "./plugins/license",
+      "description": "Commands to manage open source licenses in current repository"
     }
   ]
 }
