@@ -16,3 +16,13 @@ In `claude` run:
 ### Dependabot
 
 Use the `gh` command to manage Dependabot PRs in GitHub repositories.
+
+Commands:
+- `/dependabot:merge` - Automatically approve and merge Dependabot pull requests in current repository
+
+### Git
+
+Common repository operations for git.
+
+Commands:
+- `/git:ignore` - Set up a .gitignore file for this project by detecting the primary language and downloading appropriate templates from GitHub's gitignore repository
