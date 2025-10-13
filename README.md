@@ -26,3 +26,10 @@ Common repository operations for git.
 
 Commands:
 - `/git:ignore` - Set up a .gitignore file for this project by detecting the primary language and downloading appropriate templates from GitHub's gitignore repository
+
+### License
+
+Commands to manage open source licenses in current repository.
+
+Commands:
+- `/license:setup` - Setup LICENSE file for the project (defaults to MIT license)
