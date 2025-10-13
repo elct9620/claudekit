@@ -1,0 +1,8 @@
+{
+  "name": "git",
+  "description": "Common repository operations for git",
+  "version": "0.1.0",
+  "author": {
+    "name": "Aotokitsuruya"
+  }
+}

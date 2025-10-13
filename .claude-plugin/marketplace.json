@@ -11,6 +11,11 @@
       "name": "dependabot",
       "source": "./plugins/dependabot",
       "description": "Commands to interact with Dependabot on GitHub repositories."
+    },
+    {
+      "name": "git",
+      "source": "./plugins/git",
+      "description": "Common repository operations for git"
     }
   ]
 }
