@@ -1,0 +1,12 @@
+{
+  "name": "@aotoki/claudekit",
+  "version": "0.1.0",
+  "description": "A collection of plugins for Claude Code used by Aotokitsuruya.",
+  "scripts": {
+    "build": "pnpm -r run build"
+  },
+  "keywords": [],
+  "author": "Aotokitsuruya",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.1"
+}
