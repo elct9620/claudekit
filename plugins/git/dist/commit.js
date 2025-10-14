@@ -14,19 +14,35 @@ const CONFIG_SEARCH_PATHS = [
 	".claude/claudekit.config.json",
 	".claude/claudekit.json"
 ];
+const LOCAL_CONFIG_SEARCH_PATHS = ["claudekit.local.json", ".claude/claudekit.local.json"];
 function isConfigExists(path) {
 	return fs.existsSync(path);
+}
+function deepMerge(target, source) {
+	if (Array.isArray(target) && Array.isArray(source)) return source;
+	else if (target !== null && typeof target === "object" && source !== null && typeof source === "object") {
+		const merged = { ...target };
+		for (const key of Object.keys(source)) if (key in target) merged[key] = deepMerge(target[key], source[key]);
+		else merged[key] = source[key];
+		return merged;
+	}
+	return source;
 }
 async function loadConfig() {
 	const projectRoot = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 	const configPath = CONFIG_SEARCH_PATHS.map((p) => `${projectRoot}/${p}`).find(isConfigExists);
-	if (!configPath) return {};
-	try {
-		const configContent = await fsAsync.readFile(configPath, "utf-8");
-		return JSON.parse(configContent);
-	} catch (e) {
-		return {};
-	}
+	const localConfigPath = LOCAL_CONFIG_SEARCH_PATHS.map((p) => `${projectRoot}/${p}`).find(isConfigExists);
+	const projectConfig = {};
+	if (configPath) try {
+		const fileContent = await fsAsync.readFile(configPath, "utf-8");
+		Object.assign(projectConfig, JSON.parse(fileContent));
+	} catch (error) {}
+	const localConfig = {};
+	if (localConfigPath) try {
+		const fileContent = await fsAsync.readFile(localConfigPath, "utf-8");
+		Object.assign(localConfig, JSON.parse(fileContent));
+	} catch (error) {}
+	return deepMerge(projectConfig, localConfig);
 }
 
 //#endregion

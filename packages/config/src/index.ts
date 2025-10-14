@@ -13,6 +13,11 @@ export const CONFIG_SEARCH_PATHS = [
   ".claude/claudekit.json",
 ];
 
+export const LOCAL_CONFIG_SEARCH_PATHS = [
+  "claudekit.local.json",
+  ".claude/claudekit.local.json",
+];
+
 enum CommitLogic {
   AND = "AND",
   OR = "OR",
@@ -39,6 +44,28 @@ function isConfigExists(path: string): boolean {
   return fs.existsSync(path);
 }
 
+function deepMerge(target: any, source: any): any {
+  if (Array.isArray(target) && Array.isArray(source)) {
+    return source; // Replace arrays entirely
+  } else if (
+    target !== null &&
+    typeof target === "object" &&
+    source !== null &&
+    typeof source === "object"
+  ) {
+    const merged: any = { ...target };
+    for (const key of Object.keys(source)) {
+      if (key in target) {
+        merged[key] = deepMerge(target[key], source[key]);
+      } else {
+        merged[key] = source[key];
+      }
+    }
+    return merged;
+  }
+  return source; // For primitive types, just use the source value
+}
+
 export async function loadConfig(): Promise<Config> {
   // NOTE: Know issue for plugin, the CLAUDE_PROJECT_DIR is not passed to the plugin env.
   const projectRoot = process.env.CLAUDE_PROJECT_DIR || process.cwd();
@@ -46,15 +73,31 @@ export async function loadConfig(): Promise<Config> {
   const searchPaths = CONFIG_SEARCH_PATHS.map((p) => `${projectRoot}/${p}`);
   const configPath = searchPaths.find(isConfigExists);
 
-  if (!configPath) {
-    return {};
+  const localSearchPaths = LOCAL_CONFIG_SEARCH_PATHS.map(
+    (p) => `${projectRoot}/${p}`,
+  );
+  const localConfigPath = localSearchPaths.find(isConfigExists);
+
+  const projectConfig: Config = {};
+  if (configPath) {
+    try {
+      const fileContent = await fsAsync.readFile(configPath, "utf-8");
+      Object.assign(projectConfig, JSON.parse(fileContent));
+    } catch (error) {
+      // Ignore JSON parse errors
+    }
   }
 
-  try {
-    const configContent = await fsAsync.readFile(configPath, "utf-8");
-    const config = JSON.parse(configContent) as Config;
-    return config;
-  } catch (e) {
-    return {};
+  const localConfig: Config = {};
+  if (localConfigPath) {
+    try {
+      const fileContent = await fsAsync.readFile(localConfigPath, "utf-8");
+      Object.assign(localConfig, JSON.parse(fileContent));
+    } catch (error) {
+      // Ignore JSON parse errors
+      // Local config is optional
+    }
   }
+
+  return deepMerge(projectConfig, localConfig);
 }
