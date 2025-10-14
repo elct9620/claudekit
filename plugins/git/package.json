@@ -16,12 +16,13 @@
   "author": "Aotokitsuruya",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "catalog:",
     "prettier": "catalog:",
     "rolldown": "catalog:",
-    "typescript": "catalog:",
-    "@types/node": "catalog:"
+    "typescript": "catalog:"
   },
   "dependencies": {
-    "@claudekit/config": "workspace:*"
+    "@claudekit/config": "workspace:*",
+    "@claudekit/hook": "workspace:*"
   }
 }

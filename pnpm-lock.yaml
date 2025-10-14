@@ -7,16 +7,16 @@ settings:
 catalogs:
   default:
     '@types/node':
-      specifier: ^24.7.2
+      specifier: 24.7.2
       version: 24.7.2
     prettier:
-      specifier: ^3.6.2
+      specifier: 3.6.2
       version: 3.6.2
     rolldown:
       specifier: ^1.0.0-beta.43
       version: 1.0.0-beta.43
     typescript:
-      specifier: ^5.9.3
+      specifier: 5.9.3
       version: 5.9.3
 
 importers:
@@ -35,11 +35,27 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  packages/hook:
+    dependencies:
+      prettier:
+        specifier: 'catalog:'
+        version: 3.6.2
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.7.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
   plugins/git:
     dependencies:
       '@claudekit/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@claudekit/hook':
+        specifier: workspace:*
+        version: link:../../packages/hook
     devDependencies:
       '@types/node':
         specifier: 'catalog:'

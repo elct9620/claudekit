@@ -1,4 +1,5 @@
-import fs from "fs/promises";
+import fsAsync from "fs/promises";
+import fs from "fs";
 
 /**
  * Paths to search for configuration files, in order of precedence.
@@ -34,27 +35,23 @@ export type Config = {
   commit?: CommitConfig;
 };
 
-async function isConfigExists(path: string): Promise<boolean> {
-  return fs
-    .access(path, fs.constants.F_OK)
-    .then(() => true)
-    .catch(() => false);
+function isConfigExists(path: string): boolean {
+  return fs.existsSync(path);
 }
 
 export async function loadConfig(): Promise<Config> {
-  const projectRoot =
-    process.env.CLAUDE_PROJECT_DIR ||
-    process.env.CLAUDE_PLUGIN_ROOT ||
-    process.cwd();
+  // NOTE: Know issue for plugin, the CLAUDE_PROJECT_DIR is not passed to the plugin env.
+  const projectRoot = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
   const searchPaths = CONFIG_SEARCH_PATHS.map((p) => `${projectRoot}/${p}`);
-  const configPath = searchPaths.find((p) => isConfigExists(p));
+  const configPath = searchPaths.find(isConfigExists);
+
   if (!configPath) {
     return {};
   }
 
   try {
-    const configContent = await fs.readFile(configPath, "utf-8");
+    const configContent = await fsAsync.readFile(configPath, "utf-8");
     const config = JSON.parse(configContent) as Config;
     return config;
   } catch (e) {

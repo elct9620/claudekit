@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import fs from "fs/promises";
+import fsAsync from "fs/promises";
+import fs from "fs";
 
 //#region ../../packages/config/src/index.ts
 /**
@@ -13,15 +14,15 @@ const CONFIG_SEARCH_PATHS = [
 	".claude/claudekit.config.json",
 	".claude/claudekit.json"
 ];
-async function isConfigExists(path) {
-	return fs.access(path, fs.constants.F_OK).then(() => true).catch(() => false);
+function isConfigExists(path) {
+	return fs.existsSync(path);
 }
 async function loadConfig() {
-	const projectRoot = process.env.CLAUDE_PROJECT_DIR || process.env.CLAUDE_PLUGIN_ROOT || process.cwd();
-	const configPath = CONFIG_SEARCH_PATHS.map((p) => `${projectRoot}/${p}`).find((p) => isConfigExists(p));
+	const projectRoot = process.env.CLAUDE_PROJECT_DIR || process.cwd();
+	const configPath = CONFIG_SEARCH_PATHS.map((p) => `${projectRoot}/${p}`).find(isConfigExists);
 	if (!configPath) return {};
 	try {
-		const configContent = await fs.readFile(configPath, "utf-8");
+		const configContent = await fsAsync.readFile(configPath, "utf-8");
 		return JSON.parse(configContent);
 	} catch (e) {
 		return {};
@@ -29,9 +30,61 @@ async function loadConfig() {
 }
 
 //#endregion
+//#region ../../packages/hook/src/index.ts
+const BlockDecision = "block";
+/**
+* Convert snake_case keys to camelCase keys in a deeply nested object or array.
+*/
+function deepSnakeToCamel(obj) {
+	if (Array.isArray(obj)) return obj.map(deepSnakeToCamel);
+	else if (obj !== null && typeof obj === "object") return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
+		return [key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()), deepSnakeToCamel(value)];
+	}));
+	return obj;
+}
+/**
+* Load and parse JSON input from a readable stream (default: stdin).
+*
+* @param source - The readable stream to read from. Defaults to process.stdin.
+* @returns input - The parsed JSON object with camelCase keys.
+*/
+async function loadHook(source = process.stdin) {
+	return new Promise((resolve, reject) => {
+		let data = "";
+		source.on("data", (chunk) => {
+			data += chunk;
+		});
+		source.on("end", () => {
+			try {
+				resolve(deepSnakeToCamel(JSON.parse(data)));
+			} catch (error) {
+				reject(/* @__PURE__ */ new Error(`Unable to parse input as JSON: ${error}`));
+			}
+		});
+		source.on("error", (error) => {
+			reject(/* @__PURE__ */ new Error(`Error reading input: ${error}`));
+		});
+	});
+}
+function stop(isAllow = true, reason) {
+	return JSON.stringify({
+		decision: isAllow ? void 0 : BlockDecision,
+		reason
+	});
+}
+
+//#endregion
 //#region src/commit.ts
-const isCommitHookEnabled = (await loadConfig()).commit?.threshold.enabled ?? false;
-console.log(JSON.stringify({ reason: `WIP: this hook is a work in progress, hook is ${isCommitHookEnabled ? "enabled" : "disabled"}` }));
+const config = await loadConfig();
+await loadHook();
+if (!(config.commit?.threshold.enabled ?? false)) {
+	console.log(stop(true, `Commit hook is disabled in configuration`));
+	process.exit(0);
+}
+const maxFilesChanged = config.commit?.threshold.maxFilesChanged ?? 10;
+const maxLinesChanged = config.commit?.threshold.maxLinesChanged ?? 500;
+config.commit?.threshold.logic;
+console.log(stop(true, `Commit hook is enabled with maxFilesChanged=${maxFilesChanged} and maxLinesChanged=${maxLinesChanged}`));
 
 //#endregion
 export {  };

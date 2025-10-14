@@ -1,0 +1,7 @@
+{
+  "commit": {
+    "threshold": {
+      "enabled": true
+    }
+  }
+}
