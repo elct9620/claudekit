@@ -1,7 +1,9 @@
 {
   "commit": {
     "threshold": {
-      "enabled": true
+      "enabled": true,
+      "maxFilesChanged": 5,
+      "maxLinesChanged": 100
     }
   }
 }

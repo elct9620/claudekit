@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fsAsync from "fs/promises";
 import fs from "fs";
+import { exec } from "child_process";
 
 //#region ../../packages/config/src/index.ts
 /**
@@ -15,6 +16,11 @@ const CONFIG_SEARCH_PATHS = [
 	".claude/claudekit.json"
 ];
 const LOCAL_CONFIG_SEARCH_PATHS = ["claudekit.local.json", ".claude/claudekit.local.json"];
+let CommitLogic = /* @__PURE__ */ function(CommitLogic$1) {
+	CommitLogic$1["AND"] = "AND";
+	CommitLogic$1["OR"] = "OR";
+	return CommitLogic$1;
+}({});
 function isConfigExists(path) {
 	return fs.existsSync(path);
 }
@@ -90,17 +96,87 @@ function stop(isAllow = true, reason) {
 }
 
 //#endregion
+//#region src/git.ts
+async function isGitAvailable() {
+	try {
+		return new Promise((resolve) => {
+			exec("git status", (error) => {
+				resolve(!error);
+			});
+		});
+	} catch {
+		return false;
+	}
+}
+async function getChangedFilesCount() {
+	return new Promise((resolve, reject) => {
+		exec("git status --porcelain", (error, stdout) => {
+			if (error) {
+				reject(error);
+				return;
+			}
+			resolve(stdout.split("\n").filter((line) => line.trim() !== "").length);
+		});
+	});
+}
+async function getChangedLinesCount() {
+	return new Promise((resolve, reject) => {
+		exec("git diff --numstat", (error, stdout) => {
+			if (error) {
+				reject(error);
+				return;
+			}
+			resolve(stdout.split("\n").filter((line) => line.trim() !== "").map((line) => {
+				const parts = line.split("	");
+				const added = parseInt(parts[0] || "0", 10);
+				const deleted = parseInt(parts[1] || "0", 10);
+				return (isNaN(added) ? 0 : added) + (isNaN(deleted) ? 0 : deleted);
+			}).reduce((acc, curr) => acc + curr, 0));
+		});
+	});
+}
+async function getUntrackedLinesCount() {
+	return new Promise((resolve, reject) => {
+		exec("git ls-files --others --exclude-standard | xargs wc -l", (error, stdout) => {
+			if (error) {
+				reject(error);
+				return;
+			}
+			resolve(stdout.split("\n").filter((line) => line.trim() !== "" && !line.includes("total")).map((line) => {
+				const parts = line.trim().split(/\s+/);
+				return parseInt(parts[0] || "0", 10);
+			}).reduce((acc, curr) => acc + curr, 0));
+		});
+	});
+}
+
+//#endregion
 //#region src/commit.ts
+const DEFAULT_BLOCK_REASON = "There are too many changes {changedFiles}/{maxChangedFiles} changed files and {totalChangedLines}/{maxChangedLines} changed lines in the working directory. Please review and commit your changes before proceeding.";
 const config = await loadConfig();
-await loadHook();
 if (!(config.commit?.threshold.enabled ?? false)) {
 	console.log(stop(true, `Commit hook is disabled in configuration`));
 	process.exit(0);
 }
+if (!await isGitAvailable()) {
+	console.log(stop(true, `Git is not available in the current project`));
+	process.exit(0);
+}
+if ((await loadHook()).stopHookActive) {
+	console.log(stop(true, `Commit hook is skipped because stop hook is active`));
+	process.exit(0);
+}
 const maxFilesChanged = config.commit?.threshold.maxFilesChanged ?? 10;
 const maxLinesChanged = config.commit?.threshold.maxLinesChanged ?? 500;
-config.commit?.threshold.logic;
-console.log(stop(true, `Commit hook is enabled with maxFilesChanged=${maxFilesChanged} and maxLinesChanged=${maxLinesChanged}`));
+const conditionLogic = config.commit?.threshold.logic ?? CommitLogic.OR;
+const stopReasonTemplate = config.commit?.threshold.blockReason ?? DEFAULT_BLOCK_REASON;
+const changedFiles = await getChangedFilesCount();
+const changedLines = await getChangedLinesCount();
+const untrackedLines = await getUntrackedLinesCount();
+const isExceededFiles = changedFiles >= maxFilesChanged;
+const isExceededLines = changedLines + untrackedLines >= maxLinesChanged;
+const isBlocked = conditionLogic === CommitLogic.AND ? isExceededFiles && isExceededLines : isExceededFiles || isExceededLines;
+console.log(stop(!isBlocked, stopReasonTemplate.replace("{changedFiles}", changedFiles.toString()).replace("{maxChangedFiles}", maxFilesChanged.toString()).replace("{changedLines}", changedLines.toString()).replace("{untrackedLines}", untrackedLines.toString()).replace("{totalChangedLines}", (changedLines + untrackedLines).toString()).replace("{maxChangedLines}", maxLinesChanged.toString())));
 
 //#endregion
 export {  };

@@ -18,7 +18,7 @@ export const LOCAL_CONFIG_SEARCH_PATHS = [
   ".claude/claudekit.local.json",
 ];
 
-enum CommitLogic {
+export enum CommitLogic {
   AND = "AND",
   OR = "OR",
 }
