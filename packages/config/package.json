@@ -4,12 +4,12 @@
   "description": "The config module for Claudekit",
   "type": "module",
   "main": "src/index.ts",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "Aotokitsuruay",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
   }

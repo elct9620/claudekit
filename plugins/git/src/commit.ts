@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
-import { CONFIG_SEARCH_PATHS } from "@claudekit/config";
+import { loadConfig } from "@claudekit/config";
+
+const config = await loadConfig();
+
+const isCommitHookEnabled = config.commit?.threshold.enabled ?? false;
 
 console.log(
   JSON.stringify({
-    reason: `WIP: this hook is a work in progress, config is available at ${CONFIG_SEARCH_PATHS.join(`, `)}`,
+    reason: `WIP: this hook is a work in progress, hook is ${isCommitHookEnabled ? "enabled" : "disabled"}`,
   }),
 );

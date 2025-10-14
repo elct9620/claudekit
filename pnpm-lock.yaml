@@ -6,14 +6,17 @@ settings:
 
 catalogs:
   default:
+    '@types/node':
+      specifier: ^24.7.2
+      version: 24.7.2
     prettier:
-      specifier: 3.6.2
+      specifier: ^3.6.2
       version: 3.6.2
     rolldown:
-      specifier: 1.0.0-beta.43
+      specifier: ^1.0.0-beta.43
       version: 1.0.0-beta.43
     typescript:
-      specifier: 5.9.3
+      specifier: ^5.9.3
       version: 5.9.3
 
 importers:
@@ -22,6 +25,9 @@ importers:
 
   packages/config:
     devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.7.2
       prettier:
         specifier: 'catalog:'
         version: 3.6.2
@@ -35,6 +41,9 @@ importers:
         specifier: workspace:*
         version: link:../../packages/config
     devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.7.2
       prettier:
         specifier: 'catalog:'
         version: 3.6.2
@@ -151,6 +160,9 @@ packages:
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
 
+  '@types/node@24.7.2':
+    resolution: {integrity: sha512-/NbVmcGTP+lj5oa4yiYxxeBjRivKQ5Ns1eSZeB99ExsEQ6rX5XYU1Zy/gGxY/ilqtD4Etx9mKyrPxZRetiahhA==}
+
   ansis@4.2.0:
     resolution: {integrity: sha512-HqZ5rWlFjGiV0tDm3UxxgNRqsOTniqoKZu0pIAfh7TZQMGuZK+hH0drySty0si0QXj1ieop4+SkSfPZBPPkHig==}
     engines: {node: '>=14'}
@@ -172,6 +184,9 @@ packages:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  undici-types@7.14.0:
+    resolution: {integrity: sha512-QQiYxHuyZ9gQUIrmPo3IA+hUl4KYk8uSA7cHrcKd/l3p1OTpZcM0Tbp9x7FAtXdAYhlasd60ncPpgu6ihG6TOA==}
 
 snapshots:
 
@@ -251,6 +266,10 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@types/node@24.7.2':
+    dependencies:
+      undici-types: 7.14.0
+
   ansis@4.2.0: {}
 
   prettier@3.6.2: {}
@@ -280,3 +299,5 @@ snapshots:
     optional: true
 
   typescript@5.9.3: {}
+
+  undici-types@7.14.0: {}

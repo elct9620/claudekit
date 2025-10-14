@@ -18,7 +18,8 @@
   "devDependencies": {
     "prettier": "catalog:",
     "rolldown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@types/node": "catalog:"
   },
   "dependencies": {
     "@claudekit/config": "workspace:*"
