@@ -1,5 +1,5 @@
 ---
-allowed-tools: ["Bash(gh auth:*)", "Bash(gh pr:*)"]
+allowed-tools: ["Bash(gh auth:*)", "Bash(gh pr:*)", "Bash(gh repo view:*)", "Bash(sleep)"]
 description: Automatically approve and merge Dependabot pull requests in current repository
 ---
 
@@ -26,6 +26,14 @@ You are a DevOps automation specialist with expertise in dependency management a
     <step>1. Parse version numbers from PR title</step>
     <step>2. Check if major version changed</step>
     <return>Boolean indicating if major update</return>
+</function>
+
+<function name="is_mergeable">
+    <parameters>pr_number</parameters>
+    <description>Check if PR is mergeable</description>
+    <step>1. Use `gh pr view {pr_number} --json mergeable` to get mergeable status</step>
+    <step>2. Use `gh pr checks {pr_number}` to check status of required checks</step>
+    <return>Mergeable status (MERGEABLE/CONFLICTING/UNKNOWN)</return>
 </function>
 
 <function name="check_pr_status">
@@ -62,18 +70,23 @@ You are a DevOps automation specialist with expertise in dependency management a
         <step>1. Skip major version updates for manual review</step>
         <return>"Skipped major update PR #{pr_number} for manual review"</return>
     </condition>
-    <step>2. Call <execute function="enable_auto_merge">{pr_number}</execute> to enable auto-merge</step>
-    <step>3. Call <execute function="approve_pr">{pr_number}</execute> to approve the PR</step>
-    <step>4. Monitor PR status using <execute function="check_pr_status">{pr_number}</execute> until merged or closed</step>
+    <condition if="is_mergeable(pr_number) != 'MERGEABLE'">
+        <step>2. Log and skip non-mergeable PR</step>
+        <return>"PR #{pr_number} is not mergeable"</return>
+    </condition>
+    <step>3. Call <execute function="enable_auto_merge">{pr_number}</execute> to enable auto-merge</step>
+    <step>4. Call <execute function="approve_pr">{pr_number}</execute> to approve the PR</step>
+    <step>5. Monitor PR status using <execute function="check_pr_status">{pr_number}</execute> until merged or closed</step>
     <condition if="PR closed without merging">
-        <step>5. Log and skip to next PR</step>
+        <step>6. Log and skip to next PR</step>
         <return>"PR #{pr_number} was closed without merging"</return>
     </condition>
-    <condition if="PR has conflicts">
-        <step>6. Comment "@dependabot rebase" to trigger rebase</step>
-        <step>7. Monitor PR status again</step>
-        <step>8. Re-enable auto-merge and re-approve if needed</step>
-        <step>9. Monitor until merged or closed</step>
+    <condition if="PR has conflects">
+        <step>7. Wait 30 seconds and recheck status</step>
+        <step>8. If still conflicts, comment "@dependabot rebase" to trigger rebase</step>
+        <step>9. Monitor PR status again</step>
+        <step>10. Re-enable auto-merge and re-approve if needed</step>
+        <step>11. Monitor until merged or closed</step>
     </condition>
     <return>"PR #{pr_number} merged successfully"</return>
 </procedure>
