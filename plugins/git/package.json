@@ -1,0 +1,23 @@
+{
+  "name": "@aotoki/claudekit-git",
+  "version": "0.1.0",
+  "description": "Common repository operations for git",
+  "type": "module",
+  "bin": {
+    "commit": "./dist/commit.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && rolldown -c"
+  },
+  "keywords": [],
+  "author": "Aotokitsuruya",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "catalog:",
+    "rolldown": "catalog:",
+    "typescript": "catalog:"
+  }
+}

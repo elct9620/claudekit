@@ -1,0 +1,16 @@
+{
+  "description": "Automatic make git operation if condition met",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/dist/commit.js"
+          }
+        ]
+      }
+    ]
+  }
+}
