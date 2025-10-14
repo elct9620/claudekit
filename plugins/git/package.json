@@ -19,5 +19,8 @@
     "prettier": "catalog:",
     "rolldown": "catalog:",
     "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@claudekit/config": "workspace:*"
   }
 }

@@ -7,20 +7,33 @@ settings:
 catalogs:
   default:
     prettier:
-      specifier: ^3.6.2
+      specifier: 3.6.2
       version: 3.6.2
     rolldown:
-      specifier: ^1.0.0-beta.43
+      specifier: 1.0.0-beta.43
       version: 1.0.0-beta.43
     typescript:
-      specifier: ^5.9.3
+      specifier: 5.9.3
       version: 5.9.3
 
 importers:
 
   .: {}
 
+  packages/config:
+    devDependencies:
+      prettier:
+        specifier: 'catalog:'
+        version: 3.6.2
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
   plugins/git:
+    dependencies:
+      '@claudekit/config':
+        specifier: workspace:*
+        version: link:../../packages/config
     devDependencies:
       prettier:
         specifier: 'catalog:'

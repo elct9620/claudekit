@@ -1,0 +1,16 @@
+{
+  "name": "@claudekit/config",
+  "version": "0.1.0",
+  "description": "The config module for Claudekit",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "Aotokitsuruay",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  }
+}
