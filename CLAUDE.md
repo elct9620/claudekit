@@ -34,11 +34,19 @@ plugins/
 │   │   ├── commit.ts   # Stop hook implementation
 │   │   └── git.ts      # Git status utilities
 │   └── README.md
-└── license/           # License management
+├── license/           # License management
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── commands/
+│   │   └── setup.md
+│   └── README.md
+└── rubric/            # Code standards validation
     ├── .claude-plugin/
     │   └── plugin.json
-    ├── commands/
-    │   └── setup.md
+    ├── hooks/
+    │   └── hooks.json
+    ├── src/
+    │   └── review.ts   # PostToolUse hook implementation
     └── README.md
 ```
 
@@ -56,7 +64,7 @@ This runs the build script in each workspace package recursively.
 **Build Process**:
 - TypeScript compilation (`tsc`) generates type definitions
 - Rolldown bundles source into single executable files in `dist/`
-- Only plugins with build scripts (currently `git` plugin) require building
+- Plugins with build scripts (`git`, `rubric`) require building when hook logic changes
 - Packages (`config`, `hook`) are consumed directly via TypeScript source (`"main": "src/index.ts"`)
 
 **Testing Changes**: After modifying plugin code, rebuild with `pnpm build` before testing slash commands.
@@ -115,12 +123,21 @@ The git plugin implements Claude Code hooks to intercept operations before they 
 - Supports AND/OR logic for combining thresholds
 - Skips when `stopHookActive: true` (user override)
 
+**Rubric Plugin PostToolUse Hook** (`src/review.ts`):
+- Validates file changes against custom rubrics after Edit/Write operations
+- Matches file paths against configured regex patterns
+- Blocks operations (or warns) when rubric rules match
+- References rubric documents via `@path/to/rubric.md` syntax
+- Supports enforcement mode (block) or warning mode
+
 **Key Files**:
-- `packages/hook/src/index.ts` - Hook I/O primitives, JSON parsing, decision helpers
+- `packages/hook/src/index.ts` - Hook I/O primitives, JSON parsing, decision helpers (includes `postToolUse` helper)
 - `packages/config/src/index.ts` - Config loading from multiple paths with deep merge
-- `plugins/git/hooks/hooks.json` - Hook registration manifest
+- `plugins/git/hooks/hooks.json` - Git hook registration (Stop event)
 - `plugins/git/src/commit.ts` - Stop hook implementation
 - `plugins/git/src/git.ts` - Git operations (status, diff, ls-files)
+- `plugins/rubric/hooks/hooks.json` - Rubric hook registration (PostToolUse event)
+- `plugins/rubric/src/review.ts` - PostToolUse hook implementation
 
 ## Plugin Workflows
 
@@ -146,6 +163,14 @@ Key workflow: License template setup
 - Removes front matter from template
 - Prompts for copyright year/holder update
 
+### Rubric Plugin (Hook-based, no commands)
+Key workflow: Automatic validation after file modifications
+- Intercepts Edit and Write tool operations via PostToolUse hook
+- Matches changed file paths against configured regex patterns
+- Blocks operation (or warns) when rubric rules match
+- Prompts Claude to review changes against referenced rubric documents
+- Enables enforcement of coding standards, style guides, or documentation requirements
+
 ## Configuration System
 
 ClaudeKit uses a hierarchical configuration system via `@claudekit/config`:
@@ -161,13 +186,23 @@ ClaudeKit uses a hierarchical configuration system via `@claudekit/config`:
 - Primitives use the override value
 
 **Current Config Options**:
+
+Git plugin:
 - `commit.threshold.enabled` - Enable/disable commit size checks
 - `commit.threshold.maxFilesChanged` - File count limit (default: 10)
 - `commit.threshold.maxLinesChanged` - Line count limit (default: 500)
 - `commit.threshold.logic` - "OR" (either) or "AND" (both) for thresholds
 - `commit.threshold.blockReason` - Custom message with placeholders: `{changedFiles}`, `{maxChangedFiles}`, `{changedLines}`, `{untrackedLines}`, `{totalChangedLines}`, `{maxChangedLines}`
 
-See README.md for configuration examples.
+Rubric plugin:
+- `rubric.enforce` - Block operations on violations (default: true) or warning mode (false)
+- `rubric.reviewMessage` - Custom message template with `{references}` placeholder
+- `rubric.rules` - Array of rule objects with:
+  - `name` - Human-readable rule name (optional)
+  - `pattern` - Regex pattern to match file paths (required)
+  - `path` - Path to rubric document relative to project root (required)
+
+See README.md and individual plugin documentation for configuration examples.
 
 ## Development Notes
 
