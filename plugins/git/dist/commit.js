@@ -88,9 +88,9 @@ async function loadHook(source = process.stdin) {
 		});
 	});
 }
-function stop(isAllow = true, reason) {
+function stop(isPass = true, reason) {
 	return JSON.stringify({
-		decision: isAllow ? void 0 : BlockDecision,
+		decision: isPass ? void 0 : BlockDecision,
 		reason
 	});
 }

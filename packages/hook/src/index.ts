@@ -1,21 +1,49 @@
+export enum HookEventName {
+  Stop = "Stop",
+  PostToolUse = "PostToolUse",
+}
+
 type SharedInput = {
-  hookEventName: string;
+  hookEventName: HookEventName;
 };
 
 export type StopInput = SharedInput & {
-  hookEventName: "Stop";
+  hookEventName: HookEventName.Stop;
   stopHookActive: boolean;
 };
 
-export type HookInput = StopInput;
+export type PostToolUseInput = SharedInput & {
+  hookEventName: HookEventName.PostToolUse;
+  toolName: string;
+  toolInput: {
+    [key: string]: any;
+  };
+  toolResponse: {
+    [key: string]: any;
+  };
+};
+
+export type HookInput = StopInput | PostToolUseInput;
 
 export const BlockDecision = "block";
+type Decision = typeof BlockDecision | undefined;
 
 type SharedOutput = {};
 
+export type HookSpecificOutput<T extends HookEventName> = {
+  hookEventName: T;
+  additionalContext?: string;
+};
+
 export type StopOutput = SharedOutput & {
-  decision: typeof BlockDecision | undefined;
+  decision: Decision;
   reason?: string;
+};
+
+export type PostToolUseOutput = SharedOutput & {
+  decision: Decision;
+  reason?: string;
+  hookSpecificOutput?: HookSpecificOutput<HookEventName.PostToolUse>;
 };
 
 /**
@@ -45,7 +73,7 @@ function deepSnakeToCamel(obj: any): any {
  */
 export async function loadHook<T extends HookInput>(
   source: NodeJS.ReadableStream = process.stdin,
-): Promise<HookInput> {
+): Promise<T> {
   return new Promise((resolve, reject) => {
     let data = "";
     source.on("data", (chunk) => {
@@ -56,7 +84,7 @@ export async function loadHook<T extends HookInput>(
       try {
         const parsed = JSON.parse(data);
         const camelCased = deepSnakeToCamel(parsed);
-        resolve(camelCased as HookInput);
+        resolve(camelCased as T);
       } catch (error) {
         reject(new Error(`Unable to parse input as JSON: ${error}`));
       }
@@ -68,9 +96,29 @@ export async function loadHook<T extends HookInput>(
   });
 }
 
-export function stop(isAllow: boolean = true, reason?: string): string {
+export function stop(isPass: boolean = true, reason?: string): string {
   return JSON.stringify({
-    decision: isAllow ? undefined : BlockDecision,
+    decision: isPass ? undefined : BlockDecision,
     reason,
   });
+}
+
+export function postToolUse(
+  isPass: boolean = true,
+  reason: string = "",
+  additionalContext?: string,
+): string {
+  const output: PostToolUseOutput = {
+    decision: isPass ? undefined : BlockDecision,
+    reason,
+  };
+
+  if (additionalContext) {
+    output.hookSpecificOutput = {
+      hookEventName: HookEventName.PostToolUse,
+      additionalContext,
+    };
+  }
+
+  return JSON.stringify(output);
 }

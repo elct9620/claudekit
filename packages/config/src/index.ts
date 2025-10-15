@@ -36,8 +36,21 @@ export type CommitConfig = {
   };
 };
 
+export type Rubric = {
+  name?: string;
+  pattern: string;
+  path: string;
+};
+
+export type RubricConfig = {
+  enforce?: boolean;
+  rules: Rubric[];
+  reviewMessage?: string;
+};
+
 export type Config = {
   commit?: CommitConfig;
+  rubric?: RubricConfig;
 };
 
 function isConfigExists(path: string): boolean {
