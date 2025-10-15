@@ -10,7 +10,7 @@
     "rules": [
       {
         "name": "README Guidelines",
-        "pattern": "README\.md$",
+        "pattern": "README\\.md$",
         "path": "docs/rubrics/readme.md"
       }
     ]

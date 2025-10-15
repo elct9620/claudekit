@@ -42,12 +42,16 @@ async function loadConfig() {
 	if (configPath) try {
 		const fileContent = await fsAsync.readFile(configPath, "utf-8");
 		Object.assign(projectConfig, JSON.parse(fileContent));
-	} catch (error) {}
+	} catch (error) {
+		throw new Error(`Failed to parse config file at ${configPath}: ${error}`);
+	}
 	const localConfig = {};
 	if (localConfigPath) try {
 		const fileContent = await fsAsync.readFile(localConfigPath, "utf-8");
 		Object.assign(localConfig, JSON.parse(fileContent));
-	} catch (error) {}
+	} catch (error) {
+		throw new Error(`Failed to parse local config file at ${localConfigPath}: ${error}`);
+	}
 	return deepMerge(projectConfig, localConfig);
 }
 

@@ -97,7 +97,7 @@ export async function loadConfig(): Promise<Config> {
       const fileContent = await fsAsync.readFile(configPath, "utf-8");
       Object.assign(projectConfig, JSON.parse(fileContent));
     } catch (error) {
-      // Ignore JSON parse errors
+      throw new Error(`Failed to parse config file at ${configPath}: ${error}`);
     }
   }
 
@@ -107,8 +107,9 @@ export async function loadConfig(): Promise<Config> {
       const fileContent = await fsAsync.readFile(localConfigPath, "utf-8");
       Object.assign(localConfig, JSON.parse(fileContent));
     } catch (error) {
-      // Ignore JSON parse errors
-      // Local config is optional
+      throw new Error(
+        `Failed to parse local config file at ${localConfigPath}: ${error}`,
+      );
     }
   }
 
