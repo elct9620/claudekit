@@ -3,18 +3,25 @@
 
 Configuration loading utilities for ClaudeKit plugins with deep merge support for hierarchical config files.
 
-**Exported Functions:**
+## Functions
 
-- `loadConfig(): Promise<Config>` - Loads and merges configuration from multiple file paths
+| Function | Description |
+|----------|-------------|
+| `loadConfig()` | Loads and merges configuration from multiple file paths (returns `Promise<Config>`) |
 
-**Exported Types:**
+## Types
 
-- `Config` - Main configuration object type
-- `CommitConfig` - Git commit threshold configuration
-- `RubricConfig` - Rubric validation configuration
-- `CommitLogic` - Enum for AND/OR threshold logic
+| Type | Description |
+|------|-------------|
+| `Config` | Main configuration object type |
+| `CommitConfig` | Git commit threshold configuration |
+| `RubricConfig` | Rubric validation configuration |
+| `Rubric` | Rubric rule definition with name, pattern, and path |
+| `CommitLogic` | Enum for AND/OR threshold logic |
 
-**Exported Constants:**
+## Constants
 
-- `CONFIG_SEARCH_PATHS` - Default config file search paths
-- `LOCAL_CONFIG_SEARCH_PATHS` - Local override config file paths
+| Constant | Description |
+|----------|-------------|
+| `CONFIG_SEARCH_PATHS` | Array of default config file search paths |
+| `LOCAL_CONFIG_SEARCH_PATHS` | Array of local override config file paths |
