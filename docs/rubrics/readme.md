@@ -85,3 +85,5 @@ Package Name
 ## Note
 
 The structure of the README files should be consistent across the project, avoid add unnecessary sections otherwise it will be marked as failed.
+
+> If the section is not applicable, it can be omitted.
