@@ -24,7 +24,7 @@ Claude Kit
 
 ## Configuration
 
-> Explain how to use configuration files, link to plugin documentation for details.
+> Explain how to use configuration files, use markdown tables to display configurable plugins and documentation links.
 
 ```
 
@@ -65,6 +65,7 @@ Plugin Name
 - Easy to understand the purpose and functionality of the plugin.
 - Help users quickly find commands, agents, hooks, and configuration options.
 - Use markdown tables for better readability.
+- Use headings and formatting for better organization.
 
 ### Package README (1 points)
 
@@ -81,6 +82,7 @@ Package Name
 - The package's is designed to plugins and only internal usage.
 - Provide clear explanations of exported entities.
 - Make it easy for developers to understand and use the package.
+- Use headings and formatting for better organization.
 
 ## Note
 
