@@ -1,12 +1,12 @@
-import { defineConfig } from 'rolldown';
+import { defineConfig } from "rolldown";
 
 export default defineConfig([
   {
-    input: 'src/commit.ts',
+    input: "src/commit.ts",
     output: {
-      file: 'dist/commit.js'
+      file: "dist/commit.js",
     },
     platform: "node",
-    tsconfig: 'tsconfig.json'
-  }
+    tsconfig: "tsconfig.json",
+  },
 ]);
