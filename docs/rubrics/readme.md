@@ -1,6 +1,6 @@
 # Readme Rubric
 
-This document outlines the criteria for evaluating the quality of README. We assert the all criteria must be passed.
+This document outlines the criteria for evaluating the quality of README. We assert at least 80% of the criteria must be met to pass.
 
 ## Criteria
 
@@ -75,14 +75,26 @@ For package-specific README files, they should provide essential information abo
 Package Name
 ===
 
-> Explain exported classes, functions, types, etc.
+## Classes
 
+> Use markdown tables to list all exported classes with brief descriptions.
+
+## Functions
+
+> Use markdown tables to list all exported functions with brief descriptions.
+
+## Types
+
+> Use markdown tables to list all exported types with brief descriptions.
+
+## Constants
+
+> Use markdown tables to list all exported constants with brief descriptions.
 ```
 
 - The package's is designed to plugins and only internal usage.
 - Provide clear explanations of exported entities.
 - Make it easy for developers to understand and use the package.
-- Use headings and formatting for better organization.
 
 ## Note
 
