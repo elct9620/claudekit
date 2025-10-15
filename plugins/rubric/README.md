@@ -6,17 +6,17 @@ Automated code standards checks based on custom rubrics.
 
 Automatically validates file changes against custom rubrics (coding standards, style guides, documentation requirements) when using Edit or Write operations.
 
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `/rubric:config [rubric-path]` | Configure rubric settings for the current project |
+
 ## Hooks
 
 | Hook Event   | Matcher      | Description                                                                 |
 |--------------|--------------|-----------------------------------------------------------------------------|
 | PostToolUse  | Edit\|Write  | Validates edited/written files against configured rubric rules              |
-
-**Behavior:**
-- Matches file paths against configured rubric patterns
-- When matches found and `enforce: true` (default), blocks the operation and prompts review against referenced rubric documents
-- When `enforce: false`, allows operation but shows a warning message with rubric references
-- Skips validation when no rubric configured or no rules match the file path
 
 ## Configuration
 
