@@ -1,6 +1,6 @@
 {
   "name": "rubric",
-  "description": "Self-review system for code changes",
+  "description": "Automated code standards checks based on custom rubrics",
   "version": "0.1.0",
   "author": {
     "name": "Aotokitsuruya"

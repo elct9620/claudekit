@@ -1,14 +1,14 @@
 # Rubric Plugin
 
-Self-review system for code changes in Claude Code.
+Automated code standards checks based on custom rubrics.
 
 ## Overview
 
-The Rubric plugin automatically triggers code reviews after Edit or Write operations through Claude Code's hook system.
+The Rubric plugin hooks into Edit or Write operations through Claude Code's hook system.
 
 ## Hook Behavior
 
-This plugin registers a `PostToolUse` hook that matches `Edit|Write` tool operations. After any file modification, the hook is triggered to perform automated review.
+This plugin registers a `PostToolUse` hook that matches `Edit|Write` tool operations.
 
 ## Configuration
 

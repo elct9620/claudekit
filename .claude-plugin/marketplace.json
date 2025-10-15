@@ -21,6 +21,11 @@
       "name": "license",
       "source": "./plugins/license",
       "description": "Commands to manage open source licenses in current repository"
+    },
+    {
+      "name": "rubric",
+      "source": "./plugins/rubric",
+      "description": "Automated code standards checks based on custom rubrics"
     }
   ]
 }
