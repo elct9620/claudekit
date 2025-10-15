@@ -5,5 +5,14 @@
       "maxFilesChanged": 5,
       "maxLinesChanged": 100
     }
+  },
+  "rubric": {
+    "rules": [
+      {
+        "name": "README Guidelines",
+        "pattern": "README\.md$",
+        "path": "docs/rubrics/readme.md"
+      }
+    ]
   }
 }
