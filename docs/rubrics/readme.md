@@ -40,7 +40,7 @@ For plugin-specific README files, they should provide detailed information about
 Plugin Name
 ===
 
-## Propose
+## Purpose
 
 > A brief description of what the plugin to do.
 
@@ -65,3 +65,23 @@ Plugin Name
 - Easy to understand the purpose and functionality of the plugin.
 - Help users quickly find commands, agents, hooks, and configuration options.
 - Use markdown tables for better readability.
+
+### Package README (1 points)
+
+For package-specific README files, they should provide essential information about the package.
+
+```md
+Package Name
+===
+
+> Explain exported classes, functions, types, etc.
+
+```
+
+- The package's is designed to plugins and only internal usage.
+- Provide clear explanations of exported entities.
+- Make it easy for developers to understand and use the package.
+
+## Note
+
+The structure of the README files should be consistent across the project, avoid add unnecessary sections otherwise it will be marked as failed.
