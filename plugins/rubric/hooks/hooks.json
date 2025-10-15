@@ -1,0 +1,16 @@
+{
+  "description": "Automatic code review after Edit or Write operations",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/dist/review.js"
+          }
+        ]
+      }
+    ]
+  }
+}

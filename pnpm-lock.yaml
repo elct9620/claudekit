@@ -70,6 +70,28 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  plugins/rubric:
+    dependencies:
+      '@claudekit/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@claudekit/hook':
+        specifier: workspace:*
+        version: link:../../packages/hook
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.7.2
+      prettier:
+        specifier: 'catalog:'
+        version: 3.6.2
+      rolldown:
+        specifier: 'catalog:'
+        version: 1.0.0-beta.43
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
 packages:
 
   '@emnapi/core@1.5.0':

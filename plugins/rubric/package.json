@@ -1,0 +1,28 @@
+{
+  "name": "@aotoki/claudekit-rubric",
+  "version": "0.1.0",
+  "description": "Self-review system for code changes",
+  "type": "module",
+  "bin": {
+    "review": "./dist/review.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && rolldown -c"
+  },
+  "keywords": [],
+  "author": "Aotokitsuruya",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "prettier": "catalog:",
+    "rolldown": "catalog:",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@claudekit/config": "workspace:*",
+    "@claudekit/hook": "workspace:*"
+  }
+}
