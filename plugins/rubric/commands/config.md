@@ -1,5 +1,5 @@
 ---
-allowed-tools: ["Glob", "Grep", "Read", "Task", "Write", "Edit"]
+allowed-tools: ["Glob", "Grep", "Read", "Task", "Write", "Edit", "LS"]
 argument-hint: "[rubric-path]"
 description: Configure rubric settings for the current project
 ---
