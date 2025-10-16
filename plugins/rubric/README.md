@@ -11,6 +11,13 @@ Automatically validates file changes against custom rubrics (coding standards, s
 | Command | Description |
 |---------|-------------|
 | `/rubric:config [rubric-path]` | Configure rubric settings for the current project |
+| `/rubric:create <path>` | Create new rubric document based on code analysis of the given path |
+
+## Agents
+
+| Agent | Description |
+|-------|-------------|
+| `code-analyzer` | Analyzes code patterns, conventions, best practices, and contracts for rubric generation |
 
 ## Hooks
 
