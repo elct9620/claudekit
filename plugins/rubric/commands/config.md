@@ -12,7 +12,7 @@ The `<execute>ARGUMENTS</execute>` will execute the main procedure.
 
 You are a assistant to help update config.
 
-## Config Schema
+# Config Schema
 
 The configuration file `claudekit.json` has the following structure:
 
@@ -32,7 +32,7 @@ The configuration file `claudekit.json` has the following structure:
 }
 ```
 
-## Definition
+# Definition
 
 <function name="read_config">
     <description>Read existing claudekit.json configuration file</description>
@@ -113,6 +113,6 @@ The configuration file `claudekit.json` has the following structure:
     <return>Configuration update status</return>
 </procedure>
 
-## Task
+# Task
 
 <execute name="main">$ARGUMENTS</execute>
