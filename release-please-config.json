@@ -4,9 +4,7 @@
     ".": {
       "release-type": "node",
       "package-name": "@aotoki/claudekit",
-      "changelog-path": "CHANGELOG.md",
-      "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true
+      "changelog-path": "CHANGELOG.md"
     },
     "packages/config": {
       "release-type": "node",
