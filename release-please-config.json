@@ -1,0 +1,55 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "package-name": "@aotoki/claudekit",
+      "changelog-path": "CHANGELOG.md",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    },
+    "packages/config": {
+      "release-type": "node",
+      "package-name": "@claudekit/config",
+      "changelog-path": "CHANGELOG.md",
+      "component": "@claudekit/config"
+    },
+    "packages/hook": {
+      "release-type": "node",
+      "package-name": "@claudekit/hook",
+      "changelog-path": "CHANGELOG.md",
+      "component": "@claudekit/hook"
+    },
+    "plugins/dependabot": {
+      "release-type": "simple",
+      "package-name": "@aotoki/claudekit-dependabot",
+      "changelog-path": "CHANGELOG.md",
+      "component": "dependabot",
+      "extra-files": [".claude-plugin/plugin.json"]
+    },
+    "plugins/git": {
+      "release-type": "node",
+      "package-name": "@aotoki/claudekit-git",
+      "changelog-path": "CHANGELOG.md",
+      "component": "git",
+      "extra-files": [".claude-plugin/plugin.json"]
+    },
+    "plugins/license": {
+      "release-type": "simple",
+      "package-name": "@aotoki/claudekit-license",
+      "changelog-path": "CHANGELOG.md",
+      "component": "license",
+      "extra-files": [".claude-plugin/plugin.json"]
+    },
+    "plugins/rubric": {
+      "release-type": "node",
+      "package-name": "@aotoki/claudekit-rubric",
+      "changelog-path": "CHANGELOG.md",
+      "component": "rubric",
+      "extra-files": [".claude-plugin/plugin.json"]
+    }
+  },
+  "group-pull-request-title-pattern": "chore: release ${version}",
+  "release-search-depth": 400,
+  "separate-pull-requests": false
+}
