@@ -1,9 +1,9 @@
 {
-  ".": "0.1.0",
-  "packages/config": "0.1.0",
-  "packages/hook": "0.1.0",
-  "plugins/dependabot": "0.1.0",
-  "plugins/git": "0.1.0",
-  "plugins/license": "0.1.0",
-  "plugins/rubric": "0.1.0"
+  ".": "0.1.1",
+  "packages/config": "0.2.0",
+  "packages/hook": "0.2.0",
+  "plugins/dependabot": "0.2.0",
+  "plugins/git": "0.2.0",
+  "plugins/license": "0.2.0",
+  "plugins/rubric": "0.2.0"
 }
