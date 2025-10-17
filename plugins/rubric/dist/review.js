@@ -50,13 +50,19 @@ async function loadConfig() {
 }
 
 //#endregion
-//#region ../../packages/hook/src/index.ts
+//#region ../../packages/hook/src/input.ts
 let HookEventName = /* @__PURE__ */ function(HookEventName$1) {
 	HookEventName$1["Stop"] = "Stop";
 	HookEventName$1["PostToolUse"] = "PostToolUse";
 	return HookEventName$1;
 }({});
+
+//#endregion
+//#region ../../packages/hook/src/output.ts
 const BlockDecision = "block";
+
+//#endregion
+//#region ../../packages/hook/src/index.ts
 /**
 * Convert snake_case keys to camelCase keys in a deeply nested object or array.
 */

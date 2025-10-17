@@ -59,8 +59,11 @@ async function loadConfig() {
 }
 
 //#endregion
-//#region ../../packages/hook/src/index.ts
+//#region ../../packages/hook/src/output.ts
 const BlockDecision = "block";
+
+//#endregion
+//#region ../../packages/hook/src/index.ts
 /**
 * Convert snake_case keys to camelCase keys in a deeply nested object or array.
 */

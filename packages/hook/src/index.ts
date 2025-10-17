@@ -1,50 +1,9 @@
-export enum HookEventName {
-  Stop = "Stop",
-  PostToolUse = "PostToolUse",
-}
+export * from "./input.js";
+export * from "./output.js";
 
-type SharedInput = {
-  hookEventName: HookEventName;
-};
-
-export type StopInput = SharedInput & {
-  hookEventName: HookEventName.Stop;
-  stopHookActive: boolean;
-};
-
-export type PostToolUseInput = SharedInput & {
-  hookEventName: HookEventName.PostToolUse;
-  toolName: string;
-  toolInput: {
-    [key: string]: any;
-  };
-  toolResponse: {
-    [key: string]: any;
-  };
-};
-
-export type HookInput = StopInput | PostToolUseInput;
-
-export const BlockDecision = "block";
-type Decision = typeof BlockDecision | undefined;
-
-type SharedOutput = {};
-
-export type HookSpecificOutput<T extends HookEventName> = {
-  hookEventName: T;
-  additionalContext?: string;
-};
-
-export type StopOutput = SharedOutput & {
-  decision: Decision;
-  reason?: string;
-};
-
-export type PostToolUseOutput = SharedOutput & {
-  decision: Decision;
-  reason?: string;
-  hookSpecificOutput?: HookSpecificOutput<HookEventName.PostToolUse>;
-};
+import type { HookInput } from "./input.js";
+import { HookEventName } from "./input.js";
+import { BlockDecision, type PostToolUseOutput } from "./output.js";
 
 /**
  * Convert snake_case keys to camelCase keys in a deeply nested object or array.
