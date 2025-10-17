@@ -19,8 +19,8 @@ The configuration file `claudekit.json` has the following structure:
 ```json
 {
   "rubric": {
-    "enforce": true, // Optional default is true
-    "reviewMessage": "Make self-review with {references}", // Optional default message, the {references} will be replaced with links to the rubric documents
+    "enforce": true, // Omitted otherwise user ask for config change
+    "reviewMessage": "Make self-review with {references}", // Omitted otherwise user ask for config change, the {references} placeholder must be included
     "rules": [
       {
         "name": "JavaScript Files", // Optional descriptive name for the rule
