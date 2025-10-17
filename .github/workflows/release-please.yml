@@ -12,6 +12,55 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      prs_created: ${{ steps.release.outputs.prs_created }}
+      pr: ${{ steps.release.outputs.pr }}
     steps:
       - name: Run Release Please
+        id: release
         uses: googleapis/release-please-action@v4
+
+  rebuild-plugins:
+    needs: release-please
+    if: needs.release-please.outputs.prs_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Parse PR information
+        id: pr-info
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = JSON.parse('${{ needs.release-please.outputs.pr }}');
+            core.setOutput('branch', pr.headBranchName);
+            core.info(`Release PR branch: ${pr.headBranchName}`);
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pr-info.outputs.branch }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build plugins
+        run: pnpm build
+
+      - name: Commit rebuilt dist files
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const commit = require('./scripts/commit.js');
+            await commit({github, context, core, glob, exec});
