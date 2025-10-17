@@ -208,8 +208,27 @@ See README.md and individual plugin documentation for configuration examples.
 
 - **Package Manager**: pnpm (version 10.15.1)
 - **Plugin Distribution**: Plugins are distributed via Claude Code plugin marketplace at `elct9620/claudekit`
-- **Version**: 0.1.0 (all plugins currently at 0.1.0)
 - **License**: MIT
+
+## Release Management
+
+This project uses [Release Please](https://github.com/googleapis/release-please) for automated versioning and releases:
+
+**Automated Workflow**:
+1. Commits to `main` trigger Release Please to analyze conventional commits
+2. Release Please creates/updates a release PR with version bumps and CHANGELOGs
+3. When a release PR is created, plugins with hooks are automatically rebuilt
+4. The rebuilt `dist/` files are committed back to the release PR
+5. Merging the release PR publishes the new version
+
+**Version Management**:
+- Each package/plugin is versioned independently (see `.release-please-manifest.json`)
+- Plugin manifests (`.claude-plugin/plugin.json`) are automatically updated via `extra-files` config
+- Use [conventional commits](https://www.conventionalcommits.org/) for automatic version detection
+
+**Manual Release**:
+- Merge the release PR created by Release Please
+- Version numbers are tracked in `.release-please-manifest.json`
 
 ## Testing Plugin Commands
 
