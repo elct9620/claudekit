@@ -3,6 +3,14 @@ import fsAsync from "fs/promises";
 import fs from "fs";
 import { exec } from "child_process";
 
+//#region ../../packages/config/src/schema.ts
+let CommitLogic = /* @__PURE__ */ function(CommitLogic$1) {
+	CommitLogic$1["AND"] = "AND";
+	CommitLogic$1["OR"] = "OR";
+	return CommitLogic$1;
+}({});
+
+//#endregion
 //#region ../../packages/config/src/index.ts
 /**
 * Paths to search for configuration files, in order of precedence.
@@ -16,11 +24,6 @@ const CONFIG_SEARCH_PATHS = [
 	".claude/claudekit.json"
 ];
 const LOCAL_CONFIG_SEARCH_PATHS = ["claudekit.local.json", ".claude/claudekit.local.json"];
-let CommitLogic = /* @__PURE__ */ function(CommitLogic$1) {
-	CommitLogic$1["AND"] = "AND";
-	CommitLogic$1["OR"] = "OR";
-	return CommitLogic$1;
-}({});
 function isConfigExists(path) {
 	return fs.existsSync(path);
 }

@@ -1,5 +1,14 @@
 import fsAsync from "fs/promises";
 import fs from "fs";
+import type { Config } from "./schema.js";
+
+export type {
+  Config,
+  CommitConfig,
+  Rubric,
+  RubricConfig,
+} from "./schema.js";
+export { CommitLogic } from "./schema.js";
 
 /**
  * Paths to search for configuration files, in order of precedence.
@@ -17,41 +26,6 @@ export const LOCAL_CONFIG_SEARCH_PATHS = [
   "claudekit.local.json",
   ".claude/claudekit.local.json",
 ];
-
-export enum CommitLogic {
-  AND = "AND",
-  OR = "OR",
-}
-
-/**
- * Configuration for enforceing Claude Code to not commit large changes.
- */
-export type CommitConfig = {
-  threshold: {
-    enabled: boolean;
-    maxFilesChanged?: number;
-    maxLinesChanged?: number;
-    logic?: CommitLogic;
-    blockReason?: string;
-  };
-};
-
-export type Rubric = {
-  name?: string;
-  pattern: string;
-  path: string;
-};
-
-export type RubricConfig = {
-  enforce?: boolean;
-  rules: Rubric[];
-  reviewMessage?: string;
-};
-
-export type Config = {
-  commit?: CommitConfig;
-  rubric?: RubricConfig;
-};
 
 function isConfigExists(path: string): boolean {
   return fs.existsSync(path);
