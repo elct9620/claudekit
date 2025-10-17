@@ -30,9 +30,11 @@ jobs:
       - name: Parse PR information
         id: pr-info
         uses: actions/github-script@v8
+        env:
+          PR_JSON: ${{ needs.release-please.outputs.pr }}
         with:
           script: |
-            const pr = JSON.parse('${{ needs.release-please.outputs.pr }}');
+            const pr = JSON.parse(process.env.PR_JSON);
             core.setOutput('branch', pr.headBranchName);
             core.info(`Release PR branch: ${pr.headBranchName}`);
 
