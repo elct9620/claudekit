@@ -3,10 +3,11 @@ Dependabot Plugin
 
 ## Purpose
 
-Automatically approve and merge Dependabot pull requests in GitHub repositories using the GitHub CLI.
+Manage Dependabot configuration and automate Dependabot pull request workflows in GitHub repositories.
 
 ## Commands
 
-| Command             | Description                                              |
-|---------------------|----------------------------------------------------------|
-| `/dependabot:merge` | Automatically approve and merge Dependabot pull requests |
+| Command              | Description                                                        |
+|----------------------|--------------------------------------------------------------------|
+| `/dependabot:setup`  | Create dependabot.yml configuration file for dependency updates    |
+| `/dependabot:merge`  | Automatically approve and merge Dependabot pull requests           |
