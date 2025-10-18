@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.1.1...claudekit-v0.2.0) (2025-10-18)
+
+
+### Features
+
+* add automatic plugin rebuild for release-please PRs ([c118b98](https://github.com/elct9620/claudekit/commit/c118b983003d145d30ee72fe322d7507d561432b))
+* **dependabot:** add dependabot configuration for npm and github-actions ([9b033b6](https://github.com/elct9620/claudekit/commit/9b033b69dbb0ad406a23003cb6e42cb1937784cd))
+* **dependabot:** add setup command for dependabot.yml configuration ([9c76fe8](https://github.com/elct9620/claudekit/commit/9c76fe8fbea635e151763bb95fc8271aebf44f5d))
+
+
+### Bug Fixes
+
+* properly parse PR JSON in rebuild-plugins workflow ([73f728f](https://github.com/elct9620/claudekit/commit/73f728f8df50405d83fb50dfdac7fcd0a1e4b6b8))
+
 ## [0.1.1](https://github.com/elct9620/claudekit/compare/claudekit-v0.1.0...claudekit-v0.1.1) (2025-10-17)
 
 
