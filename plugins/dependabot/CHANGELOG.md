@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/elct9620/claudekit/compare/dependabot-v0.3.0...dependabot-v0.4.0) (2025-10-18)
+
+
+### Features
+
+* **dependabot:** improve merge command with user confirmations ([65dcb3c](https://github.com/elct9620/claudekit/commit/65dcb3c1d032ef31bc4eb6190b567cb71af1af46))
+
 ## [0.3.0](https://github.com/elct9620/claudekit/compare/dependabot-v0.2.0...dependabot-v0.3.0) (2025-10-18)
 
 
