@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.2.0...claudekit-v0.3.0) (2025-10-18)
+
+
+### Features
+
+* add create-plugin skill for scaffolding new plugins ([868cab4](https://github.com/elct9620/claudekit/commit/868cab42db90ac8458b65a39e129b28404ee8cc5))
+* **dependabot:** improve merge command with user confirmations ([65dcb3c](https://github.com/elct9620/claudekit/commit/65dcb3c1d032ef31bc4eb6190b567cb71af1af46))
+
 ## [0.2.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.1.1...claudekit-v0.2.0) (2025-10-18)
 
 
