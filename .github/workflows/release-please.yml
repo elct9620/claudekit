@@ -39,7 +39,7 @@ jobs:
             core.info(`Release PR branch: ${pr.headBranchName}`);
 
       - name: Checkout PR branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ steps.pr-info.outputs.branch }}
           token: ${{ secrets.GITHUB_TOKEN }}
