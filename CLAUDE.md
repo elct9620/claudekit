@@ -50,7 +50,7 @@ plugins/
     └── README.md
 ```
 
-**Important**: Plugin `dist/` directories are tracked in git (see .gitignore lines 86-88). This is intentional for Claude Code plugin distribution.
+**Important**: Plugin `dist/` directories are tracked in git (see .gitignore lines 86-88). This is intentional - Claude Code plugin marketplace requires built executables to be present in the repository, as plugins are installed directly from git without a build step.
 
 ## Build Commands
 
@@ -66,6 +66,13 @@ This runs the build script in each workspace package recursively.
 - Rolldown bundles source into single executable files in `dist/`
 - Plugins with build scripts (`git`, `rubric`) require building when hook logic changes
 - Packages (`config`, `hook`) are consumed directly via TypeScript source (`"main": "src/index.ts"`)
+
+**Rolldown Configuration** (for hook plugins):
+Each hook plugin has a `rolldown.config.js` that defines:
+- Input: TypeScript source file (e.g., `src/commit.ts`)
+- Output: Single bundled executable (e.g., `dist/commit.js`)
+- Platform: `node` (for Node.js runtime)
+- TypeScript config reference
 
 **Testing Changes**: After modifying plugin code, rebuild with `pnpm build` before testing slash commands.
 
@@ -141,8 +148,15 @@ The git plugin implements Claude Code hooks to intercept operations before they 
 
 ## Plugin Workflows
 
-### Dependabot Plugin (`/dependabot:merge`)
-Key workflow: Parallel PR processing with retry logic
+### Dependabot Plugin
+
+**`/dependabot:setup`** - Dependabot configuration setup
+- Detects package managers (npm/pnpm, Python, etc.)
+- Creates `.github/dependabot.yml` with weekly update schedule
+- Optionally adds GitHub Actions monitoring
+- Prompts for advanced configuration options
+
+**`/dependabot:merge`** - Parallel PR processing with retry logic
 - Checks authentication and permissions
 - Lists open Dependabot PRs
 - Skips major version updates
@@ -203,6 +217,18 @@ Rubric plugin:
   - `path` - Path to rubric document relative to project root (required)
 
 See README.md and individual plugin documentation for configuration examples.
+
+## Documentation Standards
+
+README files in this project follow strict standards enforced by the rubric plugin. See `docs/rubrics/readme.md` for complete requirements.
+
+**Key Requirements**:
+- Main README: Installation, Plugins table, Configuration table (minimal, index-style)
+- Plugin README: Purpose, Commands, Agents (if applicable), Hooks (if applicable), Configuration (if applicable)
+- Package README: Classes, Functions, Types, Constants tables
+- No additional sections beyond the rubric structure
+- Use markdown tables for clarity
+- Keep descriptions concise
 
 ## Development Notes
 
