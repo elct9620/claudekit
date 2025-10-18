@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(gh auth:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh pr checks:*), Bash(gh pr review:*), Bash(gh repo view:*), Bash(sleep)
+allowed-tools: Bash(gh auth:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh pr checks:*), Bash(gh pr merge:*), Bash(gh pr review:*), Bash(gh repo view:*), Bash(sleep)
 description: Automatically approve and merge Dependabot pull requests in current repository
 ---
 
@@ -87,7 +87,7 @@ You are a DevOps automation specialist with expertise in dependency management a
     </condition>
     <condition if="PR has conflects">
         <step>10. Wait 30 seconds and recheck status</step>
-        <step>11. If still conflicts, comment "@dependabot rebase" to trigger rebase</step>
+        <step>11. If still conflicts, use ask question tool to confirm if user wants to comment with "@dependabot rebase" to rebase or skip</step>
         <step>12. Monitor PR status again</step>
         <step>13. Re-enable auto-merge and re-approve if needed</step>
         <step>14. Monitor until merged or closed</step>
@@ -102,6 +102,9 @@ You are a DevOps automation specialist with expertise in dependency management a
     </condition>
     <step>1. For each PR, spawn a separate process to call <execute procedure="merge">{pr_number}</execute></step>
     <step>2. Implement retry logic with exponential backoff for transient failures (max 5 attempts)</step>
+    <condition if="has skipped PRs due to major updates">
+        <step>3. Use ask question tool to confirm if user wants to merge skipped major update PRs manually</step>
+    </condition>
     <return>Summary of merge results for all PRs</return>
 </procedure>
 
