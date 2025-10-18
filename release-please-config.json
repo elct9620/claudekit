@@ -49,5 +49,6 @@
   },
   "group-pull-request-title-pattern": "chore: release ${version}",
   "release-search-depth": 400,
-  "separate-pull-requests": false
+  "separate-pull-requests": false,
+  "always-link-local": false
 }
