@@ -26,6 +26,13 @@
       "name": "rubric",
       "source": "./plugins/rubric",
       "description": "Automated code standards checks based on custom rubrics"
+    },
+    {
+      "name": "hono",
+      "source": {
+        "source": "github",
+        "repo": "elct9620/claude-hono-plugin"
+      }
     }
   ]
 }
