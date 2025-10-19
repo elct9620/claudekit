@@ -1,5 +1,5 @@
 ---
-allowed-tools: ["Glob", "Grep", "Read", "Task", "Write", "Edit", "LS"]
+allowed-tools: Glob, Grep, Read, Write, Edit, LS
 argument-hint: "[rubric-path]"
 description: Configure rubric settings for the current project
 ---
@@ -88,7 +88,7 @@ The configuration file `claudekit.json` has the following structure:
         <step>2. Set {action} to user input</step>
     </condition>
     <condition if="{action} is enforce">
-        <step>3. Ask user to provide enforce value (true/false)</step>
+        <step>3. Ask user to provide enforce value (true/false) use ask question tool</step>
         <step>4. Set {enforce} to user input</step>
         <step>5. <execute name="apply_enforce">{config} {enforce}</execute> to update the config file</step>
         <return>Configuration update status</return>
@@ -105,11 +105,12 @@ The configuration file `claudekit.json` has the following structure:
     </condition>
     <step>5. Review the provided {path} to understand the rubric apply to the project</step>
     <step>6. Set {name} and {pattern} based on the rubric document</step>
+    <step>7. Use ask question tool to confirm with user if the detected {name} and {pattern} are correct</step>
     <condition if="user deny the detected name or pattern">
-        <step>7. Ask user to provide the correct {name} and {pattern}</step>
-        <step>8. Set {name} and {pattern} to user input</step>
+        <step>8. Ask user to provide the correct {name} and {pattern}</step>
+        <step>9. Set {name} and {pattern} to user input</step>
     </condition>
-    <step>9. <execute name="apply_config">{config} {name} {pattern} {path}</execute> to update the config file</step>
+    <step>10. <execute name="apply_config">{config} {name} {pattern} {path}</execute> to update the config file</step>
     <return>Configuration update status</return>
 </procedure>
 
