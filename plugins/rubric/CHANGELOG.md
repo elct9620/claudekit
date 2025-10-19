@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/elct9620/claudekit/compare/rubric-v0.2.0...rubric-v0.3.0) (2025-10-19)
+
+
+### Features
+
+* **rubric:** improve config command with explicit user confirmations ([eb657d4](https://github.com/elct9620/claudekit/commit/eb657d4e7bc1257c3663c46aed4934e14a23b929))
+
 ## [0.2.0](https://github.com/elct9620/claudekit/compare/rubric-v0.1.0...rubric-v0.2.0) (2025-10-17)
 
 
