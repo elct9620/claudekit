@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.3.0...claudekit-v0.4.0) (2025-10-19)
+
+
+### Features
+
+* add hono plugin to marketplace ([25345fb](https://github.com/elct9620/claudekit/commit/25345fbf08471fa46397c71a5bd98ca127275dec))
+* **rubric:** improve config command with explicit user confirmations ([eb657d4](https://github.com/elct9620/claudekit/commit/eb657d4e7bc1257c3663c46aed4934e14a23b929))
+
 ## [0.3.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.2.0...claudekit-v0.3.0) (2025-10-18)
 
 
