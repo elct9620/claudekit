@@ -45,6 +45,13 @@
       "changelog-path": "CHANGELOG.md",
       "component": "rubric",
       "extra-files": [".claude-plugin/plugin.json"]
+    },
+    "plugins/spec": {
+      "release-type": "simple",
+      "package-name": "@aotoki/claudekit-spec",
+      "changelog-path": "CHANGELOG.md",
+      "component": "spec",
+      "extra-files": [".claude-plugin/plugin.json"]
     }
   },
   "group-pull-request-title-pattern": "chore: release ${version}",

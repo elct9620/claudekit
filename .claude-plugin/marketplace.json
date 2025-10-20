@@ -28,6 +28,11 @@
       "description": "Automated code standards checks based on custom rubrics"
     },
     {
+      "name": "spec",
+      "source": "./plugins/spec",
+      "description": "Spec-centered development workflow (Experimental)"
+    },
+    {
       "name": "hono",
       "source": {
         "source": "github",

@@ -1,0 +1,9 @@
+{
+  "name": "spec",
+  "version": "0.1.0",
+  "description": "Spec-driven development plugin inspired by GitHub Spec Kit (Experimental)",
+  "author": {
+    "name": "Aotokitsuruya"
+  },
+  "experimental": true
+}
