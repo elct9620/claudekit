@@ -1,6 +1,7 @@
 ---
 name: spec-scaffold
-description: Process any SDD (Specification-Driven Development) action to setup templates. This skill should be used when creating specification document templates instead of creating from scratch, as it includes best practices for specification-driven development workflows.
+description: Process any SDD (Specification-Driven Development) action to setup any spec-related document. Always use this skill to scaffold templates instead of creating from scratch, usually for constitution, specification documents, architecture decision records, technology plans.
+allowed-tools: Read, Grep, Glob, Explore, Bash(cp:*)
 ---
 
 # Spec Scaffold
@@ -12,25 +13,42 @@ The spec-scaffold skill is designed to process any SDD (Specification-Driven Dev
 ## When to Use
 
 Use this skill when:
+
 - Creating new specification document templates
 - Setting up SDD workflows for a project
 - Establishing standardized specification formats
-- Users request template creation for requirements, design, or task documents
+- Any action related to specification-driven development documentation
 
 Always use this skill to create templates instead of creating from scratch.
 
+## Requirements
+
+- MUST follow best practices outlined to ensure consistency and quality.
+- MUST use provided templates as a base for creating or updating specification documents.
+
+## Document Types
+
+Following is available document types that can be scaffolded using this skill, reject other types:
+
+- **Constitutions**: Define the fundamental principles and governance of a project.
+
 ## How to Use
 
-### Workflow
+1. Identify the type of specification document you need (e.g., constitution).
+2. Refer to the references section for best practices and guidelines specific to the document type.
+    - For example, when working on a constitution, refer to the Constitution Best Practices document.
+    - To understand SDD principles, refer to GitHub's Specification-Driven Development guide.
+3. Take action
+    - For creating any document, use the provided templates in the templates section and fill in the necessary details based on references guidelines.
+    - For updating existing documents, ensure changes align with best practices outlined in the references.
 
-1. **Consult references**: Read the appropriate reference files in `references/` to understand the detailed actions and procedures for the specific SDD action being performed.
+> Note: Always use `cp` command to copy templates to your working directory instead of creating from scratch.
 
-2. **Use templates**: Always copy templates from `templates/` using the `cp` command before performing any action. Never create specification documents from scratch - the templates contain best practices and standardized formats.
+## References
 
-### Bundled Resources
+- [GitHub's Specification-Driven Development](https://github.com/github/spec-kit/blob/main/spec-driven.md)
+- [Constitution Best Practices](./references/constitution.md)
 
-#### `references/`
-Contains detailed procedural instructions for each type of SDD action. Consult these files to understand the specific steps and best practices for creating different types of specification documents.
+## Templates
 
-#### `templates/`
-Contains template files that MUST be used as the starting point for all specification documents. Always use `cp` command to copy the appropriate template before making any modifications or additions.
+- [constitution.md](./templates/constitution.md): Constitution template should be used to create project constitutions.
