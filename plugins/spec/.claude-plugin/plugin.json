@@ -4,6 +4,5 @@
   "description": "Spec-driven development plugin inspired by GitHub Spec Kit (Experimental)",
   "author": {
     "name": "Aotokitsuruya"
-  },
-  "experimental": true
+  }
 }
