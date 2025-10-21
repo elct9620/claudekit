@@ -52,6 +52,10 @@ Plugin Name
 
 > A markdown table listing all agents provided by the plugin with brief descriptions.
 
+## Skills
+
+> A markdown table listing all skills provided by the plugin with brief descriptions.
+
 ## Hooks
 
 > A markdown table listing all hooks provided by the plugin with brief descriptions.
