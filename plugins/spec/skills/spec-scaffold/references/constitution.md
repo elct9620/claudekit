@@ -1,71 +1,84 @@
-Constitution Best Practice
+Constitution Manual
 ===
 
-This document outlines best practices to maintain a constitution for a project.
+You are updating the project constitution at `docs/CONSTITUTION.md`. This is a TEMPLATE contatining placeholders in square brackets (e.g. `[PROJECT_NAME]`, `[PRINCIPLE_1_NAME]`, etc.)
 
-## Location
+## Mission
 
-By the convention the constitution document should named `CONSTITUTION.md` and be located at the `docs/` directory of the project repository.
+- Collect/derive concrete values
+- Fill template precisely
+- Propagate or amendments across dependent artifacts
 
-## Structure
+## Steps (Strict Order)
 
-The constitution at a minimum should include the following sections:
+### 1. Read Existing Constitution Template
 
-- Principles
-- Governance
+Identity every placeholder token of the form `[ALL_CAPS_IDENTIFIER]` in the template.
 
-### Principles
+**IMPORTANT**: The principles may less or more than defined in the template. Follow the user's instructions to fit the template accordingly.
 
-The principles section should outline the development principles that the project adheres to. And it will be used to review other specification documents to ensure they align with the project's principles.
+## 2. Gather Required Information
 
-### Governance
+If user already provided the necessary information, use it directly. Otherwise, infer from existing project documentation (e.g. README, docs, prior constitution versions if embedded)
 
-The governance section should outline the rules and processes for co-working on the project. This may include approval processes, review requirements, compliance checks, etc.
+- `RATIFICATION_DATE` is the original date adopted, if unknown ask or mark as "TODO"
+- `LAST_AMENDMENT_DATE` is today when making changes, otherwise keep previous date
+- `CONSTITUTION_VERSION` must increment according to semantic versioning rules:
+  - MAJOR: Backward-incompatible changes applied to principles or governance
+  - MINOR: New principle/section added or guideance expanded without conflicting prior rules
+  - PATCH: Clarifications, typos, non-semantics refinements
 
-### Other Sections
+If version bump is unclear, propose reasoning before finalizing.
 
-Depending on the project's needs, additional sections can be applied for other requirements, technical standards, etc.
+## 3. Draft Constitution Content
 
-## Maintenance
+- Replace each placeholder with concrete text without any placeholders remaining.
+- Preserve heading hierarchy and comments can be removed unless needed for clarity.
+- Ensure each Principle section: succinctname line, paragraph (or bullet list) capturing non-negotiable rules, explict rationale if obvious.
+- Ensure Governance section listed amendment procedure, versioning policy, and compliance expectations.
 
-The front matter of the constitution should include:
+## 4. Consistency Check
 
-- version: The current version of the constitution.
-- ratified: The date when the constitution was first ratified.
-- lastAmended: The date when the constitution was last amended.
+Read any guidance documents (e.g. `README.md`, `CONTRIBUTING.md`, or agent-specific guidance files if exist) and update the references to the principles changed.
 
-When making changes to the constitution, ensure to update the version and lastAmended fields accordingly.
+### 5. Produce Amendedment Report
 
-### Metadata
+Append after the YAML frontmatter as an HTML comment after update.
 
-Use `<!-- ... -->` comments after the front matter section. This area is designed to introduce recently changes to the constitution for easy reference.
+- Version Changes: `old -> new` (e.g. `2.0.0 -> 2.1.0`)
+- Bump Rationale: explain why made the version change
+- List of modified principles
+- List of added sections
+- List of removed sections
+- Follow-up TODOS: if any placeholders could not be filled
 
-Example:
+### 7. Review
 
-```markdown
----
-version: 2.1.1
-ratified: 2025-10-21
-lastAmended: 2025-10-21
----
-<!---
-  CONSTITUTION AMENDMENT LOG
-  ===
+- Ensure no placeholders remain without any reasonable explanation.
+- Version information is matched amendment report.
+- Dates ISO format (YYYY-MM-DD).
+- Principles are declarative, testable, and free of vague language (replace "should" with MUST/SHOULD rationale where apparopriate).
 
-  Version Changes: 2.1.0 → 2.1.1
-  Bump Rationale: Clarified Principle III to emphasize simplicity.
+### 8. Finalize
 
-  Modified Sections:
-    - Principle III. Simplicity and YAGNI: Updated description to stress starting simple and only implementing necessary features.
-    - Principle V. Observability: Added requirement for structured logging.
+Save the updated constitution back to `docs/CONSTITUTION.md` (overwrite existing file).
 
-  Added Sections:
-    - Performance Requirements: Introduced new section outlining performance benchmarks for the project.
+### 9. Summarize Changes
 
-  Removed Sections: N/A (initial version)
+- New version and rationale
+- Any follow-up actions needed
 
-  Follow-up TODOs: None
---->
-```
+## Formatting Guidelines
 
-Every amendment to the constitution should be documented in this section for easy reference.
+- Use Markdown headings exactly as in the template. (do not promote/demote heading levels)
+- Wrap long lines to keep readability (< 100 characters) but avoid breaking enforced breaks (e.g., lists, code blocks).
+- Keep single blank line between sections for clarity.
+- Avoid trailing whitespace.
+
+## Modification Rules
+
+No matter partial or full updates, always follow steps above to ensure consistency and completeness. Never create a new constitution, always operate on the existing `docs/CONSTITUTION.md` file.
+
+## Missing Information
+
+Any critical missing information (e.g. ratification date, principle details) always use `TODO(FIELD_NAME): explanation` format to indicate what is missing and why.

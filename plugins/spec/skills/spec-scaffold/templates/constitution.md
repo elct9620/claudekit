@@ -4,6 +4,12 @@ ratified: [RATIFICATION_DATE]
 lastAmended: [LAST_AMENDMENT_DATE]
 ---
 <!-- Example: version: 2.1.1, ratified: 2025-10-21, lastAmended: 2025-10-21 -->
+<!--
+  AMENDMENT REPORT
+  ===
+
+  [SUMMARY_OF_CHANGES]
+-->
 
 # [PROJECT_NAME] Constitution
 <!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
