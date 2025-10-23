@@ -20,10 +20,12 @@ allowed-tools: Read, Grep, Glob, Explore, Bash(cp:*), TodoWrite
 ## Manual
 
 - [Constitution](./references/constitution.md): How to write a project constitution.
+- [Specification](./references/specification.md): How to write a specification document.
 
 ## Templates
 
 - [constitution.md](./templates/constitution.md): Constitution template should be used to create project constitutions.
+- [specification.md](./templates/specification.md): Specification template should be used to create specification documents.
 
 ## References
 
