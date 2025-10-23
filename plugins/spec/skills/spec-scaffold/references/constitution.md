@@ -13,13 +13,13 @@ You are updating the project constitution at `docs/CONSTITUTION.md`. This is a T
 
 ### 1. Read Existing Constitution Template
 
-Identity every placeholder token of the form `[ALL_CAPS_IDENTIFIER]` in the template.
+Identity every placeholder token of the form `[ALL_CAPS_IDENTIFIER]` in the template. Create a todo list of required information to fill in each placeholder.
 
 **IMPORTANT**: The principles may less or more than defined in the template. Follow the user's instructions to fit the template accordingly.
 
 ## 2. Gather Required Information
 
-If user already provided the necessary information, use it directly. Otherwise, infer from existing project documentation (e.g. README, docs, prior constitution versions if embedded)
+If user already provided the necessary information, use it directly. Otherwise, infer from existing project documentation (e.g. README, docs, prior constitution versions if embedded) if possible.
 
 - `RATIFICATION_DATE` is the original date adopted, if unknown ask or mark as "TODO"
 - `LAST_AMENDMENT_DATE` is today when making changes, otherwise keep previous date
@@ -28,7 +28,7 @@ If user already provided the necessary information, use it directly. Otherwise, 
   - MINOR: New principle/section added or guideance expanded without conflicting prior rules
   - PATCH: Clarifications, typos, non-semantics refinements
 
-If version bump is unclear, propose reasoning before finalizing.
+If version bump is unclear, propose reasoning before finalizing. Ask user to make each information explicit if cannot be inferred.
 
 ## 3. Draft Constitution Content
 
