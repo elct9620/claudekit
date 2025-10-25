@@ -1,6 +1,6 @@
 ---
 name: spec-scaffold
-description: Process any SDD (Specification-Driven Development) operations related to creating or updating specification documents. Always use this skill when dealing with specifications, e.g. constitution, specification document, architecture-related documents, roadmap, etc.
+description: Process any SDD (Specification-Driven Development) operations related to creating or updating specification documents. Always use this skill when dealing with specifications, e.g. constitution, specification document, architecture-related documents, roadmap, glossary, etc.
 allowed-tools: Read, Grep, Glob, Explore, Bash(cp:*), TodoWrite
 ---
 

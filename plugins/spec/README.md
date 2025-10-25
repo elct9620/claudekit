@@ -11,6 +11,8 @@ Spec-centered development workflow plugin inspired by [GitHub Spec Kit](https://
 | Command | Description |
 |---------|-------------|
 | `/spec:constitution` | Create a project constitution for spec-central development and governance |
+| `/spec:draft` | Draft a new specification document as single source of truth for feature development |
+| `/spec:clarify` | Update existing specification document to clarify user requirements |
 
 ## Skills
 
