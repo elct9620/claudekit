@@ -148,9 +148,10 @@ Read the specification file and fill the checklist in the HTML comment according
 
 Ask the user to clarify failed checks and make necessary revisions to the specification document.
 
-### 9. Update Roadmap
+### 9. Update Roadmap and Glossary
 
-The roadmap located at `docs/ROADMAP.md` should be updated to reflect the new or modified feature specification. Read roadmap manual for detailed steps.
+- The roadmap located at `docs/ROADMAP.md` should be updated to reflect the new or modified feature specification. Read roadmap manual for detailed steps.
+- The glossary located at `docs/GLOSSARY.md` should be updated if any new terms are introduced in the specification. Read glossary manual for detailed steps.
 
 ### 10. Summarize Changes
 

@@ -23,12 +23,14 @@ allowed-tools: Read, Grep, Glob, Explore, Bash(cp:*), TodoWrite
 - [Constitution](./references/constitution.md): How to write a project constitution.
 - [Specification](./references/specification.md): How to write a specification document.
 - [Roadmap](./references/roadmap.md): How to use roadmaps to track project progress.
+- [Glossary](./references/glossary.md): The ubiquitous terms used in the project specifications.
 
 ## Templates
 
 - [constitution.md](./templates/constitution.md): Constitution template should be used to create project constitutions.
 - [specification.md](./templates/specification.md): Specification template should be used to create specification documents.
 - [roadmap.md](./templates/roadmap.md): Roadmap template should be used to initiate project roadmaps.
+- [glossary.md](./templates/glossary.md): Glossary template should be used to create project glossaries.
 
 ## References
 
