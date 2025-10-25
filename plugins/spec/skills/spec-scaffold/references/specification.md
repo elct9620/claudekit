@@ -44,11 +44,9 @@ According to the user's instructions, decide 2 ~ 4 words concise feature name to
 
 ### 3. Read Existing Specification Template
 
-Identify every placeholder token of the form `[ALL_CAPS_IDENTIFIER]` in the template. Create a todo list of required information to fill in each placeholder.
+Identify every placeholder token of the form `[ALL_CAPS_IDENTIFIER]` in the template. List unclarified items to user as questions for clarification.
 
-### 4. Gather Required Information
-
-According the user's instructions, infer from existing project documentation (e.g. README, docs, other specification files if exist) to create a brief outline of the feature.
+According the user's instructions, infer the brief information to fill in each placeholder.
 
 Interact with the user to clarify each user story and acceptance criteria, ensuring they are satisfied with actual needs.
 
@@ -56,9 +54,39 @@ Interact with the user to clarify each user story and acceptance criteria, ensur
 - `LAST_UPDATED_DATE` is today when making changes, use `CREATION_DATE` if first created.
 - `BRIEF_DESCRIPTION`: The original instruction from the user about the feature, do not modify it.
 
-**IMPORTANT**: Ensure no unclarified items remain before proceeding to draft the specification content, ask the user to accept you leave any unclarified items.
+Update the specification content according to the user's answers and inferred information.
+
+### 4. Gather Required Information
+
+Based on the "draft" or "clarify" mode in current context, use different strategies to gather required information.
+
+- Draft Mode: Suggest user stories and confirm with the user.
+- Clarify Mode: Ask user to clarify each user story explicitly.
+
+Example draft questions:
+
+```
+Q: Does the authentication feature allow users to sign up with email and password?
+- A: Yes.
+- B: No, only social logins.
+- C: No, only email/password.
+- D: Other: [User specifies]
+```
+
+Example clarify questions:
+
+```
+Q: As end user, what is password validation rules when signing up?
+- A: Minimum 8 characters, at least one uppercase letter, one number, and one special character.
+- B: Minimum 6 characters, no other restrictions.
+- C: Other: [User specifies]
+```
+
+Gather information one by one until user stops adding more user stories.
 
 ### 5. Draft Specification Content
+
+Update specification content one by one based on gathered information, do not apply all changes at once.
 
 - Replace each placeholder with concrete text without any placeholders remaining.
 - Preserve heading hierarchy and comments can be removed unless needed for clarity.

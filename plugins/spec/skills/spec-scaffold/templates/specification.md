@@ -5,6 +5,14 @@
 **Last Updated:** [LAST_UPDATED_DATE]
 **Brief Description:** [BRIEF_DESCRIPTION]
 
+## Purpose
+
+<!--
+  Explain why this feature is needed and what problem it solves. And what value it delivers to users.
+-->
+
+[PURPOSE_DESCRIPTION]
+
 ## User Stories and Acceptance Criteria **(mandatory)**
 
 <!--
@@ -34,7 +42,18 @@
     Scenario: [Title of the scenario]
       When [event occurs]
       Then [ensure some outcomes]
+
+    Rule: [If any specific business rules apply which group multiple scenarios]
+
+      Scenario: [Title of another scenario]
+        Given [initial context]
+        When [event occurs]
+        Then [ensure some outcomes]
     ```
+
+    - Use `Background:` to define any common preconditions if needed.
+    - Use `Rule:` to define any specific business rules if needed.
+    - Use `Examples:` to provide data tables for scenarios if needed.
 --->
 
 ### User Story 1 - [BRIEF_TITLE] (Priority: P1)
@@ -102,6 +121,7 @@ Scenario: [Title of the scenario]
 
 <!--
   IMPORTANT: This section only include items which user allowed to be left unclear after asking for clarifications.
+  The edge cases not covered by existing information should be explicitly listed here for future resolution.
 -->
 
 - [NAME_OF_ITEM]: explanation of what is unclear and why.
