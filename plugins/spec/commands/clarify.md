@@ -26,6 +26,7 @@ Current Time: !`date +"%Y-%m-%d %H:%M:%S %Z"`
     <step>3. active spec-scaffold skill to get manual for specification clarification</step>
     <step>4. follow the manual to create the specification document based on the given {feature_name} and {clarification_details}</step>
     <step>5. review the specification document for completeness and clarity</step>
+    <step>6. according to the manual to update roadmap</step>
     <return>path to the updated specification document</return>
 </procedure>
 

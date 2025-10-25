@@ -148,7 +148,11 @@ Read the specification file and fill the checklist in the HTML comment according
 
 Ask the user to clarify failed checks and make necessary revisions to the specification document.
 
-### 9. Summarize Changes
+### 9. Update Roadmap
+
+The roadmap located at `docs/ROADMAP.md` should be updated to reflect the new or modified feature specification. Read roadmap manual for detailed steps.
+
+### 10. Summarize Changes
 
 - New feature name and brief description
 - Key user stories added or modified
