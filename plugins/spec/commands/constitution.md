@@ -23,6 +23,7 @@ Current Time: !`date +"%Y-%m-%d %H:%M:%S %Z"`
     <step>1. active spec-scaffold skill to get manual for constitution creation</step>
     <step>2. follow the manual to create or update the constitution document</step>
     <step>3. review the constitution document for completeness and clarity</step>
+    <return>Path to the created or updated constitution document</return>
 </procedure>
 
 # Task

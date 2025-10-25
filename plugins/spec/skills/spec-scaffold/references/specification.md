@@ -82,7 +82,7 @@ Q: As end user, what is password validation rules when signing up?
 - C: Other: [User specifies]
 ```
 
-Gather information one by one until user stops adding more user stories.
+Gather information one by one until user explicitly answer "STOP". Keep asking until no unclarified items remain or out of context.
 
 ### 5. Draft Specification Content
 
@@ -121,7 +121,7 @@ Fill following checks and use HTML comments to append after the specification co
 
   ## Content Quality
 
-  - [ ] No implementation details present (e.g., code snippets, technical jargon)
+  - [ ] No implementation details present (e.g., code snippets, technical jargon, framework, storage, etc.)
   - [ ] Focus on delivering user value and outcomes
   - [ ] Write for non-technical stakeholders
   - [ ] All mandatory sections completed
@@ -131,7 +131,7 @@ Fill following checks and use HTML comments to append after the specification co
   - [ ] User stories can explain operational needs clearly
   - [ ] No implementation assumptions made
   - [ ] All scenarios have clear acceptance criteria
-  - [ ] The outcomes are measurable and verifiable (e.g., count, response time, performance indicators)
+  - [ ] The outcomes are measurable and verifiable (e.g., count, response time, performance indicators, etc.)
 
   ## Notes
 
