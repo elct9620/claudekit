@@ -4,7 +4,11 @@
     ".": {
       "release-type": "node",
       "package-name": "@aotoki/claudekit",
-      "changelog-path": "CHANGELOG.md"
+      "changelog-path": "CHANGELOG.md",
+      "exclude-paths": [
+        "packages/**",
+        "plugins/**"
+      ]
     },
     "packages/config": {
       "release-type": "node",
