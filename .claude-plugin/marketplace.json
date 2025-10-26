@@ -38,6 +38,13 @@
         "source": "github",
         "repo": "elct9620/claude-hono-plugin"
       }
+    },
+    {
+      "name": "ruby",
+      "source": {
+        "source": "github",
+        "repo": "elct9620/claude-ruby-plugin"
+      }
     }
   ]
 }
