@@ -18,6 +18,22 @@ allowed-tools: Read, Grep, Glob, Explore, Bash(cp:*), TodoWrite
     - Existing document needs updates: Read the existing document, identify sections that need modification, and update them accordingly.
 5. According to the plan and manual, gather required information using AskUserQuestion tool if necessary.
 
+## Document Relationship
+
+Following are independent for each other, do not make references between them.
+
+- Constitution: The foundational document that outlines the project's purpose, governance, and decision-making processes.
+- Specification: Detailed descriptions of features, user stories, and acceptance criteria.
+- Architecture: Overview of the project's architecture, design patterns, and technology stack.
+
+Following are referenced by specification documents.
+
+- Glossary: A collection of terms and definitions used throughout the specifications to ensure consistency and clarity.
+
+Following are referenced by roadmaps.
+
+- Specification: Each feature or milestone in the roadmap should link to its corresponding specification document for detailed information.
+
 ## Manual
 
 - [Constitution](./references/constitution.md): How to write a project constitution.
