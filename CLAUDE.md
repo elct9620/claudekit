@@ -40,13 +40,26 @@ plugins/
 │   ├── commands/
 │   │   └── setup.md
 │   └── README.md
-└── rubric/            # Code standards validation
+├── rubric/            # Code standards validation
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── hooks/
+│   │   └── hooks.json
+│   ├── src/
+│   │   └── review.ts   # PostToolUse hook implementation
+│   └── README.md
+└── spec/              # Specification-driven development (Experimental)
     ├── .claude-plugin/
     │   └── plugin.json
-    ├── hooks/
-    │   └── hooks.json
-    ├── src/
-    │   └── review.ts   # PostToolUse hook implementation
+    ├── commands/
+    │   ├── constitution.md
+    │   ├── draft.md
+    │   └── clarify.md
+    ├── skills/
+    │   └── spec-scaffold/  # SDD workflow skill
+    │       ├── SKILL.md
+    │       ├── references/ # Best practice guides
+    │       └── templates/  # Document templates
     └── README.md
 ```
 
@@ -177,13 +190,48 @@ Key workflow: License template setup
 - Removes front matter from template
 - Prompts for copyright year/holder update
 
-### Rubric Plugin (Hook-based, no commands)
+### Rubric Plugin
 Key workflow: Automatic validation after file modifications
 - Intercepts Edit and Write tool operations via PostToolUse hook
 - Matches changed file paths against configured regex patterns
 - Blocks operation (or warns) when rubric rules match
 - Prompts Claude to review changes against referenced rubric documents
 - Enables enforcement of coding standards, style guides, or documentation requirements
+
+**`/rubric:config`** - Configure rubric settings
+- Set up rules for file path patterns and rubric documents
+- Configure enforcement mode (block vs warning)
+
+**`/rubric:create`** - Create rubric from code analysis
+- Analyzes existing code patterns and conventions
+- Generates rubric document based on identified best practices
+
+### Spec Plugin (Experimental)
+Key workflow: Specification-driven development inspired by GitHub Spec Kit
+- Maintains specifications as single source of truth for features
+- Preserves requirement history even as implementations evolve
+- Uses templates and best practices for consistent documentation
+
+**`/spec:constitution`** - Create project constitution
+- Sets up governance and decision-making framework
+- Defines project principles and standards
+- Uses spec-scaffold skill with constitution template
+
+**`/spec:draft`** - Draft new specification document
+- Creates feature specification from user requirements
+- Uses spec-scaffold skill with specification template
+- Establishes requirements before implementation begins
+
+**`/spec:clarify`** - Update existing specification
+- Clarifies or extends existing specification documents
+- Maintains requirement history and context
+- Uses spec-scaffold skill to update specifications
+
+**Spec-scaffold skill**:
+- Procedural workflow for creating/updating specification documents
+- Provides templates: constitution, specification, roadmap, glossary
+- Provides reference guides for best practices
+- Supports multiple document types (constitution, ADR, roadmap, glossary)
 
 ## Configuration System
 
@@ -229,6 +277,53 @@ README files in this project follow strict standards enforced by the rubric plug
 - No additional sections beyond the rubric structure
 - Use markdown tables for clarity
 - Keep descriptions concise
+
+## Marketplace Management
+
+The repository serves as a plugin marketplace that aggregates both local and external plugins.
+
+**Marketplace Configuration** (`.claude-plugin/marketplace.json`):
+- **name**: Marketplace identifier (e.g., "claudekit")
+- **owner**: Marketplace owner information
+- **metadata**: Marketplace description
+- **plugins**: Array of plugin entries
+
+**Plugin Entry Types**:
+
+1. **Local plugins** (in this repository):
+```json
+{
+  "name": "plugin-name",
+  "source": "./plugins/plugin-name",
+  "description": "Plugin description"
+}
+```
+
+2. **External plugins** (separate repositories):
+```json
+{
+  "name": "plugin-name",
+  "source": {
+    "source": "github",
+    "repo": "owner/repo-name"
+  }
+}
+```
+
+**Adding Plugins to Marketplace**:
+1. **Local plugin**: Add entry to `plugins` array with relative `source` path
+2. **External plugin**: Add entry with GitHub `source` object (repo format: `owner/repo`)
+3. Update main README.md plugins table with documentation link
+4. External plugins must have their own `.claude-plugin/plugin.json` in their repository root
+
+**External Plugin Requirements**:
+- Must be a standalone git repository
+- Must have `.claude-plugin/plugin.json` with metadata (name, version, description, author)
+- Must have README.md with plugin documentation (follow rubric standards)
+- Should follow the same plugin structure (commands/, skills/, hooks/, etc.)
+- Built executables (dist/) must be committed if plugin has hooks
+- Should include CLAUDE.md for development guidance (optional but recommended)
+- Should use conventional commits if planning to use Release Please
 
 ## Development Notes
 
