@@ -20,6 +20,7 @@ In `claude` run:
 | Hono       | Provides Hono CLI skill for Hono framework       | [README](https://github.com/elct9620/claude-hono-plugin/blob/main/README.md) |
 | License    | Manage open source licenses                      | [README](./plugins/license/README.md)                                   |
 | Rubric     | Automated code standards checks based on rubrics | [README](./plugins/rubric/README.md)                                    |
+| Ruby       | Ruby documentation and development utilities     | [README](https://github.com/elct9620/claude-ruby-plugin/blob/main/README.md) |
 | Spec       | Spec-centered development workflow (Experimental) | [README](./plugins/spec/README.md)                                     |
 
 ## Configuration
