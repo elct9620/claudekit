@@ -116,7 +116,7 @@ const SUPPORTED_TOOL_NAMES = [
 	"Write",
 	"MultiWrite"
 ];
-const DEFAULT_REVIEW_MESSAGE = "Ensure review changes against {references}, fix rubrics violations and keep the code clean before proceeding.";
+const DEFAULT_REVIEW_MESSAGE = "Ensure review changes against {references} and resolve violations, ignoring this message if no violations exist anymore.";
 const hook = await loadHook();
 if (!SUPPORTED_TOOL_NAMES.includes(hook.toolName)) process.exit(0);
 const config = await loadConfig();

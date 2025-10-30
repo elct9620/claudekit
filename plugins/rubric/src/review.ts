@@ -5,7 +5,7 @@ import { loadHook, postToolUse, type PostToolUseInput } from "@claudekit/hook";
 
 const SUPPORTED_TOOL_NAMES = ["Edit", "Write", "MultiWrite"];
 const DEFAULT_REVIEW_MESSAGE =
-  "Ensure review changes against {references}, fix rubrics violations and keep the code clean before proceeding.";
+  "Ensure review changes against {references} and resolve violations, ignoring this message if no violations exist anymore.";
 
 const hook = await loadHook<PostToolUseInput>();
 
