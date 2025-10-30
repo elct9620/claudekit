@@ -32,6 +32,15 @@ The configuration file `claudekit.json` has the following structure:
 }
 ```
 
+# Pattern
+
+Prevent to use `^` to match the start of the edited file path, as the path may be relative or absolute.
+
+By default, prefer to use  `.*\\.js$` to match any path ending with `.js`.
+
+- The relative and absolute path matching should be supported.
+- Use `$` to ensure the file extension is at the end of the path.
+
 # Definition
 
 <function name="read_config">
