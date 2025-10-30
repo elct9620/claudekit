@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/elct9620/claudekit/compare/rubric-v0.3.0...rubric-v0.3.1) (2025-10-30)
+
+
+### Bug Fixes
+
+* **rubric:** add pattern matching best practices to config command ([8049fde](https://github.com/elct9620/claudekit/commit/8049fdec4e7545e12520db6f20e68e715646ff04))
+
 ## [0.3.0](https://github.com/elct9620/claudekit/compare/rubric-v0.2.0...rubric-v0.3.0) (2025-10-19)
 
 
