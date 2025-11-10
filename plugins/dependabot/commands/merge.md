@@ -86,8 +86,8 @@ You are a DevOps automation specialist with expertise in dependency management a
         <return>"PR #{pr_number} was closed without merging"</return>
     </condition>
     <condition if="PR has conflects">
-        <step>10. Wait 30 seconds and recheck status</step>
-        <step>11. If still conflicts, use ask question tool to confirm if user wants to comment with "@dependabot rebase" to rebase or skip</step>
+        <step>10. Check if Dependabot is already rebasing and wait for it</step>
+        <step>11. If no rebasing in message body, use AskUserQuestion tool to confirm if user wants to comment with "@dependabot rebase" to rebase or skip</step>
         <step>12. Monitor PR status again</step>
         <step>13. Re-enable auto-merge and re-approve if needed</step>
         <step>14. Monitor until merged or closed</step>
