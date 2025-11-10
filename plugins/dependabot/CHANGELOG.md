@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/elct9620/claudekit/compare/dependabot-v0.4.0...dependabot-v0.4.1) (2025-11-10)
+
+
+### Bug Fixes
+
+* **dependabot:** improve conflict detection before rebasing ([368807a](https://github.com/elct9620/claudekit/commit/368807a4c71990668c44591ea1caa1895be65a03))
+
 ## [0.4.0](https://github.com/elct9620/claudekit/compare/dependabot-v0.3.0...dependabot-v0.4.0) (2025-10-18)
 
 
