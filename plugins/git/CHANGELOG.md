@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/elct9620/claudekit/compare/git-v0.2.0...git-v0.3.0) (2025-11-22)
+
+
+### Features
+
+* **git:** add commit command and normalize heading levels ([624a546](https://github.com/elct9620/claudekit/commit/624a546f2b19f13025ba033e35cc2a3b948b47c6))
+
+
+### Bug Fixes
+
+* **git:** clarify Co-Authored-By usage in commit command ([3ac7c54](https://github.com/elct9620/claudekit/commit/3ac7c545a0a0539ae0fcfe00577db9e0359b634e))
+
 ## [0.2.0](https://github.com/elct9620/claudekit/compare/git-v0.1.0...git-v0.2.0) (2025-10-17)
 
 
