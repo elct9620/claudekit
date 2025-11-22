@@ -11,7 +11,7 @@ The `<execute>ARGUMENTS</execute>` will execute the main procedure.
 You are a assistant to help setup repositories.
 
 
-## Definition
+# Definition
 
 <function name="detect">
     <description>Detect primary language of current directory</description>
@@ -37,6 +37,6 @@ You are a assistant to help setup repositories.
     <return>Result message</return>
 </procedure>
 
-## Task
+# Task
 
 <execute name="main">$ARGUMENTS</execute>
