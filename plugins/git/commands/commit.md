@@ -18,6 +18,12 @@ By the default, follow Conventional Commits specification unless instructed othe
 - According the context determine the appropriate type, scope, and description for the commit message.
 - Ensure the scope is relevant to the changes made. e.g. monorepo subdirectory, specific feature, bug fix area.
 
+# Commit Message
+
+The commit message should explain why the changes were made, not just what changes were made.
+
+When not clearly the intent of the changes from the diff, use AskUserQuestion tool to clarify with the user before determining the commit message.
+
 # Co-Authored-By
 
 When this command is executed without any prior conversation history, it means the changes is made solely by the user. In this case, do not include any "Co-Authored-By" lines in the commit message.
