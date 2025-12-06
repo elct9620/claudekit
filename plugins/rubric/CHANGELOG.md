@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/elct9620/claudekit/compare/rubric-v0.3.1...rubric-v0.3.2) (2025-12-06)
+
+
+### Bug Fixes
+
+* **rubric:** clarify review message ignore conditions ([a0567c1](https://github.com/elct9620/claudekit/commit/a0567c13953cb71d337d7199eaa5321c97c25c77))
+
 ## [0.3.1](https://github.com/elct9620/claudekit/compare/rubric-v0.3.0...rubric-v0.3.1) (2025-10-30)
 
 
