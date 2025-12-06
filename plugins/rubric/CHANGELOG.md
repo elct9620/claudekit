@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/elct9620/claudekit/compare/rubric-v0.3.2...rubric-v0.3.3) (2025-12-06)
+
+
+### Bug Fixes
+
+* **ci:** set executable permissions for plugin dist files in GitHub Actions ([f8cf649](https://github.com/elct9620/claudekit/commit/f8cf6491b6aaad4de15290d6a5abec425d61e1b7))
+
 ## [0.3.2](https://github.com/elct9620/claudekit/compare/rubric-v0.3.1...rubric-v0.3.2) (2025-12-06)
 
 
