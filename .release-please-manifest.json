@@ -5,6 +5,6 @@
   "plugins/dependabot": "0.4.1",
   "plugins/git": "0.3.0",
   "plugins/license": "0.2.0",
-  "plugins/rubric": "0.3.1",
+  "plugins/rubric": "0.3.2",
   "plugins/spec": "0.1.0"
 }
