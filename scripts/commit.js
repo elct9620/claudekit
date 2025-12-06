@@ -86,7 +86,7 @@ module.exports = async ({ github, context, core, exec }) => {
 
       return {
         path: file,
-        mode: '100644',
+        mode: '100755',
         type: 'blob',
         sha: blobResponse.data.sha
       };
