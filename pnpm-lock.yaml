@@ -10,8 +10,8 @@ catalogs:
       specifier: 24.10.1
       version: 24.10.1
     prettier:
-      specifier: 3.6.2
-      version: 3.6.2
+      specifier: 3.7.4
+      version: 3.7.4
     rolldown:
       specifier: ^1.0.0-beta.52
       version: 1.0.0-beta.52
@@ -30,7 +30,7 @@ importers:
         version: 24.10.1
       prettier:
         specifier: 'catalog:'
-        version: 3.6.2
+        version: 3.7.4
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -39,7 +39,7 @@ importers:
     dependencies:
       prettier:
         specifier: 'catalog:'
-        version: 3.6.2
+        version: 3.7.4
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -62,7 +62,7 @@ importers:
         version: 24.10.1
       prettier:
         specifier: 'catalog:'
-        version: 3.6.2
+        version: 3.7.4
       rolldown:
         specifier: 'catalog:'
         version: 1.0.0-beta.52
@@ -84,7 +84,7 @@ importers:
         version: 24.10.1
       prettier:
         specifier: 'catalog:'
-        version: 3.6.2
+        version: 3.7.4
       rolldown:
         specifier: 'catalog:'
         version: 1.0.0-beta.52
@@ -201,8 +201,8 @@ packages:
   '@types/node@24.10.1':
     resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
 
-  prettier@3.6.2:
-    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+  prettier@3.7.4:
+    resolution: {integrity: sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -304,7 +304,7 @@ snapshots:
     dependencies:
       undici-types: 7.16.0
 
-  prettier@3.6.2: {}
+  prettier@3.7.4: {}
 
   rolldown@1.0.0-beta.52:
     dependencies:
