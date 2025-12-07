@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/elct9620/claudekit/compare/rubric-v0.3.3...rubric-v0.3.4) (2025-12-07)
+
+
+### Bug Fixes
+
+* **rubric:** improve review hook clarity and remove unsupported tool ([67b517f](https://github.com/elct9620/claudekit/commit/67b517f3f1b670d6b6d4966919c93c9c603642a5))
+
 ## [0.3.3](https://github.com/elct9620/claudekit/compare/rubric-v0.3.2...rubric-v0.3.3) (2025-12-06)
 
 
