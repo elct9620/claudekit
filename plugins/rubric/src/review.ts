@@ -3,9 +3,9 @@
 import { loadConfig } from "@claudekit/config";
 import { loadHook, postToolUse, type PostToolUseInput } from "@claudekit/hook";
 
-const SUPPORTED_TOOL_NAMES = ["Edit", "Write", "MultiWrite"];
+const SUPPORTED_TOOL_NAMES = ["Edit", "Write"];
 const DEFAULT_REVIEW_MESSAGE =
-  "Ensure review changes against {references} and resolve violations until no critical issues remain. You can ignore this message after self-review and no critical issues remain.";
+  "Ensure review changes against {references} and resolve violations until reached criteria requirements defined in the rubric.";
 
 const hook = await loadHook<PostToolUseInput>();
 
