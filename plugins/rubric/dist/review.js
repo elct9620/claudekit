@@ -111,12 +111,8 @@ function postToolUse(isPass = true, reason = "", additionalContext) {
 
 //#endregion
 //#region src/review.ts
-const SUPPORTED_TOOL_NAMES = [
-	"Edit",
-	"Write",
-	"MultiWrite"
-];
-const DEFAULT_REVIEW_MESSAGE = "Ensure review changes against {references} and resolve violations until no critical issues remain. You can ignore this message after self-review and no critical issues remain.";
+const SUPPORTED_TOOL_NAMES = ["Edit", "Write"];
+const DEFAULT_REVIEW_MESSAGE = "Ensure review changes against {references} and resolve violations until reached criteria requirements defined in the rubric.";
 const hook = await loadHook();
 if (!SUPPORTED_TOOL_NAMES.includes(hook.toolName)) process.exit(0);
 const config = await loadConfig();
