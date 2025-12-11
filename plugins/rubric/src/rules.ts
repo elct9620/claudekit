@@ -34,12 +34,27 @@ function parseFrontmatter(content: string): Frontmatter {
 
 /**
  * Convert glob pattern to RegExp
+ *
+ * Supports glob patterns: * (any chars except /), ** (zero+ dirs), {a,b} (alternation)
  */
 export function globToRegex(glob: string): RegExp {
-  let regex = glob.replace(/[.+^${}()|[\]\\]/g, "\\$&");
-  regex = regex.replace(/\*\*/g, "\0");
+  const braceExpansions: string[] = [];
+  let regex = glob.replace(/\{([^}]+)\}/g, (_, contents) => {
+    const options = contents.split(",").map((s: string) => s.trim());
+    braceExpansions.push(options.join("|"));
+    return `\x01${braceExpansions.length - 1}\x02`;
+  });
+
+  regex = regex.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+
+  regex = regex.replace(/\x01(\d+)\x02/g, (_, index) => {
+    return `(${braceExpansions[Number.parseInt(index)]})`;
+  });
+
+  regex = regex.replace(/\*\*\//g, "\x00");
   regex = regex.replace(/\*/g, "[^/]*");
-  regex = regex.replace(/\0/g, ".*");
+  regex = regex.replace(/\x00/g, "(.*\\/)?");
+
   return new RegExp(`^${regex}$`);
 }
 
