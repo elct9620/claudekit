@@ -43,7 +43,7 @@ it("is expected to allow with additional context", async () => {
 ```
 
 - The `given` step is used to set up the initial state or context for the test.
-- The `when` step usually import from `src/handlers` folder, which is the action to be tested.
+- The `when` step usually import from production code, representing the action being tested.
 - The `then` step is used to assert the expected outcome or behavior of the test.
 
 ### Mock or Stub When Necessary (1 points)
