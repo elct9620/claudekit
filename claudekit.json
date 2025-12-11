@@ -7,12 +7,6 @@
     }
   },
   "rubric": {
-    "rules": [
-      {
-        "name": "README Guidelines",
-        "pattern": "README\\.md$",
-        "path": "docs/rubrics/readme.md"
-      }
-    ]
+    "rules": []
   }
 }

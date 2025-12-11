@@ -1,3 +1,8 @@
+---
+name: README Guidelines
+paths: **/README.md
+---
+
 # Readme Rubric
 
 This document outlines the criteria for evaluating the quality of README. We assert at least 80% of the criteria must be met to pass.

@@ -268,7 +268,7 @@ See README.md and individual plugin documentation for configuration examples.
 
 ## Documentation Standards
 
-README files in this project follow strict standards enforced by the rubric plugin. See `docs/rubrics/readme.md` for complete requirements.
+README files in this project follow strict standards enforced by the rubric plugin. See `.claude/rules/readme.md` for complete requirements.
 
 **Key Requirements**:
 - Main README: Installation, Plugins table, Configuration table (minimal, index-style)

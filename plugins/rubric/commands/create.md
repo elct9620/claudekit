@@ -75,7 +75,7 @@ Each rubric usually have 3 ~ 5 criteria with 2 ~ 5 guidelines. Keep the rubric c
 <procedure name="main">
     <parameters name="path">path, module, or package to analyze</parameters>
     <step>1. Take a brief look at the codebase in the given {path} to understand its structure and components</step>
-    <step>2. Search existing rubric documents (default: `docs/rubrics`) and set {similar_rubric} to the most relevant one if found</step>
+    <step>2. Search existing rubric documents (default: `.claude/rules`) and set {similar_rubric} to the most relevant one if found</step>
     <condition if="similar_rubric found">
         <step>3. Ask user create new rubric or update existing {similar_rubric}</step>
         <step>4. Set {overwrite} based on user response</step>
@@ -85,7 +85,7 @@ Each rubric usually have 3 ~ 5 criteria with 2 ~ 5 guidelines. Keep the rubric c
     </condition>
     <step>5. Call <execute name="code_analyzer" path="{path}" /> to analyze the codebase and identify patterns, conventions, and best practices</step>
     <step>6. Create rubric based on the analysis result using the provided rubric template</step>
-    <step>7. If {overwrite} is true, update the existing {similar_rubric} document; otherwise, create a new rubric document in `docs/rubrics` directory</step>
+    <step>7. If {overwrite} is true, update the existing {similar_rubric} document; otherwise, create a new rubric document in `.claude/rules` directory</step>
     <step>8. Save the rubric document</step>
     <step>9. Inform user can use `/rubric:config` command to apply the rubric to the project</step>
     <return>Rubric creation or update status</return>
