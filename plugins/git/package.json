@@ -10,7 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc && rolldown -c"
+    "build": "tsc && rolldown -c",
+    "tsc": "tsc"
   },
   "keywords": [],
   "author": "Aotokitsuruya",

@@ -12,7 +12,8 @@
   "scripts": {
     "build": "tsc && rolldown -c",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "tsc": "tsc"
   },
   "keywords": [],
   "author": "Aotokitsuruya",

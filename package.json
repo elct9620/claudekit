@@ -4,7 +4,8 @@
   "description": "A collection of plugins for Claude Code used by Aotokitsuruya.",
   "scripts": {
     "build": "pnpm -r run build",
-    "test": "pnpm -r run test"
+    "test": "pnpm -r run test",
+    "tsc": "pnpm -r run tsc"
   },
   "keywords": [],
   "author": "Aotokitsuruya",

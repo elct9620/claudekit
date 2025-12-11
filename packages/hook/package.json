@@ -4,7 +4,9 @@
   "description": "The utility library for Claude Code Hooks",
   "type": "module",
   "main": "src/index.ts",
-  "scripts": {},
+  "scripts": {
+    "tsc": "tsc"
+  },
   "keywords": [],
   "author": "Aotokitsuruya",
   "license": "MIT",
