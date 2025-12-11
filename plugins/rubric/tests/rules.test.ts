@@ -163,9 +163,9 @@ describe("Rule Discovery", () => {
         const rules = discoverRules();
 
         expect(rules).toHaveLength(2);
-        expect(rules[0].name).toBe("Testing Quality");
-        expect(rules[0].pattern.test("src/file.test.ts")).toBe(true);
-        expect(rules[1].pattern.test("src/file.spec.ts")).toBe(true);
+        expect(rules[0]!.name).toBe("Testing Quality");
+        expect(rules[0]!.pattern.test("src/file.test.ts")).toBe(true);
+        expect(rules[1]!.pattern.test("src/file.spec.ts")).toBe(true);
       });
     });
 
@@ -188,7 +188,7 @@ describe("Rule Discovery", () => {
         const rules = discoverRules();
 
         expect(rules).toHaveLength(1);
-        expect(rules[0].name).toBe("Global Standards");
+        expect(rules[0]!.name).toBe("Global Standards");
       });
     });
 
@@ -211,9 +211,9 @@ describe("Rule Discovery", () => {
         const rules = discoverRules();
 
         expect(rules).toHaveLength(1);
-        expect(rules[0].name).toBe("plain");
-        expect(rules[0].pattern.test("any/file.ts")).toBe(true);
-        expect(rules[0].pattern.test("anything")).toBe(true);
+        expect(rules[0]!.name).toBe("plain");
+        expect(rules[0]!.pattern.test("any/file.ts")).toBe(true);
+        expect(rules[0]!.pattern.test("anything")).toBe(true);
       });
     });
 
@@ -236,8 +236,8 @@ describe("Rule Discovery", () => {
         const rules = discoverRules();
 
         expect(rules).toHaveLength(1);
-        expect(rules[0].pattern.test("any/file.ts")).toBe(true);
-        expect(rules[0].pattern.test("src/component.tsx")).toBe(true);
+        expect(rules[0]!.pattern.test("any/file.ts")).toBe(true);
+        expect(rules[0]!.pattern.test("src/component.tsx")).toBe(true);
       });
     });
 
@@ -260,8 +260,8 @@ describe("Rule Discovery", () => {
         const rules = discoverRules();
 
         expect(rules).toHaveLength(1);
-        expect(rules[0].name).toBe("empty");
-        expect(rules[0].pattern.test("any/path")).toBe(true);
+        expect(rules[0]!.name).toBe("empty");
+        expect(rules[0]!.pattern.test("any/path")).toBe(true);
       });
     });
   });
@@ -314,8 +314,8 @@ describe("Rule Discovery", () => {
       const rules = discoverRules();
 
       expect(rules).toHaveLength(1);
-      expect(rules[0].name).toBe("rule");
-      expect(rules[0].path).toContain("nested");
+      expect(rules[0]!.name).toBe("rule");
+      expect(rules[0]!.path).toContain("nested");
     });
   });
 
@@ -349,8 +349,8 @@ describe("Rule Discovery", () => {
       const rules = discoverRules();
 
       expect(rules).toHaveLength(2);
-      expect(rules[0].name).toBe("testing");
-      expect(rules[1].name).toBe("readme");
+      expect(rules[0]!.name).toBe("testing");
+      expect(rules[1]!.name).toBe("readme");
     });
   });
 });

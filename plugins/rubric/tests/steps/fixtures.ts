@@ -3,7 +3,13 @@ import type { PostToolUseInput } from "@claudekit/hook";
 import { HookEventName } from "@claudekit/hook";
 import type { Rule } from "../../src/core.js";
 
-export const SAMPLE_CONFIGS: Record<string, Config> = {
+export const SAMPLE_CONFIGS: {
+  empty: Config;
+  withEnforce: Config;
+  withoutEnforce: Config;
+  withCustomMessage: Config;
+  withMultipleRules: Config;
+} = {
   empty: {},
   withEnforce: {
     rubric: {
@@ -65,7 +71,15 @@ export const SAMPLE_CONFIGS: Record<string, Config> = {
   },
 };
 
-export const SAMPLE_HOOK_INPUTS: Record<string, PostToolUseInput> = {
+export const SAMPLE_HOOK_INPUTS: {
+  editTypeScript: PostToolUseInput;
+  writeTypeScript: PostToolUseInput;
+  editJavaScript: PostToolUseInput;
+  readTool: PostToolUseInput;
+  bashTool: PostToolUseInput;
+  editTestFile: PostToolUseInput;
+  noFilePath: PostToolUseInput;
+} = {
   editTypeScript: {
     hookEventName: HookEventName.PostToolUse,
     toolName: "Edit",
@@ -122,7 +136,12 @@ export const SAMPLE_HOOK_INPUTS: Record<string, PostToolUseInput> = {
   },
 };
 
-export const SAMPLE_RULES: Record<string, Rule> = {
+export const SAMPLE_RULES: {
+  typescript: Rule;
+  testFiles: Rule;
+  javascript: Rule;
+  allFiles: Rule;
+} = {
   typescript: {
     name: "TypeScript",
     pattern: /\.ts$/,

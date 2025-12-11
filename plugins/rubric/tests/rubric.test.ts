@@ -9,7 +9,7 @@ describe("Rubric Rule Loading", () => {
         const rules = loadRubricRules(SAMPLE_CONFIGS.withEnforce);
 
         expect(rules).toHaveLength(1);
-        expect(rules[0].name).toBe("TypeScript Files");
+        expect(rules[0]!.name).toBe("TypeScript Files");
       });
     });
 
@@ -18,7 +18,7 @@ describe("Rubric Rule Loading", () => {
         const rules = loadRubricRules(SAMPLE_CONFIGS.withCustomMessage);
 
         expect(rules).toHaveLength(1);
-        expect(rules[0].name).toBe("Unnamed Rule");
+        expect(rules[0]!.name).toBe("Unnamed Rule");
       });
     });
 
@@ -27,9 +27,9 @@ describe("Rubric Rule Loading", () => {
         const rules = loadRubricRules(SAMPLE_CONFIGS.withEnforce);
 
         expect(rules).toHaveLength(1);
-        expect(rules[0].pattern).toBeInstanceOf(RegExp);
-        expect(rules[0].pattern.test("file.ts")).toBe(true);
-        expect(rules[0].pattern.test("file.js")).toBe(false);
+        expect(rules[0]!.pattern).toBeInstanceOf(RegExp);
+        expect(rules[0]!.pattern.test("file.ts")).toBe(true);
+        expect(rules[0]!.pattern.test("file.js")).toBe(false);
       });
 
       it("is expected to handle complex regex patterns", () => {
@@ -46,8 +46,8 @@ describe("Rubric Rule Loading", () => {
 
         const rules = loadRubricRules(config);
 
-        expect(rules[0].pattern.test("src/component.test.ts")).toBe(true);
-        expect(rules[0].pattern.test("tests/component.test.ts")).toBe(false);
+        expect(rules[0]!.pattern.test("src/component.test.ts")).toBe(true);
+        expect(rules[0]!.pattern.test("tests/component.test.ts")).toBe(false);
       });
     });
 
@@ -55,13 +55,13 @@ describe("Rubric Rule Loading", () => {
       it("is expected to set path correctly", () => {
         const rules = loadRubricRules(SAMPLE_CONFIGS.withEnforce);
 
-        expect(rules[0].path).toBe("rubrics/typescript.md");
+        expect(rules[0]!.path).toBe("rubrics/typescript.md");
       });
 
       it("is expected to generate reference from path", () => {
         const rules = loadRubricRules(SAMPLE_CONFIGS.withEnforce);
 
-        expect(rules[0].reference).toBe("@rubrics/typescript.md");
+        expect(rules[0]!.reference).toBe("@rubrics/typescript.md");
       });
     });
   });
@@ -86,17 +86,17 @@ describe("Rubric Rule Loading", () => {
       const rules = loadRubricRules(SAMPLE_CONFIGS.withMultipleRules);
 
       expect(rules).toHaveLength(3);
-      expect(rules[0].name).toBe("TypeScript");
-      expect(rules[1].name).toBe("Test Files");
-      expect(rules[2].name).toBe("JavaScript");
+      expect(rules[0]!.name).toBe("TypeScript");
+      expect(rules[1]!.name).toBe("Test Files");
+      expect(rules[2]!.name).toBe("JavaScript");
     });
 
     it("is expected to maintain rule order", () => {
       const rules = loadRubricRules(SAMPLE_CONFIGS.withMultipleRules);
 
-      expect(rules[0].path).toBe("rubrics/typescript.md");
-      expect(rules[1].path).toBe("rubrics/testing.md");
-      expect(rules[2].path).toBe("rubrics/javascript.md");
+      expect(rules[0]!.path).toBe("rubrics/typescript.md");
+      expect(rules[1]!.path).toBe("rubrics/testing.md");
+      expect(rules[2]!.path).toBe("rubrics/javascript.md");
     });
 
     it("is expected to convert all patterns to RegExp", () => {
@@ -122,10 +122,10 @@ describe("Rubric Rule Loading", () => {
       const rules = loadRubricRules(config);
 
       expect(rules).toHaveLength(4);
-      expect(rules[0].pattern.test("file.ts")).toBe(true);
-      expect(rules[1].pattern.test("file.js")).toBe(true);
-      expect(rules[2].pattern.test("file.tsx")).toBe(true);
-      expect(rules[3].pattern.test("file.json")).toBe(true);
+      expect(rules[0]!.pattern.test("file.ts")).toBe(true);
+      expect(rules[1]!.pattern.test("file.js")).toBe(true);
+      expect(rules[2]!.pattern.test("file.tsx")).toBe(true);
+      expect(rules[3]!.pattern.test("file.json")).toBe(true);
     });
 
     it("is expected to handle directory-specific patterns", () => {
@@ -140,10 +140,10 @@ describe("Rubric Rule Loading", () => {
 
       const rules = loadRubricRules(config);
 
-      expect(rules[0].pattern.test("src/file.ts")).toBe(true);
-      expect(rules[0].pattern.test("tests/file.ts")).toBe(false);
-      expect(rules[1].pattern.test("tests/file.ts")).toBe(true);
-      expect(rules[1].pattern.test("src/file.ts")).toBe(false);
+      expect(rules[0]!.pattern.test("src/file.ts")).toBe(true);
+      expect(rules[0]!.pattern.test("tests/file.ts")).toBe(false);
+      expect(rules[1]!.pattern.test("tests/file.ts")).toBe(true);
+      expect(rules[1]!.pattern.test("src/file.ts")).toBe(false);
     });
 
     it("is expected to handle wildcard patterns", () => {
@@ -155,9 +155,9 @@ describe("Rubric Rule Loading", () => {
 
       const rules = loadRubricRules(config);
 
-      expect(rules[0].pattern.test("file.test.ts")).toBe(true);
-      expect(rules[0].pattern.test("file.test.js")).toBe(true);
-      expect(rules[0].pattern.test("file.spec.ts")).toBe(false);
+      expect(rules[0]!.pattern.test("file.test.ts")).toBe(true);
+      expect(rules[0]!.pattern.test("file.test.js")).toBe(true);
+      expect(rules[0]!.pattern.test("file.spec.ts")).toBe(false);
     });
   });
 });

@@ -55,7 +55,7 @@ export function givenDiscoveredRules(mockDirectory: MockDirectory): void {
 
   vi.mocked(fs.readFileSync).mockImplementation((path: string) => {
     for (const dir in mockDirectory) {
-      const entry = mockDirectory[dir].find((e) => path.toString().endsWith(e.name));
+      const entry = mockDirectory[dir]!.find((e) => path.toString().endsWith(e.name));
       if (entry?.content) {
         return entry.content;
       }

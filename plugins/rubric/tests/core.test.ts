@@ -13,7 +13,7 @@ describe("Rule Matching", () => {
         const matchedRules = matchRules(rules, filePath);
 
         expect(matchedRules).toHaveLength(1);
-        expect(matchedRules[0].name).toBe("TypeScript");
+        expect(matchedRules[0]!.name).toBe("TypeScript");
       });
     });
 
@@ -25,8 +25,8 @@ describe("Rule Matching", () => {
         const matchedRules = matchRules(rules, filePath);
 
         expect(matchedRules).toHaveLength(2);
-        expect(matchedRules[0].name).toBe("TypeScript");
-        expect(matchedRules[1].name).toBe("Test Files");
+        expect(matchedRules[0]!.name).toBe("TypeScript");
+        expect(matchedRules[1]!.name).toBe("Test Files");
       });
     });
 

@@ -292,8 +292,8 @@ describe("Review Hook Integration", () => {
 
       const matches = matchRules(rules, "component.test.ts");
       expect(matches).toHaveLength(2);
-      expect(matches[0].name).toBe("TypeScript");
-      expect(matches[1].name).toBe("Test Files");
+      expect(matches[0]!.name).toBe("TypeScript");
+      expect(matches[1]!.name).toBe("Test Files");
     });
 
     it("is expected to not match unrelated files", () => {
