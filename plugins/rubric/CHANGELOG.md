@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/elct9620/claudekit/compare/rubric-v0.3.4...rubric-v0.4.0) (2025-12-11)
+
+
+### Features
+
+* **rubric:** auto-detect .claude/rules files as rubric sources ([5fc66a6](https://github.com/elct9620/claudekit/commit/5fc66a6fcf09e9fe44a8b564210f86aaadeac2b8))
+* **rubric:** support name field in rule file frontmatter ([1ea5d6e](https://github.com/elct9620/claudekit/commit/1ea5d6e95bf39370fbbc41e9c4ee196cf734c55d))
+
 ## [0.3.4](https://github.com/elct9620/claudekit/compare/rubric-v0.3.3...rubric-v0.3.4) (2025-12-07)
 
 

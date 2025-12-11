@@ -1,6 +1,6 @@
 {
   "name": "@aotoki/claudekit-rubric",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "Self-review system for code changes",
   "type": "module",
   "bin": {
