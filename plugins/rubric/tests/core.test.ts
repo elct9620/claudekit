@@ -15,22 +15,18 @@ describe("Rule Matching", () => {
   describe("when rules are provided", () => {
     describe("when file path matches single rule", () => {
       it("is expected to return matching rule", () => {
-        const rules = [SAMPLE_RULES.typescript];
+        const matchedRules = matchRules([SAMPLE_RULES.typescript], "src/test.ts");
 
-        thenMatchedRulesCountShouldBe(rules, "src/test.ts", 1);
-
-        const matchedRules = matchRules(rules, "src/test.ts");
+        thenMatchedRulesCountShouldBe(matchedRules, 1);
         thenRuleShouldHaveName(matchedRules[0]!, "TypeScript");
       });
     });
 
     describe("when file path matches multiple rules", () => {
       it("is expected to return all matching rules", () => {
-        const rules = [SAMPLE_RULES.typescript, SAMPLE_RULES.testFiles];
+        const matchedRules = matchRules([SAMPLE_RULES.typescript, SAMPLE_RULES.testFiles], "src/component.test.ts");
 
-        thenMatchedRulesCountShouldBe(rules, "src/component.test.ts", 2);
-
-        const matchedRules = matchRules(rules, "src/component.test.ts");
+        thenMatchedRulesCountShouldBe(matchedRules, 2);
         thenRuleShouldHaveName(matchedRules[0]!, "TypeScript");
         thenRuleShouldHaveName(matchedRules[1]!, "Test Files");
       });
@@ -38,29 +34,32 @@ describe("Rule Matching", () => {
 
     describe("when file path matches no rules", () => {
       it("is expected to return empty array", () => {
-        const rules = [SAMPLE_RULES.javascript];
+        const matchedRules = matchRules([SAMPLE_RULES.javascript], "src/test.ts");
 
-        thenMatchedRulesCountShouldBe(rules, "src/test.ts", 0);
+        thenMatchedRulesCountShouldBe(matchedRules, 0);
       });
     });
 
     describe("when testing against various paths", () => {
       it("is expected to match paths with directories", () => {
         const rules = [SAMPLE_RULES.typescript];
+        const matchedRules = matchRules(rules, "src/components/Button.ts");
 
-        thenMatchedRulesCountShouldBe(rules, "src/components/Button.ts", 1);
+        thenMatchedRulesCountShouldBe(matchedRules, 1);
       });
 
       it("is expected to match root level files", () => {
         const rules = [SAMPLE_RULES.typescript];
+        const matchedRules = matchRules(rules, "index.ts");
 
-        thenMatchedRulesCountShouldBe(rules, "index.ts", 1);
+        thenMatchedRulesCountShouldBe(matchedRules, 1);
       });
 
       it("is expected to match deeply nested paths", () => {
         const rules = [SAMPLE_RULES.typescript];
+        const matchedRules = matchRules(rules, "src/features/auth/components/LoginForm.ts");
 
-        thenMatchedRulesCountShouldBe(rules, "src/features/auth/components/LoginForm.ts", 1);
+        thenMatchedRulesCountShouldBe(matchedRules, 1);
       });
     });
 
@@ -79,8 +78,9 @@ describe("Rule Matching", () => {
   describe("when no rules are provided", () => {
     it("is expected to return empty array", () => {
       const rules: ReturnType<typeof createRule>[] = [];
+      const matchedRules = matchRules(rules, "src/test.ts");
 
-      thenMatchedRulesCountShouldBe(rules, "src/test.ts", 0);
+      thenMatchedRulesCountShouldBe(matchedRules, 0);
     });
   });
 });
