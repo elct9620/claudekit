@@ -2,14 +2,6 @@ import type { Config } from "@claudekit/config";
 import type { PostToolUseInput } from "@claudekit/hook";
 import { vi } from "vitest";
 
-export function givenConfig(config: Partial<Config>): void {
-  const { loadConfig } = vi.hoisted(() => {
-    return { loadConfig: vi.fn() };
-  });
-
-  vi.mocked(loadConfig).mockResolvedValue(config as Config);
-}
-
 export function givenHookInput(input: Partial<PostToolUseInput>): PostToolUseInput {
   const fullInput: PostToolUseInput = {
     hookEventName: input.hookEventName || ("PostToolUse" as any),
@@ -27,51 +19,62 @@ type MockFileEntry = {
   content?: string;
 };
 
-type MockDirectory = {
-  [key: string]: MockFileEntry[];
+type MarkdownFile = {
+  name: string;
+  content: string;
 };
 
-export function givenDiscoveredRules(mockDirectory: MockDirectory): void {
-  const fs = vi.hoisted(() => {
-    return {
-      existsSync: vi.fn(),
-      readdirSync: vi.fn(),
-      readFileSync: vi.fn(),
-    };
-  });
+export async function givenMarkdownFilesWithContent(files: MarkdownFile[]): Promise<void> {
+  const fs = await import("node:fs");
 
-  vi.mocked(fs.existsSync).mockImplementation((path: string) => {
-    return path in mockDirectory;
-  });
+  vi.mocked(fs.existsSync).mockReturnValue(true);
+  vi.mocked(fs.readdirSync).mockReturnValue(
+    files.map((file) => ({
+      name: file.name,
+      isDirectory: () => false,
+      isFile: () => true,
+    })) as any,
+  );
 
-  vi.mocked(fs.readdirSync).mockImplementation((path: string) => {
-    const entries = mockDirectory[path as string] || [];
-    return entries.map((entry) => ({
-      name: entry.name,
-      isDirectory: () => entry.isDirectory,
-      isFile: () => !entry.isDirectory,
-    })) as any;
-  });
-
-  vi.mocked(fs.readFileSync).mockImplementation((path: string) => {
-    for (const dir in mockDirectory) {
-      const entry = mockDirectory[dir]!.find((e) => path.toString().endsWith(e.name));
-      if (entry?.content) {
-        return entry.content;
-      }
-    }
-    return "";
+  vi.mocked(fs.readFileSync).mockImplementation((path: any) => {
+    const fileName = path.toString().split("/").pop();
+    const file = files.find((f) => f.name === fileName);
+    return file?.content || "";
   });
 }
 
-export function givenNoDiscoveredRules(): void {
-  const fs = vi.hoisted(() => {
-    return {
-      existsSync: vi.fn(),
-      readdirSync: vi.fn(),
-      readFileSync: vi.fn(),
-    };
+export async function givenNoRulesDirectory(): Promise<void> {
+  const fs = await import("node:fs");
+  vi.mocked(fs.existsSync).mockReturnValue(false);
+}
+
+export async function givenNestedDirectory(content: string = ""): Promise<void> {
+  const fs = await import("node:fs");
+
+  vi.mocked(fs.existsSync).mockReturnValue(true);
+  vi.mocked(fs.readdirSync).mockImplementation((dir: any) => {
+    if (dir === ".claude/rules") {
+      return [
+        {
+          name: "nested",
+          isDirectory: () => true,
+          isFile: () => false,
+        } as any,
+      ];
+    }
+    if (dir.includes("nested")) {
+      return [
+        {
+          name: "rule.md",
+          isDirectory: () => false,
+          isFile: () => true,
+        } as any,
+      ];
+    }
+    return [];
   });
 
-  vi.mocked(fs.existsSync).mockReturnValue(false);
+  if (content) {
+    vi.mocked(fs.readFileSync).mockReturnValue(content);
+  }
 }

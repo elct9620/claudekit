@@ -94,7 +94,14 @@ export function thenAllRulePatternsShouldBeRegExp(rules: Rule[]): void {
   expect(rules.every((rule) => rule.pattern instanceof RegExp)).toBe(true);
 }
 
-export function thenMatchedRulesCountShouldBe(rules: Rule[], filePath: string, expectedCount: number): void {
-  const matched = rules.filter((rule) => rule.pattern.test(filePath));
-  expect(matched).toHaveLength(expectedCount);
+export function thenMatchedRulesCountShouldBe(matchedRules: Rule[], expectedCount: number): void {
+  expect(matchedRules).toHaveLength(expectedCount);
+}
+
+export function thenReferencesJoinedShouldBe(references: string[], expected: string): void {
+  expect(references.join(", ")).toBe(expected);
+}
+
+export function thenMessageShouldBe(message: string, expected: string): void {
+  expect(message).toBe(expected);
 }
