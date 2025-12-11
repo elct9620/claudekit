@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/elct9620/claudekit/compare/rubric-v0.4.1...rubric-v0.5.0) (2025-12-11)
+
+
+### Features
+
+* **rubric:** add vitest testing infrastructure ([10d29cc](https://github.com/elct9620/claudekit/commit/10d29cc2a63bc6dba001bfcf74fa45d986dfb312))
+* **rubric:** support brace expansion in frontmatter glob patterns ([500624d](https://github.com/elct9620/claudekit/commit/500624d3b9b30cab381dec1b020875bc83eef22b))
+
 ## [0.4.1](https://github.com/elct9620/claudekit/compare/rubric-v0.4.0...rubric-v0.4.1) (2025-12-11)
 
 
