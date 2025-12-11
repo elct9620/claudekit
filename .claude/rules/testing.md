@@ -1,3 +1,8 @@
+---
+name: Testing Quality
+paths: **/tests/**/*.{ts,js}
+---
+
 # Testing Quality
 
 This document outlines the criteria for evaluating the quality of tests. For each test, we assert its quality passed over 80% rubric score.
