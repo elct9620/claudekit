@@ -4,7 +4,14 @@ import { SAMPLE_FRONTMATTER_FILES } from "./steps/fixtures.js";
 import {
   thenPatternShouldMatch,
   thenPatternShouldNotMatch,
+  thenRulesCountShouldBe,
+  thenRuleShouldHaveName,
 } from "./steps/then.js";
+import {
+  givenMarkdownFilesWithContent,
+  givenNoRulesDirectory,
+  givenNestedDirectory,
+} from "./steps/given.js";
 
 vi.mock("node:fs");
 
@@ -145,293 +152,297 @@ describe("Rule Discovery", () => {
 
   describe("when .claude/rules/ directory exists", () => {
     describe("when .md file has frontmatter with paths", () => {
-      it("is expected to create rule for each path pattern", async () => {
-        const fs = await import("node:fs");
-
-        vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readdirSync).mockReturnValue([
-          {
-            name: "testing.md",
-            isDirectory: () => false,
-            isFile: () => true,
-          } as any,
+      it("is expected to create two rules from paths array", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "testing.md", content: SAMPLE_FRONTMATTER_FILES.withPathsAndName },
         ]);
-        vi.mocked(fs.readFileSync).mockReturnValue(
-          SAMPLE_FRONTMATTER_FILES.withPathsAndName,
-        );
 
         const rules = discoverRules();
 
-        expect(rules).toHaveLength(2);
-        expect(rules[0]!.name).toBe("Testing Quality");
-        expect(rules[0]!.pattern.test("src/file.test.ts")).toBe(true);
-        expect(rules[1]!.pattern.test("src/file.spec.ts")).toBe(true);
+        thenRulesCountShouldBe(rules, 2);
+      });
+
+      it("is expected to use name from frontmatter for each rule", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "testing.md", content: SAMPLE_FRONTMATTER_FILES.withPathsAndName },
+        ]);
+
+        const rules = discoverRules();
+
+        thenRuleShouldHaveName(rules[0]!, "Testing Quality");
+      });
+
+      it("is expected to match test file patterns correctly", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "testing.md", content: SAMPLE_FRONTMATTER_FILES.withPathsAndName },
+        ]);
+
+        const rules = discoverRules();
+
+        thenPatternShouldMatch(rules[0]!.pattern, "src/file.test.ts");
+        thenPatternShouldMatch(rules[1]!.pattern, "src/file.spec.ts");
       });
     });
 
     describe("when .md file has frontmatter with name", () => {
-      it("is expected to use name from frontmatter", async () => {
-        const fs = await import("node:fs");
-
-        vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readdirSync).mockReturnValue([
-          {
-            name: "global.md",
-            isDirectory: () => false,
-            isFile: () => true,
-          } as any,
+      it("is expected to create single rule", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "global.md", content: SAMPLE_FRONTMATTER_FILES.withNameOnly },
         ]);
-        vi.mocked(fs.readFileSync).mockReturnValue(
-          SAMPLE_FRONTMATTER_FILES.withNameOnly,
-        );
 
         const rules = discoverRules();
 
-        expect(rules).toHaveLength(1);
-        expect(rules[0]!.name).toBe("Global Standards");
+        thenRulesCountShouldBe(rules, 1);
+      });
+
+      it("is expected to use name from frontmatter", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "global.md", content: SAMPLE_FRONTMATTER_FILES.withNameOnly },
+        ]);
+
+        const rules = discoverRules();
+
+        thenRuleShouldHaveName(rules[0]!, "Global Standards");
       });
     });
 
     describe("when .md file has no frontmatter", () => {
-      it("is expected to use filename as name and match all files", async () => {
-        const fs = await import("node:fs");
-
-        vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readdirSync).mockReturnValue([
-          {
-            name: "plain.md",
-            isDirectory: () => false,
-            isFile: () => true,
-          } as any,
+      it("is expected to create single rule from plain file", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "plain.md", content: SAMPLE_FRONTMATTER_FILES.noFrontmatter },
         ]);
-        vi.mocked(fs.readFileSync).mockReturnValue(
-          SAMPLE_FRONTMATTER_FILES.noFrontmatter,
-        );
 
         const rules = discoverRules();
 
-        expect(rules).toHaveLength(1);
-        expect(rules[0]!.name).toBe("plain");
-        expect(rules[0]!.pattern.test("any/file.ts")).toBe(true);
-        expect(rules[0]!.pattern.test("anything")).toBe(true);
+        thenRulesCountShouldBe(rules, 1);
+      });
+
+      it("is expected to use filename as name", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "plain.md", content: SAMPLE_FRONTMATTER_FILES.noFrontmatter },
+        ]);
+
+        const rules = discoverRules();
+
+        thenRuleShouldHaveName(rules[0]!, "plain");
+      });
+
+      it("is expected to match all file patterns", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "plain.md", content: SAMPLE_FRONTMATTER_FILES.noFrontmatter },
+        ]);
+
+        const rules = discoverRules();
+
+        thenPatternShouldMatch(rules[0]!.pattern, "any/file.ts");
+        thenPatternShouldMatch(rules[0]!.pattern, "anything");
       });
     });
 
     describe("when .md file has frontmatter without paths", () => {
-      it("is expected to create rule matching all files", async () => {
-        const fs = await import("node:fs");
-
-        vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readdirSync).mockReturnValue([
-          {
-            name: "global.md",
-            isDirectory: () => false,
-            isFile: () => true,
-          } as any,
+      it("is expected to create single rule", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "global.md", content: SAMPLE_FRONTMATTER_FILES.withNameOnly },
         ]);
-        vi.mocked(fs.readFileSync).mockReturnValue(
-          SAMPLE_FRONTMATTER_FILES.withNameOnly,
-        );
 
         const rules = discoverRules();
 
-        expect(rules).toHaveLength(1);
-        expect(rules[0]!.pattern.test("any/file.ts")).toBe(true);
-        expect(rules[0]!.pattern.test("src/component.tsx")).toBe(true);
+        thenRulesCountShouldBe(rules, 1);
+      });
+
+      it("is expected to match all files", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "global.md", content: SAMPLE_FRONTMATTER_FILES.withNameOnly },
+        ]);
+
+        const rules = discoverRules();
+
+        thenPatternShouldMatch(rules[0]!.pattern, "any/file.ts");
+        thenPatternShouldMatch(rules[0]!.pattern, "src/component.tsx");
       });
     });
 
     describe("when .md file has empty frontmatter", () => {
-      it("is expected to use filename and match all files", async () => {
-        const fs = await import("node:fs");
-
-        vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readdirSync).mockReturnValue([
-          {
-            name: "empty.md",
-            isDirectory: () => false,
-            isFile: () => true,
-          } as any,
+      it("is expected to create single rule", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "empty.md", content: SAMPLE_FRONTMATTER_FILES.emptyFrontmatter },
         ]);
-        vi.mocked(fs.readFileSync).mockReturnValue(
-          SAMPLE_FRONTMATTER_FILES.emptyFrontmatter,
-        );
 
         const rules = discoverRules();
 
-        expect(rules).toHaveLength(1);
-        expect(rules[0]!.name).toBe("empty");
-        expect(rules[0]!.pattern.test("any/path")).toBe(true);
+        thenRulesCountShouldBe(rules, 1);
+      });
+
+      it("is expected to use filename as name", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "empty.md", content: SAMPLE_FRONTMATTER_FILES.emptyFrontmatter },
+        ]);
+
+        const rules = discoverRules();
+
+        thenRuleShouldHaveName(rules[0]!, "empty");
+      });
+
+      it("is expected to match all paths", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "empty.md", content: SAMPLE_FRONTMATTER_FILES.emptyFrontmatter },
+        ]);
+
+        const rules = discoverRules();
+
+        thenPatternShouldMatch(rules[0]!.pattern, "any/path");
       });
     });
 
     describe("when .md file has brace expansion in paths", () => {
-      it("is expected to handle single brace pattern", async () => {
-        const fs = await import("node:fs");
-
-        vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readdirSync).mockReturnValue([
-          {
-            name: "testing.md",
-            isDirectory: () => false,
-            isFile: () => true,
-          } as any,
+      it("is expected to create single rule from brace pattern", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "testing.md", content: SAMPLE_FRONTMATTER_FILES.withBraceExpansion },
         ]);
-        vi.mocked(fs.readFileSync).mockReturnValue(
-          SAMPLE_FRONTMATTER_FILES.withBraceExpansion,
-        );
 
         const rules = discoverRules();
 
-        // Should create ONE rule (not split on comma inside braces)
-        expect(rules).toHaveLength(1);
-        expect(rules[0]!.name).toBe("Testing Quality");
-
-        // Should match files with .ts or .js in tests directory
-        expect(rules[0]!.pattern.test("tests/core.test.ts")).toBe(true);
-        expect(rules[0]!.pattern.test("tests/utils.test.js")).toBe(true);
-        expect(rules[0]!.pattern.test("plugins/rubric/tests/review.test.ts")).toBe(true);
+        thenRulesCountShouldBe(rules, 1);
       });
 
-      it("is expected to handle multiple patterns with braces", async () => {
-        const fs = await import("node:fs");
-
-        vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readdirSync).mockReturnValue([
-          {
-            name: "code.md",
-            isDirectory: () => false,
-            isFile: () => true,
-          } as any,
+      it("is expected to use name from frontmatter", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "testing.md", content: SAMPLE_FRONTMATTER_FILES.withBraceExpansion },
         ]);
-        vi.mocked(fs.readFileSync).mockReturnValue(
-          SAMPLE_FRONTMATTER_FILES.withMultiplePatternsAndBraces,
-        );
 
         const rules = discoverRules();
 
-        // Should create TWO rules (split on comma outside braces)
-        expect(rules).toHaveLength(2);
-
-        // First pattern: {src,lib}/**/*.{ts,tsx}
-        expect(rules[0]!.pattern.test("src/index.ts")).toBe(true);
-        expect(rules[0]!.pattern.test("lib/utils.tsx")).toBe(true);
-
-        // Second pattern: tests/**/*.test.ts
-        expect(rules[1]!.pattern.test("tests/core.test.ts")).toBe(true);
+        thenRuleShouldHaveName(rules[0]!, "Testing Quality");
       });
 
-      it("is expected to handle nested braces", async () => {
-        const fs = await import("node:fs");
+      it("is expected to match files with different extensions", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "testing.md", content: SAMPLE_FRONTMATTER_FILES.withBraceExpansion },
+        ]);
 
-        vi.mocked(fs.existsSync).mockReturnValue(true);
-        vi.mocked(fs.readdirSync).mockReturnValue([
+        const rules = discoverRules();
+
+        thenPatternShouldMatch(rules[0]!.pattern, "tests/core.test.ts");
+        thenPatternShouldMatch(rules[0]!.pattern, "tests/utils.test.js");
+        thenPatternShouldMatch(rules[0]!.pattern, "plugins/rubric/tests/review.test.ts");
+      });
+
+      it("is expected to create two rules from multiple patterns", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "code.md", content: SAMPLE_FRONTMATTER_FILES.withMultiplePatternsAndBraces },
+        ]);
+
+        const rules = discoverRules();
+
+        thenRulesCountShouldBe(rules, 2);
+      });
+
+      it("is expected to match first pattern with braces", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "code.md", content: SAMPLE_FRONTMATTER_FILES.withMultiplePatternsAndBraces },
+        ]);
+
+        const rules = discoverRules();
+
+        thenPatternShouldMatch(rules[0]!.pattern, "src/index.ts");
+        thenPatternShouldMatch(rules[0]!.pattern, "lib/utils.tsx");
+      });
+
+      it("is expected to match second pattern", async () => {
+        await givenMarkdownFilesWithContent([
+          { name: "code.md", content: SAMPLE_FRONTMATTER_FILES.withMultiplePatternsAndBraces },
+        ]);
+
+        const rules = discoverRules();
+
+        thenPatternShouldMatch(rules[1]!.pattern, "tests/core.test.ts");
+      });
+
+      it("is expected to create single rule from nested braces", async () => {
+        await givenMarkdownFilesWithContent([
           {
             name: "complex.md",
-            isDirectory: () => false,
-            isFile: () => true,
-          } as any,
-        ]);
-        vi.mocked(fs.readFileSync).mockReturnValue(
-          `---
+            content: `---
 paths: src/**/*.{test,spec}.{ts,js}
 ---`,
-        );
+          },
+        ]);
 
         const rules = discoverRules();
 
-        expect(rules).toHaveLength(1);
-        expect(rules[0]!.pattern.test("src/utils.test.ts")).toBe(true);
-        expect(rules[0]!.pattern.test("src/utils.spec.js")).toBe(true);
+        thenRulesCountShouldBe(rules, 1);
+      });
+
+      it("is expected to match nested brace patterns", async () => {
+        await givenMarkdownFilesWithContent([
+          {
+            name: "complex.md",
+            content: `---
+paths: src/**/*.{test,spec}.{ts,js}
+---`,
+          },
+        ]);
+
+        const rules = discoverRules();
+
+        thenPatternShouldMatch(rules[0]!.pattern, "src/utils.test.ts");
+        thenPatternShouldMatch(rules[0]!.pattern, "src/utils.spec.js");
       });
     });
   });
 
   describe("when .claude/rules/ directory does not exist", () => {
     it("is expected to return empty array", async () => {
-      const fs = await import("node:fs");
-
-      vi.mocked(fs.existsSync).mockReturnValue(false);
+      await givenNoRulesDirectory();
 
       const rules = discoverRules();
 
-      expect(rules).toHaveLength(0);
+      thenRulesCountShouldBe(rules, 0);
     });
   });
 
   describe("when .claude/rules/ has nested directories", () => {
-    it("is expected to recursively scan subdirectories", async () => {
-      const fs = await import("node:fs");
-      const path = await import("node:path");
-
-      vi.mocked(fs.existsSync).mockReturnValue(true);
-
-      vi.mocked(fs.readdirSync).mockImplementation((dir: any) => {
-        if (dir === ".claude/rules") {
-          return [
-            {
-              name: "nested",
-              isDirectory: () => true,
-              isFile: () => false,
-            } as any,
-          ];
-        }
-        if (dir.includes("nested")) {
-          return [
-            {
-              name: "rule.md",
-              isDirectory: () => false,
-              isFile: () => true,
-            } as any,
-          ];
-        }
-        return [];
-      });
-
-      vi.mocked(fs.readFileSync).mockReturnValue(
-        SAMPLE_FRONTMATTER_FILES.noFrontmatter,
-      );
+    it("is expected to find single rule in nested directory", async () => {
+      await givenNestedDirectory(SAMPLE_FRONTMATTER_FILES.noFrontmatter);
 
       const rules = discoverRules();
 
-      expect(rules).toHaveLength(1);
-      expect(rules[0]!.name).toBe("rule");
-      expect(rules[0]!.path).toContain("nested");
+      thenRulesCountShouldBe(rules, 1);
+    });
+
+    it("is expected to use filename for nested rule", async () => {
+      await givenNestedDirectory(SAMPLE_FRONTMATTER_FILES.noFrontmatter);
+
+      const rules = discoverRules();
+
+      thenRuleShouldHaveName(rules[0]!, "rule");
     });
   });
 
   describe("when directory has multiple files", () => {
-    it("is expected to discover all markdown files", async () => {
-      const fs = await import("node:fs");
-
-      vi.mocked(fs.existsSync).mockReturnValue(true);
-      vi.mocked(fs.readdirSync).mockReturnValue([
-        {
-          name: "testing.md",
-          isDirectory: () => false,
-          isFile: () => true,
-        } as any,
-        {
-          name: "readme.md",
-          isDirectory: () => false,
-          isFile: () => true,
-        } as any,
-        {
-          name: "not-markdown.txt",
-          isDirectory: () => false,
-          isFile: () => true,
-        } as any,
+    it("is expected to discover two markdown files", async () => {
+      await givenMarkdownFilesWithContent([
+        { name: "testing.md", content: SAMPLE_FRONTMATTER_FILES.noFrontmatter },
+        { name: "readme.md", content: SAMPLE_FRONTMATTER_FILES.noFrontmatter },
+        { name: "not-markdown.txt", content: "" },
       ]);
-
-      vi.mocked(fs.readFileSync).mockReturnValue(
-        SAMPLE_FRONTMATTER_FILES.noFrontmatter,
-      );
 
       const rules = discoverRules();
 
-      expect(rules).toHaveLength(2);
-      expect(rules[0]!.name).toBe("testing");
-      expect(rules[1]!.name).toBe("readme");
+      thenRulesCountShouldBe(rules, 2);
+    });
+
+    it("is expected to use filenames for rule names", async () => {
+      await givenMarkdownFilesWithContent([
+        { name: "testing.md", content: SAMPLE_FRONTMATTER_FILES.noFrontmatter },
+        { name: "readme.md", content: SAMPLE_FRONTMATTER_FILES.noFrontmatter },
+        { name: "not-markdown.txt", content: "" },
+      ]);
+
+      const rules = discoverRules();
+
+      thenRuleShouldHaveName(rules[0]!, "testing");
+      thenRuleShouldHaveName(rules[1]!, "readme");
     });
   });
 });
