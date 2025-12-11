@@ -1,6 +1,6 @@
 ---
 name: Testing Quality
-paths: **/tests/**/*.{ts,js}
+paths: **/tests/**/*.{test,spec}.{ts,js}
 ---
 
 # Testing Quality

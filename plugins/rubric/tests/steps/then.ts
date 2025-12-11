@@ -54,8 +54,12 @@ export function thenRulesShouldMatch(rules: Rule[], filePath: string, expectedCo
   expect(matched).toHaveLength(expectedCount);
 }
 
-export function thenRuleShouldHaveReference(rule: Rule, expectedPath: string): void {
-  expect(rule.reference).toBe(`@${expectedPath}`);
+export function thenRuleShouldHaveReference(rule: Rule, expectedReference: string): void {
+  expect(rule.reference).toBe(expectedReference);
+}
+
+export function thenRuleShouldHavePath(rule: Rule, expectedPath: string): void {
+  expect(rule.path).toBe(expectedPath);
 }
 
 export function thenPatternShouldMatch(pattern: RegExp, testPath: string): void {
@@ -64,4 +68,33 @@ export function thenPatternShouldMatch(pattern: RegExp, testPath: string): void 
 
 export function thenPatternShouldNotMatch(pattern: RegExp, testPath: string): void {
   expect(pattern.test(testPath)).toBe(false);
+}
+
+export function thenRulesCountShouldBe(rules: Rule[], expectedCount: number): void {
+  expect(rules).toHaveLength(expectedCount);
+}
+
+export function thenRuleShouldHaveName(rule: Rule, expectedName: string): void {
+  expect(rule.name).toBe(expectedName);
+}
+
+export function thenRulePatternShouldMatch(rule: Rule, testPath: string): void {
+  expect(rule.pattern.test(testPath)).toBe(true);
+}
+
+export function thenRulePatternShouldNotMatch(rule: Rule, testPath: string): void {
+  expect(rule.pattern.test(testPath)).toBe(false);
+}
+
+export function thenRulePatternShouldBeRegExp(rule: Rule): void {
+  expect(rule.pattern).toBeInstanceOf(RegExp);
+}
+
+export function thenAllRulePatternsShouldBeRegExp(rules: Rule[]): void {
+  expect(rules.every((rule) => rule.pattern instanceof RegExp)).toBe(true);
+}
+
+export function thenMatchedRulesCountShouldBe(rules: Rule[], filePath: string, expectedCount: number): void {
+  const matched = rules.filter((rule) => rule.pattern.test(filePath));
+  expect(matched).toHaveLength(expectedCount);
 }

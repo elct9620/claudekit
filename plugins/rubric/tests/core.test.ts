@@ -1,72 +1,66 @@
-import { describe, it, expect } from "vitest";
+import { describe, it } from "vitest";
 import { createRule, matchRules } from "../src/core.js";
 import { SAMPLE_RULES } from "./steps/fixtures.js";
-import { thenRulesShouldMatch, thenRuleShouldHaveReference } from "./steps/then.js";
+import {
+  thenRulesShouldMatch,
+  thenRuleShouldHaveReference,
+  thenRuleShouldHaveName,
+  thenRuleShouldHavePath,
+  thenRulePatternShouldMatch,
+  thenRulePatternShouldNotMatch,
+  thenMatchedRulesCountShouldBe,
+} from "./steps/then.js";
 
 describe("Rule Matching", () => {
   describe("when rules are provided", () => {
     describe("when file path matches single rule", () => {
       it("is expected to return matching rule", () => {
         const rules = [SAMPLE_RULES.typescript];
-        const filePath = "src/test.ts";
 
-        const matchedRules = matchRules(rules, filePath);
+        thenMatchedRulesCountShouldBe(rules, "src/test.ts", 1);
 
-        expect(matchedRules).toHaveLength(1);
-        expect(matchedRules[0]!.name).toBe("TypeScript");
+        const matchedRules = matchRules(rules, "src/test.ts");
+        thenRuleShouldHaveName(matchedRules[0]!, "TypeScript");
       });
     });
 
     describe("when file path matches multiple rules", () => {
       it("is expected to return all matching rules", () => {
         const rules = [SAMPLE_RULES.typescript, SAMPLE_RULES.testFiles];
-        const filePath = "src/component.test.ts";
 
-        const matchedRules = matchRules(rules, filePath);
+        thenMatchedRulesCountShouldBe(rules, "src/component.test.ts", 2);
 
-        expect(matchedRules).toHaveLength(2);
-        expect(matchedRules[0]!.name).toBe("TypeScript");
-        expect(matchedRules[1]!.name).toBe("Test Files");
+        const matchedRules = matchRules(rules, "src/component.test.ts");
+        thenRuleShouldHaveName(matchedRules[0]!, "TypeScript");
+        thenRuleShouldHaveName(matchedRules[1]!, "Test Files");
       });
     });
 
     describe("when file path matches no rules", () => {
       it("is expected to return empty array", () => {
         const rules = [SAMPLE_RULES.javascript];
-        const filePath = "src/test.ts";
 
-        const matchedRules = matchRules(rules, filePath);
-
-        expect(matchedRules).toHaveLength(0);
+        thenMatchedRulesCountShouldBe(rules, "src/test.ts", 0);
       });
     });
 
     describe("when testing against various paths", () => {
       it("is expected to match paths with directories", () => {
         const rules = [SAMPLE_RULES.typescript];
-        const filePath = "src/components/Button.ts";
 
-        const matchedRules = matchRules(rules, filePath);
-
-        expect(matchedRules).toHaveLength(1);
+        thenMatchedRulesCountShouldBe(rules, "src/components/Button.ts", 1);
       });
 
       it("is expected to match root level files", () => {
         const rules = [SAMPLE_RULES.typescript];
-        const filePath = "index.ts";
 
-        const matchedRules = matchRules(rules, filePath);
-
-        expect(matchedRules).toHaveLength(1);
+        thenMatchedRulesCountShouldBe(rules, "index.ts", 1);
       });
 
       it("is expected to match deeply nested paths", () => {
         const rules = [SAMPLE_RULES.typescript];
-        const filePath = "src/features/auth/components/LoginForm.ts";
 
-        const matchedRules = matchRules(rules, filePath);
-
-        expect(matchedRules).toHaveLength(1);
+        thenMatchedRulesCountShouldBe(rules, "src/features/auth/components/LoginForm.ts", 1);
       });
     });
 
@@ -85,11 +79,8 @@ describe("Rule Matching", () => {
   describe("when no rules are provided", () => {
     it("is expected to return empty array", () => {
       const rules: ReturnType<typeof createRule>[] = [];
-      const filePath = "src/test.ts";
 
-      const matchedRules = matchRules(rules, filePath);
-
-      expect(matchedRules).toHaveLength(0);
+      thenMatchedRulesCountShouldBe(rules, "src/test.ts", 0);
     });
   });
 });
@@ -99,7 +90,7 @@ describe("Rule Creation", () => {
     it("is expected to generate reference with @ prefix", () => {
       const rule = createRule("Test Rule", /\.ts$/, "path/to/rubric.md");
 
-      thenRuleShouldHaveReference(rule, "path/to/rubric.md");
+      thenRuleShouldHaveReference(rule, "@path/to/rubric.md");
     });
 
     it("is expected to set all properties correctly", () => {
@@ -109,18 +100,17 @@ describe("Rule Creation", () => {
 
       const rule = createRule(name, pattern, path);
 
-      expect(rule.name).toBe(name);
-      expect(rule.pattern).toBe(pattern);
-      expect(rule.path).toBe(path);
-      expect(rule.reference).toBe(`@${path}`);
+      thenRuleShouldHaveName(rule, name);
+      thenRuleShouldHavePath(rule, path);
+      thenRuleShouldHaveReference(rule, `@${path}`);
     });
 
     it("is expected to work with complex patterns", () => {
       const pattern = /^src\/.*\.test\.ts$/;
       const rule = createRule("Test Files", pattern, "testing.md");
 
-      expect(rule.pattern.test("src/component.test.ts")).toBe(true);
-      expect(rule.pattern.test("tests/component.test.ts")).toBe(false);
+      thenRulePatternShouldMatch(rule, "src/component.test.ts");
+      thenRulePatternShouldNotMatch(rule, "tests/component.test.ts");
     });
   });
 });
