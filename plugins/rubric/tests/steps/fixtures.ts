@@ -201,4 +201,22 @@ This has no frontmatter.
 
 # Empty Frontmatter
 `,
+  withBraceExpansion: `---
+name: Testing Quality
+paths: **/tests/**/*.{ts,js}
+---
+
+# Testing Quality
+
+Tests with brace expansion in path pattern.
+`,
+  withMultiplePatternsAndBraces: `---
+name: Code Quality
+paths: {src,lib}/**/*.{ts,tsx}, tests/**/*.test.ts
+---
+
+# Code Quality
+
+Multiple patterns with brace expansion.
+`,
 };

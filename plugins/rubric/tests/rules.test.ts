@@ -264,6 +264,87 @@ describe("Rule Discovery", () => {
         expect(rules[0]!.pattern.test("any/path")).toBe(true);
       });
     });
+
+    describe("when .md file has brace expansion in paths", () => {
+      it("is expected to handle single brace pattern", async () => {
+        const fs = await import("node:fs");
+
+        vi.mocked(fs.existsSync).mockReturnValue(true);
+        vi.mocked(fs.readdirSync).mockReturnValue([
+          {
+            name: "testing.md",
+            isDirectory: () => false,
+            isFile: () => true,
+          } as any,
+        ]);
+        vi.mocked(fs.readFileSync).mockReturnValue(
+          SAMPLE_FRONTMATTER_FILES.withBraceExpansion,
+        );
+
+        const rules = discoverRules();
+
+        // Should create ONE rule (not split on comma inside braces)
+        expect(rules).toHaveLength(1);
+        expect(rules[0]!.name).toBe("Testing Quality");
+
+        // Should match files with .ts or .js in tests directory
+        expect(rules[0]!.pattern.test("tests/core.test.ts")).toBe(true);
+        expect(rules[0]!.pattern.test("tests/utils.test.js")).toBe(true);
+        expect(rules[0]!.pattern.test("plugins/rubric/tests/review.test.ts")).toBe(true);
+      });
+
+      it("is expected to handle multiple patterns with braces", async () => {
+        const fs = await import("node:fs");
+
+        vi.mocked(fs.existsSync).mockReturnValue(true);
+        vi.mocked(fs.readdirSync).mockReturnValue([
+          {
+            name: "code.md",
+            isDirectory: () => false,
+            isFile: () => true,
+          } as any,
+        ]);
+        vi.mocked(fs.readFileSync).mockReturnValue(
+          SAMPLE_FRONTMATTER_FILES.withMultiplePatternsAndBraces,
+        );
+
+        const rules = discoverRules();
+
+        // Should create TWO rules (split on comma outside braces)
+        expect(rules).toHaveLength(2);
+
+        // First pattern: {src,lib}/**/*.{ts,tsx}
+        expect(rules[0]!.pattern.test("src/index.ts")).toBe(true);
+        expect(rules[0]!.pattern.test("lib/utils.tsx")).toBe(true);
+
+        // Second pattern: tests/**/*.test.ts
+        expect(rules[1]!.pattern.test("tests/core.test.ts")).toBe(true);
+      });
+
+      it("is expected to handle nested braces", async () => {
+        const fs = await import("node:fs");
+
+        vi.mocked(fs.existsSync).mockReturnValue(true);
+        vi.mocked(fs.readdirSync).mockReturnValue([
+          {
+            name: "complex.md",
+            isDirectory: () => false,
+            isFile: () => true,
+          } as any,
+        ]);
+        vi.mocked(fs.readFileSync).mockReturnValue(
+          `---
+paths: src/**/*.{test,spec}.{ts,js}
+---`,
+        );
+
+        const rules = discoverRules();
+
+        expect(rules).toHaveLength(1);
+        expect(rules[0]!.pattern.test("src/utils.test.ts")).toBe(true);
+        expect(rules[0]!.pattern.test("src/utils.spec.js")).toBe(true);
+      });
+    });
   });
 
   describe("when .claude/rules/ directory does not exist", () => {

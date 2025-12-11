@@ -10,6 +10,49 @@ type Frontmatter = {
 };
 
 /**
+ * Split comma-separated glob patterns while respecting brace boundaries.
+ * Uses a state machine to track brace depth.
+ *
+ * @example
+ * // Brace expansion - no split
+ * splitGlobPatterns("**​/tests/**​/*.{ts,js}")
+ * // => ["**​/tests/**​/*.{ts,js}"]
+ *
+ * @example
+ * // Multiple patterns - split on comma
+ * splitGlobPatterns("**​/*.ts, **​/*.md")
+ * // => ["**​/*.ts", "**​/*.md"]
+ */
+function splitGlobPatterns(input: string): string[] {
+  const patterns: string[] = [];
+  let current = '';
+  let braceDepth = 0;
+
+  for (const char of input) {
+    if (char === '{') {
+      braceDepth++;
+      current += char;
+    } else if (char === '}') {
+      braceDepth--;
+      current += char;
+    } else if (char === ',' && braceDepth === 0) {
+      // Comma outside braces = pattern separator
+      const trimmed = current.trim();
+      if (trimmed) patterns.push(trimmed);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+
+  // Add final pattern
+  const trimmed = current.trim();
+  if (trimmed) patterns.push(trimmed);
+
+  return patterns;
+}
+
+/**
  * Parse YAML frontmatter to extract name and paths fields
  */
 function parseFrontmatter(content: string): Frontmatter {
@@ -23,10 +66,7 @@ function parseFrontmatter(content: string): Frontmatter {
 
   const pathsMatch = frontmatter.match(/^paths:\s*(.+)$/m);
   const paths = pathsMatch?.[1]
-    ? pathsMatch[1]
-        .trim()
-        .split(/,\s*/)
-        .map((p) => p.trim())
+    ? splitGlobPatterns(pathsMatch[1].trim())
     : null;
 
   return { name, paths };
