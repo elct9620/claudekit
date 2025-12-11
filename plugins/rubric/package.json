@@ -10,7 +10,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc && rolldown -c"
+    "build": "tsc && rolldown -c",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "Aotokitsuruya",
@@ -19,7 +21,8 @@
     "@types/node": "catalog:",
     "prettier": "catalog:",
     "rolldown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "dependencies": {
     "@claudekit/config": "workspace:*",
