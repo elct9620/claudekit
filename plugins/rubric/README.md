@@ -27,9 +27,7 @@ Automatically validates file changes against custom rubrics (coding standards, s
 
 ## Configuration
 
-Configure rubrics in `claudekit.json` or `claudekit.local.json`.
-
-**Configuration Options:**
+Rules can be defined via Claude Code rule files (`.claude/rules/*.md`) or `claudekit.json`. Rule files support `name` and `paths` frontmatter fields.
 
 | Option                  | Type      | Required | Default                                       | Description                                      |
 |-------------------------|-----------|----------|-----------------------------------------------|--------------------------------------------------|
