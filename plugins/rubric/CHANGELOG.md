@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/elct9620/claudekit/compare/rubric-v0.4.0...rubric-v0.4.1) (2025-12-11)
+
+
+### Bug Fixes
+
+* **rubric:** correct globstar pattern to match zero or more directories ([1898652](https://github.com/elct9620/claudekit/commit/1898652e2399cf2a8573f7de5e68b8b7aef0a51e))
+
 ## [0.4.0](https://github.com/elct9620/claudekit/compare/rubric-v0.3.4...rubric-v0.4.0) (2025-12-11)
 
 
