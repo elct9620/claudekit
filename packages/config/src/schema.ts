@@ -24,7 +24,7 @@ export type Rubric = {
 
 export type RubricConfig = {
   enforce?: boolean;
-  rules: Rubric[];
+  rules?: Rubric[];
   reviewMessage?: string;
 };
 

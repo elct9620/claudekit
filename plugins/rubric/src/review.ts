@@ -2,6 +2,9 @@
 
 import { loadConfig } from "@claudekit/config";
 import { loadHook, postToolUse, type PostToolUseInput } from "@claudekit/hook";
+import { matchRules } from "./core.js";
+import { discoverRules } from "./rules.js";
+import { loadRubricRules } from "./rubric.js";
 
 const SUPPORTED_TOOL_NAMES = ["Edit", "Write"];
 const DEFAULT_REVIEW_MESSAGE =
@@ -9,46 +12,37 @@ const DEFAULT_REVIEW_MESSAGE =
 
 const hook = await loadHook<PostToolUseInput>();
 
-const isSupportedTool = SUPPORTED_TOOL_NAMES.includes(hook.toolName);
-if (!isSupportedTool) {
-  // Not a supported tool, exit early.
+if (!SUPPORTED_TOOL_NAMES.includes(hook.toolName)) {
   process.exit(0);
 }
 
 const config = await loadConfig();
-const isRubricDefined = Boolean(config.rubric);
-if (!isRubricDefined) {
-  // No rubric defined, exit early.
-  process.exit(0);
-}
-
 const filePath = hook.toolInput.filePath;
-const messageTemplate = config.rubric?.reviewMessage || DEFAULT_REVIEW_MESSAGE;
-const rules = (config.rubric?.rules ?? []).map((rule) => ({
-  name: rule.name || "Unnamed Rule",
-  pattern: new RegExp(rule.pattern),
-  path: rule.path,
-  reference: `@${rule.path}`,
-}));
 
-const matches = rules.filter((rule) => rule.pattern.test(filePath));
-const references = matches.map((rule) => rule.reference);
-if (matches.length === 0) {
+// Load rules from both sources
+const rubricRules = loadRubricRules(config);
+const discoveredRules = discoverRules();
+const allRules = [...rubricRules, ...discoveredRules];
+
+// Match rules against file path
+const matchedRules = matchRules(allRules, filePath);
+if (matchedRules.length === 0) {
   console.log(postToolUse(true));
   process.exit(0);
 }
 
-const isEnforced = config.rubric?.enforce ?? true;
+// Build review message
+const references = matchedRules.map((rule) => rule.reference);
+const messageTemplate = config.rubric?.reviewMessage || DEFAULT_REVIEW_MESSAGE;
 const reviewMessage = messageTemplate.replace(
   "{references}",
   references.join(", "),
 );
 
+// Output decision
+const isEnforced = config.rubric?.enforce ?? true;
 if (isEnforced) {
   console.log(postToolUse(false, reviewMessage));
-  process.exit(0);
+} else {
+  console.log(postToolUse(true, "The changes match rubric rules.", reviewMessage));
 }
-
-console.log(
-  postToolUse(true, "The changes match rubric rules.", reviewMessage),
-);

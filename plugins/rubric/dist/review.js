@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import fsAsync from "fs/promises";
 import fs from "fs";
+import * as fs$1 from "node:fs";
+import * as path from "node:path";
 
 //#region ../../packages/config/src/index.ts
 /**
@@ -15,8 +17,8 @@ const CONFIG_SEARCH_PATHS = [
 	".claude/claudekit.json"
 ];
 const LOCAL_CONFIG_SEARCH_PATHS = ["claudekit.local.json", ".claude/claudekit.local.json"];
-function isConfigExists(path) {
-	return fs.existsSync(path);
+function isConfigExists(path$1) {
+	return fs.existsSync(path$1);
 }
 function deepMerge(target, source) {
 	if (Array.isArray(target) && Array.isArray(source)) return source;
@@ -110,33 +112,93 @@ function postToolUse(isPass = true, reason = "", additionalContext) {
 }
 
 //#endregion
+//#region src/core.ts
+function createRule(name, pattern, path$1) {
+	return {
+		name,
+		pattern,
+		path: path$1,
+		reference: `@${path$1}`
+	};
+}
+function matchRules(rules, filePath$1) {
+	return rules.filter((rule) => rule.pattern.test(filePath$1));
+}
+
+//#endregion
+//#region src/rules.ts
+const RULES_DIR = ".claude/rules";
+/**
+* Parse YAML frontmatter to extract paths field
+*/
+function parseFrontmatter(content) {
+	const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+	if (!match?.[1]) return null;
+	const pathsMatch = match[1].match(/^paths:\s*(.+)$/m);
+	if (!pathsMatch?.[1]) return null;
+	return pathsMatch[1].trim().split(/,\s*/).map((p) => p.trim());
+}
+/**
+* Convert glob pattern to RegExp
+*/
+function globToRegex(glob) {
+	let regex = glob.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+	regex = regex.replace(/\*\*/g, "\0");
+	regex = regex.replace(/\*/g, "[^/]*");
+	regex = regex.replace(/\0/g, ".*");
+	return /* @__PURE__ */ new RegExp(`^${regex}$`);
+}
+/**
+* Discover rules from .claude/rules/ directory
+*/
+function discoverRules() {
+	if (!fs$1.existsSync(RULES_DIR)) return [];
+	const rules = [];
+	function scanDir(dir) {
+		const entries = fs$1.readdirSync(dir, { withFileTypes: true });
+		for (const entry of entries) {
+			const fullPath = path.join(dir, entry.name);
+			if (entry.isDirectory()) scanDir(fullPath);
+			else if (entry.isFile() && entry.name.endsWith(".md")) {
+				const patterns = parseFrontmatter(fs$1.readFileSync(fullPath, "utf-8"));
+				const name = path.basename(fullPath, ".md");
+				if (patterns === null) rules.push(createRule(name, /.*/, fullPath));
+				else for (const pattern of patterns) rules.push(createRule(name, globToRegex(pattern), fullPath));
+			}
+		}
+	}
+	scanDir(RULES_DIR);
+	return rules;
+}
+
+//#endregion
+//#region src/rubric.ts
+/**
+* Load rules from rubric config
+*/
+function loadRubricRules(config$1) {
+	return (config$1.rubric?.rules ?? []).map((rule) => createRule(rule.name || "Unnamed Rule", new RegExp(rule.pattern), rule.path));
+}
+
+//#endregion
 //#region src/review.ts
 const SUPPORTED_TOOL_NAMES = ["Edit", "Write"];
 const DEFAULT_REVIEW_MESSAGE = "Ensure review changes against {references} and resolve violations until reached criteria requirements defined in the rubric.";
 const hook = await loadHook();
 if (!SUPPORTED_TOOL_NAMES.includes(hook.toolName)) process.exit(0);
 const config = await loadConfig();
-if (!Boolean(config.rubric)) process.exit(0);
 const filePath = hook.toolInput.filePath;
-const messageTemplate = config.rubric?.reviewMessage || DEFAULT_REVIEW_MESSAGE;
-const matches = (config.rubric?.rules ?? []).map((rule) => ({
-	name: rule.name || "Unnamed Rule",
-	pattern: new RegExp(rule.pattern),
-	path: rule.path,
-	reference: `@${rule.path}`
-})).filter((rule) => rule.pattern.test(filePath));
-const references = matches.map((rule) => rule.reference);
-if (matches.length === 0) {
+const rubricRules = loadRubricRules(config);
+const discoveredRules = discoverRules();
+const matchedRules = matchRules([...rubricRules, ...discoveredRules], filePath);
+if (matchedRules.length === 0) {
 	console.log(postToolUse(true));
 	process.exit(0);
 }
-const isEnforced = config.rubric?.enforce ?? true;
-const reviewMessage = messageTemplate.replace("{references}", references.join(", "));
-if (isEnforced) {
-	console.log(postToolUse(false, reviewMessage));
-	process.exit(0);
-}
-console.log(postToolUse(true, "The changes match rubric rules.", reviewMessage));
+const references = matchedRules.map((rule) => rule.reference);
+const reviewMessage = (config.rubric?.reviewMessage || DEFAULT_REVIEW_MESSAGE).replace("{references}", references.join(", "));
+if (config.rubric?.enforce ?? true) console.log(postToolUse(false, reviewMessage));
+else console.log(postToolUse(true, "The changes match rubric rules.", reviewMessage));
 
 //#endregion
 export {  };
