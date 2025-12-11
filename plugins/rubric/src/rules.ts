@@ -4,19 +4,32 @@ import { createRule, type Rule } from "./core.js";
 
 const RULES_DIR = ".claude/rules";
 
+type Frontmatter = {
+  name: string | null;
+  paths: string[] | null;
+};
+
 /**
- * Parse YAML frontmatter to extract paths field
+ * Parse YAML frontmatter to extract name and paths fields
  */
-function parseFrontmatter(content: string): string[] | null {
+function parseFrontmatter(content: string): Frontmatter {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!match?.[1]) return null;
+  if (!match?.[1]) return { name: null, paths: null };
 
   const frontmatter = match[1];
-  const pathsMatch = frontmatter.match(/^paths:\s*(.+)$/m);
-  if (!pathsMatch?.[1]) return null;
 
-  const pathsValue = pathsMatch[1].trim();
-  return pathsValue.split(/,\s*/).map((p) => p.trim());
+  const nameMatch = frontmatter.match(/^name:\s*(.+)$/m);
+  const name = nameMatch?.[1]?.trim() ?? null;
+
+  const pathsMatch = frontmatter.match(/^paths:\s*(.+)$/m);
+  const paths = pathsMatch?.[1]
+    ? pathsMatch[1]
+        .trim()
+        .split(/,\s*/)
+        .map((p) => p.trim())
+    : null;
+
+  return { name, paths };
 }
 
 /**
@@ -46,15 +59,15 @@ export function discoverRules(): Rule[] {
         scanDir(fullPath);
       } else if (entry.isFile() && entry.name.endsWith(".md")) {
         const content = fs.readFileSync(fullPath, "utf-8");
-        const patterns = parseFrontmatter(content);
-        const name = path.basename(fullPath, ".md");
+        const frontmatter = parseFrontmatter(content);
+        const name = frontmatter.name || path.basename(fullPath, ".md");
 
-        if (patterns === null) {
+        if (frontmatter.paths === null) {
           // No paths = apply to all files
           rules.push(createRule(name, /.*/, fullPath));
         } else {
           // Create rule for each pattern
-          for (const pattern of patterns) {
+          for (const pattern of frontmatter.paths) {
             rules.push(createRule(name, globToRegex(pattern), fullPath));
           }
         }

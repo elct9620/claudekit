@@ -129,14 +129,21 @@ function matchRules(rules, filePath$1) {
 //#region src/rules.ts
 const RULES_DIR = ".claude/rules";
 /**
-* Parse YAML frontmatter to extract paths field
+* Parse YAML frontmatter to extract name and paths fields
 */
 function parseFrontmatter(content) {
 	const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-	if (!match?.[1]) return null;
-	const pathsMatch = match[1].match(/^paths:\s*(.+)$/m);
-	if (!pathsMatch?.[1]) return null;
-	return pathsMatch[1].trim().split(/,\s*/).map((p) => p.trim());
+	if (!match?.[1]) return {
+		name: null,
+		paths: null
+	};
+	const frontmatter = match[1];
+	const name = frontmatter.match(/^name:\s*(.+)$/m)?.[1]?.trim() ?? null;
+	const pathsMatch = frontmatter.match(/^paths:\s*(.+)$/m);
+	return {
+		name,
+		paths: pathsMatch?.[1] ? pathsMatch[1].trim().split(/,\s*/).map((p) => p.trim()) : null
+	};
 }
 /**
 * Convert glob pattern to RegExp
@@ -160,10 +167,10 @@ function discoverRules() {
 			const fullPath = path.join(dir, entry.name);
 			if (entry.isDirectory()) scanDir(fullPath);
 			else if (entry.isFile() && entry.name.endsWith(".md")) {
-				const patterns = parseFrontmatter(fs$1.readFileSync(fullPath, "utf-8"));
-				const name = path.basename(fullPath, ".md");
-				if (patterns === null) rules.push(createRule(name, /.*/, fullPath));
-				else for (const pattern of patterns) rules.push(createRule(name, globToRegex(pattern), fullPath));
+				const frontmatter = parseFrontmatter(fs$1.readFileSync(fullPath, "utf-8"));
+				const name = frontmatter.name || path.basename(fullPath, ".md");
+				if (frontmatter.paths === null) rules.push(createRule(name, /.*/, fullPath));
+				else for (const pattern of frontmatter.paths) rules.push(createRule(name, globToRegex(pattern), fullPath));
 			}
 		}
 	}
