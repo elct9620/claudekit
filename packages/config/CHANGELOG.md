@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/elct9620/claudekit/compare/@claudekit/config-v0.2.0...@claudekit/config-v0.3.0) (2025-12-11)
+
+
+### Features
+
+* **rubric:** auto-detect .claude/rules files as rubric sources ([5fc66a6](https://github.com/elct9620/claudekit/commit/5fc66a6fcf09e9fe44a8b564210f86aaadeac2b8))
+
 ## [0.2.0](https://github.com/elct9620/claudekit/compare/@claudekit/config-v0.1.0...@claudekit/config-v0.2.0) (2025-10-17)
 
 
