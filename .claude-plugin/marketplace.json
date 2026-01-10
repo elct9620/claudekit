@@ -29,8 +29,10 @@
     },
     {
       "name": "spec",
-      "source": "./plugins/spec",
-      "description": "Spec-centered development workflow (Experimental)"
+      "source": {
+        "source": "github",
+        "repo": "elct9620/claude-spec-plugin"
+      }
     },
     {
       "name": "hono",
