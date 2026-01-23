@@ -4,10 +4,10 @@ import fs from "fs";
 import { exec } from "child_process";
 
 //#region ../../packages/config/src/schema.ts
-let CommitLogic = /* @__PURE__ */ function(CommitLogic$1) {
-	CommitLogic$1["AND"] = "AND";
-	CommitLogic$1["OR"] = "OR";
-	return CommitLogic$1;
+let CommitLogic = /* @__PURE__ */ function(CommitLogic) {
+	CommitLogic["AND"] = "AND";
+	CommitLogic["OR"] = "OR";
+	return CommitLogic;
 }({});
 
 //#endregion

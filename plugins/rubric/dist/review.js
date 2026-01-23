@@ -53,10 +53,10 @@ async function loadConfig() {
 
 //#endregion
 //#region ../../packages/hook/src/input.ts
-let HookEventName = /* @__PURE__ */ function(HookEventName$1) {
-	HookEventName$1["Stop"] = "Stop";
-	HookEventName$1["PostToolUse"] = "PostToolUse";
-	return HookEventName$1;
+let HookEventName = /* @__PURE__ */ function(HookEventName) {
+	HookEventName["Stop"] = "Stop";
+	HookEventName["PostToolUse"] = "PostToolUse";
+	return HookEventName;
 }({});
 
 //#endregion
