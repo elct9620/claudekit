@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.5.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.4.0...claudekit-v0.5.0) (2026-01-25)
+
+
+### Features
+
+* **git:** add commit command and normalize heading levels ([624a546](https://github.com/elct9620/claudekit/commit/624a546f2b19f13025ba033e35cc2a3b948b47c6))
+* **marketplace:** add autonoe plugin ([aaeda3e](https://github.com/elct9620/claudekit/commit/aaeda3eff19a66d4bd3cfdf8a9860214b5a6c0ec))
+* **marketplace:** add ruby plugin ([12a1465](https://github.com/elct9620/claudekit/commit/12a14651afbb2e2b3805d314f1b8b9552ca1e69f))
+* **rubric:** add frontmatter to testing.md for rule discovery ([3024eb6](https://github.com/elct9620/claudekit/commit/3024eb618fc5cdf25fcfd8a53899181711317023))
+* **rubric:** add vitest testing infrastructure ([10d29cc](https://github.com/elct9620/claudekit/commit/10d29cc2a63bc6dba001bfcf74fa45d986dfb312))
+* **rubric:** auto-detect .claude/rules files as rubric sources ([5fc66a6](https://github.com/elct9620/claudekit/commit/5fc66a6fcf09e9fe44a8b564210f86aaadeac2b8))
+* **rubric:** support brace expansion in frontmatter glob patterns ([500624d](https://github.com/elct9620/claudekit/commit/500624d3b9b30cab381dec1b020875bc83eef22b))
+* **rubric:** support name field in rule file frontmatter ([1ea5d6e](https://github.com/elct9620/claudekit/commit/1ea5d6e95bf39370fbbc41e9c4ee196cf734c55d))
+* **spec:** add architecture command for ADR documentation ([5c66a03](https://github.com/elct9620/claudekit/commit/5c66a03b75e94c5cabf1e20f6c5d92d1b353d378))
+* **spec:** add architecture documentation support to spec-scaffold skill ([27f3df3](https://github.com/elct9620/claudekit/commit/27f3df3459ff934e54cb18d13e2f8d517bea449f))
+* **spec:** add clarify/draft commands and refine workflow ([4d69bd3](https://github.com/elct9620/claudekit/commit/4d69bd30bbf88a98d0dfa234d52079e81fd9afab))
+* **spec:** add experimental spec plugin for spec-centered development ([c223b4c](https://github.com/elct9620/claudekit/commit/c223b4c00d738851b9769fd1fda3c4d6dd95ed50))
+* **spec:** add glossary support to specification workflow ([8d15170](https://github.com/elct9620/claudekit/commit/8d1517066e4af60aec5501ea062d24967cc3b318))
+* **spec:** add spec-scaffold skill for SDD template creation ([29e54f3](https://github.com/elct9620/claudekit/commit/29e54f3af04c77230943935073529a739e424906))
+* **spec:** add specification reference and template to spec-scaffold skill ([91fbff2](https://github.com/elct9620/claudekit/commit/91fbff2084b3e332fe5cbf8e459c8b942186bf72))
+* **spec:** integrate roadmap tracking into specification workflow ([36107e2](https://github.com/elct9620/claudekit/commit/36107e2b223a2541982c8134c13cffc05d78d00a))
+
+
+### Bug Fixes
+
+* **ci:** set executable permissions for plugin dist files in GitHub Actions ([f8cf649](https://github.com/elct9620/claudekit/commit/f8cf6491b6aaad4de15290d6a5abec425d61e1b7))
+* **dependabot:** improve conflict detection before rebasing ([368807a](https://github.com/elct9620/claudekit/commit/368807a4c71990668c44591ea1caa1895be65a03))
+* **git:** clarify Co-Authored-By usage in commit command ([3ac7c54](https://github.com/elct9620/claudekit/commit/3ac7c545a0a0539ae0fcfe00577db9e0359b634e))
+* **rubric:** add pattern matching best practices to config command ([8049fde](https://github.com/elct9620/claudekit/commit/8049fdec4e7545e12520db6f20e68e715646ff04))
+* **rubric:** clarify review message ignore conditions ([a0567c1](https://github.com/elct9620/claudekit/commit/a0567c13953cb71d337d7199eaa5321c97c25c77))
+* **rubric:** correct globstar pattern to match zero or more directories ([1898652](https://github.com/elct9620/claudekit/commit/1898652e2399cf2a8573f7de5e68b8b7aef0a51e))
+* **rubric:** improve review hook clarity and remove unsupported tool ([67b517f](https://github.com/elct9620/claudekit/commit/67b517f3f1b670d6b6d4966919c93c9c603642a5))
+* **spec:** remove unsupported experimental field from plugin manifest ([347627d](https://github.com/elct9620/claudekit/commit/347627d080312be58905c30546ee28433285331e))
+
 ## [0.4.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.3.0...claudekit-v0.4.0) (2025-10-19)
 
 
