@@ -15,6 +15,7 @@ In `claude` run:
 
 | Plugin     | Description                                      | Documentation                                                           |
 |------------|--------------------------------------------------|-------------------------------------------------------------------------|
+| Autonoe    | Autonomous agent orchestrator skill              | [README](https://github.com/elct9620/autonoe-skill/blob/main/README.md) |
 | Dependabot | Manage Dependabot PRs in GitHub repositories     | [README](./plugins/dependabot/README.md)                                |
 | Git        | Common repository operations for git             | [README](./plugins/git/README.md)                                       |
 | Hono       | Provides Hono CLI skill for Hono framework       | [README](https://github.com/elct9620/claude-hono-plugin/blob/main/README.md) |

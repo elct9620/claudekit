@@ -8,6 +8,13 @@
   },
   "plugins": [
     {
+      "name": "autonoe",
+      "source": {
+        "source": "github",
+        "repo": "elct9620/autonoe-skill"
+      }
+    },
+    {
       "name": "dependabot",
       "source": "./plugins/dependabot",
       "description": "Commands to interact with Dependabot on GitHub repositories."
