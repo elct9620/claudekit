@@ -4,7 +4,7 @@ packages:
 
 catalog:
   '@types/node': 25.0.10
-  prettier: 3.8.0
+  prettier: 3.8.1
   rolldown: ^1.0.0-beta.60
   typescript: 5.9.3
   vitest: 4.0.17
