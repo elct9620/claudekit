@@ -10,8 +10,8 @@
     {
       "name": "autonoe",
       "source": {
-        "source": "github",
-        "repo": "elct9620/autonoe-skill"
+        "source": "url",
+        "url": "https://github.com/elct9620/autonoe-skill.git"
       }
     },
     {
@@ -37,22 +37,22 @@
     {
       "name": "spec",
       "source": {
-        "source": "github",
-        "repo": "elct9620/claude-spec-plugin"
+        "source": "url",
+        "url": "https://github.com/elct9620/claude-spec-plugin.git"
       }
     },
     {
       "name": "hono",
       "source": {
-        "source": "github",
-        "repo": "elct9620/claude-hono-plugin"
+        "source": "url",
+        "url": "https://github.com/elct9620/claude-hono-plugin.git"
       }
     },
     {
       "name": "ruby",
       "source": {
-        "source": "github",
-        "repo": "elct9620/claude-ruby-plugin"
+        "source": "url",
+        "url": "https://github.com/elct9620/claude-ruby-plugin.git"
       }
     }
   ]
