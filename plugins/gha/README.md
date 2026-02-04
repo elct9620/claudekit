@@ -10,3 +10,4 @@ Create and manage GitHub Actions workflows for CI/CD automation. Supports automa
 | Command | Description |
 |---------|-------------|
 | `/gha:setup` | Create a GitHub Actions workflow configuration for CI/CD |
+| `/gha:release` | Set up Release Please configuration for automated versioning and releases |
