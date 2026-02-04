@@ -17,8 +17,8 @@ const CONFIG_SEARCH_PATHS = [
 	".claude/claudekit.json"
 ];
 const LOCAL_CONFIG_SEARCH_PATHS = ["claudekit.local.json", ".claude/claudekit.local.json"];
-function isConfigExists(path$1) {
-	return fs.existsSync(path$1);
+function isConfigExists(path) {
+	return fs.existsSync(path);
 }
 function deepMerge(target, source) {
 	if (Array.isArray(target) && Array.isArray(source)) return source;
@@ -113,16 +113,16 @@ function postToolUse(isPass = true, reason = "", additionalContext) {
 
 //#endregion
 //#region src/core.ts
-function createRule(name, pattern, path$1) {
+function createRule(name, pattern, path) {
 	return {
 		name,
 		pattern,
-		path: path$1,
-		reference: `@${path$1}`
+		path,
+		reference: `@${path}`
 	};
 }
-function matchRules(rules, filePath$1) {
-	return rules.filter((rule) => rule.pattern.test(filePath$1));
+function matchRules(rules, filePath) {
+	return rules.filter((rule) => rule.pattern.test(filePath));
 }
 
 //#endregion
@@ -153,8 +153,8 @@ function splitGlobPatterns(input) {
 		braceDepth--;
 		current += char;
 	} else if (char === "," && braceDepth === 0) {
-		const trimmed$1 = current.trim();
-		if (trimmed$1) patterns.push(trimmed$1);
+		const trimmed = current.trim();
+		if (trimmed) patterns.push(trimmed);
 		current = "";
 	} else current += char;
 	const trimmed = current.trim();
@@ -197,7 +197,7 @@ function globToRegex(glob) {
 	regex = regex.replace(/\*\*\//g, "\0");
 	regex = regex.replace(/\*/g, "[^/]*");
 	regex = regex.replace(/\x00/g, "(.*\\/)?");
-	return /* @__PURE__ */ new RegExp(`^${regex}$`);
+	return new RegExp(`^${regex}$`);
 }
 /**
 * Discover rules from .claude/rules/ directory
@@ -227,8 +227,8 @@ function discoverRules() {
 /**
 * Load rules from rubric config
 */
-function loadRubricRules(config$1) {
-	return (config$1.rubric?.rules ?? []).map((rule) => createRule(rule.name || "Unnamed Rule", new RegExp(rule.pattern), rule.path));
+function loadRubricRules(config) {
+	return (config.rubric?.rules ?? []).map((rule) => createRule(rule.name || "Unnamed Rule", new RegExp(rule.pattern), rule.path));
 }
 
 //#endregion
