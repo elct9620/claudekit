@@ -61,6 +61,11 @@
         "source": "url",
         "url": "https://github.com/elct9620/ai-coding-skills.git"
       }
+    },
+    {
+      "name": "gha",
+      "source": "./plugins/gha",
+      "description": "Commands to create and manage GitHub Actions workflows."
     }
   ]
 }

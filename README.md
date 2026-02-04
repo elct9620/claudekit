@@ -18,6 +18,7 @@ In `claude` run:
 | Autonoe       | Autonomous agent orchestrator skill              | [README](https://github.com/elct9620/autonoe-skill/blob/main/README.md) |
 | Coding Skills | Personalized agent skills for coding tasks       | [README](https://github.com/elct9620/ai-coding-skills/blob/main/README.md) |
 | Dependabot    | Manage Dependabot PRs in GitHub repositories     | [README](./plugins/dependabot/README.md)                                |
+| GHA           | Create and manage GitHub Actions workflows       | [README](./plugins/gha/README.md)                                       |
 | Git           | Common repository operations for git             | [README](./plugins/git/README.md)                                       |
 | Hono          | Provides Hono CLI skill for Hono framework       | [README](https://github.com/elct9620/claude-hono-plugin/blob/main/README.md) |
 | License       | Manage open source licenses                      | [README](./plugins/license/README.md)                                   |

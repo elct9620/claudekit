@@ -1,0 +1,8 @@
+{
+  "name": "gha",
+  "description": "Commands to create and manage GitHub Actions workflows.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Aotokitsuruya"
+  }
+}
