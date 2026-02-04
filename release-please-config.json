@@ -29,6 +29,13 @@
       "component": "dependabot",
       "extra-files": [".claude-plugin/plugin.json"]
     },
+    "plugins/gha": {
+      "release-type": "simple",
+      "package-name": "@aotoki/claudekit-gha",
+      "changelog-path": "CHANGELOG.md",
+      "component": "gha",
+      "extra-files": [".claude-plugin/plugin.json"]
+    },
     "plugins/git": {
       "release-type": "node",
       "package-name": "@aotoki/claudekit-git",
