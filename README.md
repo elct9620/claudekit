@@ -13,16 +13,17 @@ In `claude` run:
 
 ## Plugins
 
-| Plugin     | Description                                      | Documentation                                                           |
-|------------|--------------------------------------------------|-------------------------------------------------------------------------|
-| Autonoe    | Autonomous agent orchestrator skill              | [README](https://github.com/elct9620/autonoe-skill/blob/main/README.md) |
-| Dependabot | Manage Dependabot PRs in GitHub repositories     | [README](./plugins/dependabot/README.md)                                |
-| Git        | Common repository operations for git             | [README](./plugins/git/README.md)                                       |
-| Hono       | Provides Hono CLI skill for Hono framework       | [README](https://github.com/elct9620/claude-hono-plugin/blob/main/README.md) |
-| License    | Manage open source licenses                      | [README](./plugins/license/README.md)                                   |
-| Rubric     | Automated code standards checks based on rubrics | [README](./plugins/rubric/README.md)                                    |
-| Ruby       | Ruby documentation and development utilities     | [README](https://github.com/elct9620/claude-ruby-plugin/blob/main/README.md) |
-| Spec       | Specification management knowledge and templates  | [README](https://github.com/elct9620/claude-spec-plugin/blob/main/README.md) |
+| Plugin        | Description                                      | Documentation                                                           |
+|---------------|--------------------------------------------------|-------------------------------------------------------------------------|
+| Autonoe       | Autonomous agent orchestrator skill              | [README](https://github.com/elct9620/autonoe-skill/blob/main/README.md) |
+| Coding Skills | Personalized agent skills for coding tasks       | [README](https://github.com/elct9620/ai-coding-skills/blob/main/README.md) |
+| Dependabot    | Manage Dependabot PRs in GitHub repositories     | [README](./plugins/dependabot/README.md)                                |
+| Git           | Common repository operations for git             | [README](./plugins/git/README.md)                                       |
+| Hono          | Provides Hono CLI skill for Hono framework       | [README](https://github.com/elct9620/claude-hono-plugin/blob/main/README.md) |
+| License       | Manage open source licenses                      | [README](./plugins/license/README.md)                                   |
+| Rubric        | Automated code standards checks based on rubrics | [README](./plugins/rubric/README.md)                                    |
+| Ruby          | Ruby documentation and development utilities     | [README](https://github.com/elct9620/claude-ruby-plugin/blob/main/README.md) |
+| Spec          | Specification management knowledge and templates | [README](https://github.com/elct9620/claude-spec-plugin/blob/main/README.md) |
 
 ## Configuration
 

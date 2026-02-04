@@ -54,6 +54,13 @@
         "source": "url",
         "url": "https://github.com/elct9620/claude-ruby-plugin.git"
       }
+    },
+    {
+      "name": "coding",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/elct9620/ai-coding-skills.git"
+      }
     }
   ]
 }
