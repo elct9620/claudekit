@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/elct9620/claudekit/compare/dependabot-v0.4.1...dependabot-v0.5.0) (2026-03-02)
+
+
+### Features
+
+* **dependabot:** show change summary for skipped major updates ([833a0fe](https://github.com/elct9620/claudekit/commit/833a0feae5d62dfe3ea4cc73b1ae05376c444107))
+
 ## [0.4.1](https://github.com/elct9620/claudekit/compare/dependabot-v0.4.0...dependabot-v0.4.1) (2025-11-10)
 
 
