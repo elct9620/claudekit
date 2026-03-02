@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.6.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.5.0...claudekit-v0.6.0) (2026-03-02)
+
+
+### Features
+
+* **dependabot:** show change summary for skipped major updates ([833a0fe](https://github.com/elct9620/claudekit/commit/833a0feae5d62dfe3ea4cc73b1ae05376c444107))
+* **gha:** add release command for Release Please configuration ([93643c1](https://github.com/elct9620/claudekit/commit/93643c17daedb518d33410dcd28bd579b9026caa))
+* **marketplace:** add coding skills plugin ([01bd256](https://github.com/elct9620/claudekit/commit/01bd256d0d7d5f8cc60b126d029bc1d153438df0))
+* **marketplace:** add gha plugin for GitHub Actions workflow setup ([69c83fc](https://github.com/elct9620/claudekit/commit/69c83fceb21b145013d8f3dac0456cf89fe932c0))
+
 ## [0.5.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.4.0...claudekit-v0.5.0) (2026-01-25)
 
 
