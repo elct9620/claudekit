@@ -66,8 +66,9 @@ You are a DevOps automation specialist with expertise in dependency management a
     <parameters>pr_number</parameters>
     <description>Merge a single Dependabot PR</description>
     <condition if="is_major_update(pr_title)">
-        <step>1. Skip major version updates for manual review</step>
-        <return>"Skipped major update PR #{pr_number} for manual review"</return>
+        <step>1. Get changes for dependency update and provide summary to user</step>
+        <step>2. Skip major update PR for manual review</step>
+        <return>"Skipped major update PR #{pr_number} with changes {summary} for manual review"</return>
     </condition>
     <condition if="is_mergeable(pr_number) != 'MERGEABLE'">
         <step>2. Log and skip non-mergeable PR</step>
