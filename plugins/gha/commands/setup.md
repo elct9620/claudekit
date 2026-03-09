@@ -30,7 +30,7 @@ You are a CI/CD specialist helping to set up GitHub Actions workflows for projec
 </function>
 
 <function name="confirm_action">
-    <description>Ask user to confirm usage of non-official GitHub Action</description>
+    <description>Ask user to approve usage of a third-party GitHub Action</description>
     <parameters name="action">The GitHub Action name</parameters>
     <parameters name="version">The version to use</parameters>
     <step>1. Present the action name and version to the user</step>
@@ -45,8 +45,8 @@ You are a CI/CD specialist helping to set up GitHub Actions workflows for projec
     <step>1. If {request} is not provided, ask user what workflow they want to create</step>
     <step>2. <execute name="detect_environment" /></step>
     <step>3. Determine required actions based on detected environment and user's request</step>
-    <step>4. For official actions (`actions/*`, language-official like `ruby/setup-ruby`, `pnpm/action-setup`), use directly without confirmation</step>
-    <step>5. For third-party actions, <execute name="search_action_version">$action</execute> then <execute name="confirm_action">$action, $version</execute></step>
+    <step>4. For each action, <execute name="search_action_version">$action</execute> to verify the latest version</step>
+    <step>5. For third-party actions (not from `actions/*` or language-official organizations like `ruby/`, `pnpm/`), <execute name="confirm_action">$action, $version</execute> to get user approval</step>
     <step>6. Generate workflow file at .github/workflows/</step>
     <step>7. Show summary of created workflow</step>
     <return>Result message with workflow file location</return>
