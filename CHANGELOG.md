@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/elct9620/claudekit/compare/claudekit-v0.6.0...claudekit-v0.6.1) (2026-03-09)
+
+
+### Bug Fixes
+
+* **gha:** require version verification for all actions, not just third-party ([5ce0332](https://github.com/elct9620/claudekit/commit/5ce0332121321ee64fc6e6627978871851bb00e7))
+
 ## [0.6.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.5.0...claudekit-v0.6.0) (2026-03-06)
 
 
