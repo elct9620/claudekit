@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.6.1...claudekit-v0.7.0) (2026-03-23)
+
+
+### Features
+
+* **gha:** pin GitHub Actions by commit SHA to prevent supply chain attacks ([85e4e90](https://github.com/elct9620/claudekit/commit/85e4e90b64f1610240589bda6407b4cbcacd9016))
+
 ## [0.6.1](https://github.com/elct9620/claudekit/compare/claudekit-v0.6.0...claudekit-v0.6.1) (2026-03-09)
 
 

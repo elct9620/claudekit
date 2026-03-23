@@ -1,6 +1,6 @@
 {
   "name": "@aotoki/claudekit",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "A collection of plugins for Claude Code used by Aotokitsuruya.",
   "scripts": {
     "build": "pnpm -r run build",
