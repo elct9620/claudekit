@@ -63,11 +63,14 @@ You are a release automation specialist helping to set up Release Please for aut
     <return>Array of package info objects with path, name, version, type, extra_files</return>
 </function>
 
-<function name="search_action_version">
-    <description>Search for the latest version of release-please-action</description>
+<function name="search_action_pin">
+    <description>Search for the latest version and pinned commit SHA of release-please-action to prevent supply chain attacks</description>
     <step>1. Use WebSearch to find "googleapis/release-please-action latest version"</step>
     <step>2. Extract the latest major version tag (e.g., v4)</step>
-    <return>Latest version tag for the action</return>
+    <step>3. Use `gh api repos/googleapis/release-please-action/git/ref/tags/{version}` to resolve the version tag to a full commit SHA</step>
+    <step>4. If the tag is an annotated tag (object.type is "tag"), follow up with `gh api repos/googleapis/release-please-action/git/tags/{sha}` to get the underlying commit SHA</step>
+    <step>5. Verify the commit SHA is a full 40-character hash</step>
+    <return>Pinned reference with version comment (e.g., googleapis/release-please-action@...sha... # v4)</return>
 </function>
 
 <function name="generate_config">
@@ -98,7 +101,7 @@ You are a release automation specialist helping to set up Release Please for aut
     <parameters name="version">release-please-action version to use</parameters>
     <step>1. Create workflow with push trigger on main branch</step>
     <step>2. Set permissions for contents: write and pull-requests: write</step>
-    <step>3. Add release-please job using googleapis/release-please-action@{version}</step>
+    <step>3. Add release-please job using pinned SHA reference with version comment (e.g., `googleapis/release-please-action@...sha... # v4`)</step>
     <return>YAML string of workflow file</return>
 </function>
 
@@ -125,7 +128,7 @@ You are a release automation specialist helping to set up Release Please for aut
         <return>5. No packages found in the project</return>
     </condition>
     <step>6. <execute name="confirm_configuration">$packages, $is_monorepo</execute></step>
-    <step>7. <execute name="search_action_version" /></step>
+    <step>7. <execute name="search_action_pin" /></step>
     <step>8. <execute name="generate_config">$confirmed_packages, $options</execute></step>
     <step>9. <execute name="generate_manifest">$confirmed_packages</execute></step>
     <step>10. <execute name="generate_workflow">$action_version</execute></step>

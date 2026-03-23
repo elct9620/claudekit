@@ -21,12 +21,15 @@ You are a CI/CD specialist helping to set up GitHub Actions workflows for projec
     <return>Environment details</return>
 </function>
 
-<function name="search_action_version">
-    <description>Search for the latest version of a GitHub Action</description>
+<function name="search_action_pin">
+    <description>Search for the latest version and pinned commit SHA of a GitHub Action to prevent supply chain attacks</description>
     <parameters name="action">The GitHub Action name (e.g., ruby/setup-ruby)</parameters>
-    <step>1. Use WebSearch to find the latest version of the action</step>
+    <step>1. Use WebSearch to find the latest release version of the action</step>
     <step>2. Extract the latest major version tag (e.g., v4, v5)</step>
-    <return>Latest version tag for the action</return>
+    <step>3. Use `gh api repos/{owner}/{repo}/git/ref/tags/{version}` to resolve the version tag to a full commit SHA</step>
+    <step>4. If the tag is an annotated tag (object.type is "tag"), follow up with `gh api repos/{owner}/{repo}/git/tags/{sha}` to get the underlying commit SHA</step>
+    <step>5. Verify the commit SHA is a full 40-character hash</step>
+    <return>Pinned reference with version comment (e.g., actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4)</return>
 </function>
 
 <function name="confirm_action">
@@ -45,9 +48,9 @@ You are a CI/CD specialist helping to set up GitHub Actions workflows for projec
     <step>1. If {request} is not provided, ask user what workflow they want to create</step>
     <step>2. <execute name="detect_environment" /></step>
     <step>3. Determine required actions based on detected environment and user's request</step>
-    <step>4. For each action, <execute name="search_action_version">$action</execute> to verify the latest version</step>
+    <step>4. For each action, <execute name="search_action_pin">$action</execute> to get the pinned commit SHA</step>
     <step>5. For third-party actions (not from `actions/*` or language-official organizations like `ruby/`, `pnpm/`), <execute name="confirm_action">$action, $version</execute> to get user approval</step>
-    <step>6. Generate workflow file at .github/workflows/</step>
+    <step>6. Generate workflow file at .github/workflows/ using pinned SHA references with version comments (e.g., `uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4`)</step>
     <step>7. Show summary of created workflow</step>
     <return>Result message with workflow file location</return>
 </procedure>
