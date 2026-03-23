@@ -2,14 +2,12 @@
 import fsAsync from "fs/promises";
 import fs from "fs";
 import { exec } from "child_process";
-
 //#region ../../packages/config/src/schema.ts
 let CommitLogic = /* @__PURE__ */ function(CommitLogic) {
 	CommitLogic["AND"] = "AND";
 	CommitLogic["OR"] = "OR";
 	return CommitLogic;
 }({});
-
 //#endregion
 //#region ../../packages/config/src/index.ts
 /**
@@ -57,11 +55,9 @@ async function loadConfig() {
 	}
 	return deepMerge(projectConfig, localConfig);
 }
-
 //#endregion
 //#region ../../packages/hook/src/output.ts
 const BlockDecision = "block";
-
 //#endregion
 //#region ../../packages/hook/src/index.ts
 /**
@@ -104,7 +100,6 @@ function stop(isPass = true, reason) {
 		reason
 	});
 }
-
 //#endregion
 //#region src/git.ts
 async function isGitAvailable() {
@@ -159,7 +154,6 @@ async function getUntrackedLinesCount() {
 		});
 	});
 }
-
 //#endregion
 //#region src/commit.ts
 const DEFAULT_BLOCK_REASON = "There are too many changes {changedFiles}/{maxChangedFiles} changed files and {totalChangedLines}/{maxChangedLines} changed lines in the working directory. Please review and commit your changes before proceeding.";
@@ -187,6 +181,5 @@ const isExceededFiles = changedFiles >= maxFilesChanged;
 const isExceededLines = changedLines + untrackedLines >= maxLinesChanged;
 const isBlocked = conditionLogic === CommitLogic.AND ? isExceededFiles && isExceededLines : isExceededFiles || isExceededLines;
 console.log(stop(!isBlocked, stopReasonTemplate.replace("{changedFiles}", changedFiles.toString()).replace("{maxChangedFiles}", maxFilesChanged.toString()).replace("{changedLines}", changedLines.toString()).replace("{untrackedLines}", untrackedLines.toString()).replace("{totalChangedLines}", (changedLines + untrackedLines).toString()).replace("{maxChangedLines}", maxLinesChanged.toString())));
-
 //#endregion
-export {  };
+export {};
