@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/elct9620/claudekit/compare/dependabot-v0.5.0...dependabot-v0.6.0) (2026-03-25)
+
+
+### Features
+
+* **dependabot:** add cooldown defaults to mitigate supply chain attacks ([d0b1882](https://github.com/elct9620/claudekit/commit/d0b188267f2c1a6a86f1e14268a4832703d65871))
+
 ## [0.5.0](https://github.com/elct9620/claudekit/compare/dependabot-v0.4.1...dependabot-v0.5.0) (2026-03-06)
 
 
