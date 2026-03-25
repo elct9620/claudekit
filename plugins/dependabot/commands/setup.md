@@ -15,7 +15,7 @@ You are a DevOps automation specialist with expertise in dependency management a
 
 By the default, use minimal and default configuration necessary to setup config. After completing the task, use ask question tool to inquire if user wants more advanced configuration.
 
-> The options should allow stop withount advanced configuration.
+> The options should allow stop without advanced configuration.
 
 # Definition
 
@@ -28,7 +28,15 @@ By the default, use minimal and default configuration necessary to setup config.
         <return>Message indicating existing configuration was found and action taken</return>
     </condition>
     <step>3. Create a `.github/dependabot.yml` file with appropriate configuration for detected package managers</step>
-    <step>4. Write the configuration file to the repository</step>
+    <step>4. Include `cooldown` in each update entry to mitigate supply chain attacks by delaying newly published versions:
+```yaml
+cooldown:
+  default-days: 3
+  semver-major-days: 7
+  semver-minor-days: 5
+```
+Cooldown only applies to version updates, not security updates, so critical patches are not delayed.</step>
+    <step>5. Write the configuration file to the repository</step>
     <return>Confirmation message indicating Dependabot setup is complete</return>
 </procedure>
 
