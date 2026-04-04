@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.8.0...claudekit-v0.9.0) (2026-04-04)
+
+
+### Features
+
+* **marketplace:** add powerloop plugin ([3ff0ec6](https://github.com/elct9620/claudekit/commit/3ff0ec69ca7d3ae76c73f2d255c4866b4b99d323))
+
 ## [0.8.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.7.0...claudekit-v0.8.0) (2026-03-25)
 
 
