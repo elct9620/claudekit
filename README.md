@@ -22,6 +22,7 @@ In `claude` run:
 | Git           | Common repository operations for git             | [README](./plugins/git/README.md)                                       |
 | Hono          | Provides Hono CLI skill for Hono framework       | [README](https://github.com/elct9620/claude-hono-plugin/blob/main/README.md) |
 | License       | Manage open source licenses                      | [README](./plugins/license/README.md)                                   |
+| Powerloop     | Structured loop with Plan, Execute, Review phases | [README](https://github.com/elct9620/claude-powerloop-plugin/blob/main/README.md) |
 | Rubric        | Automated code standards checks based on rubrics | [README](./plugins/rubric/README.md)                                    |
 | Ruby          | Ruby documentation and development utilities     | [README](https://github.com/elct9620/claude-ruby-plugin/blob/main/README.md) |
 | Spec          | Specification management knowledge and templates | [README](https://github.com/elct9620/ai-spec-skills/blob/main/README.md) |
