@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Run Release Please
         id: release
-        uses: googleapis/release-please-action@v4
+        uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4
 
   rebuild-plugins:
     needs: release-please
@@ -29,7 +29,7 @@ jobs:
     steps:
       - name: Parse PR information
         id: pr-info
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           PR_JSON: ${{ needs.release-please.outputs.pr }}
         with:
@@ -39,18 +39,18 @@ jobs:
             core.info(`Release PR branch: ${pr.headBranchName}`);
 
       - name: Checkout PR branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: ${{ steps.pr-info.outputs.branch }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: 'lts/*'
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -59,7 +59,7 @@ jobs:
         run: pnpm build
 
       - name: Commit rebuilt dist files
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             const commit = require('./scripts/commit.js');
