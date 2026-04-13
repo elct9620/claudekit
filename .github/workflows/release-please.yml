@@ -29,7 +29,7 @@ jobs:
     steps:
       - name: Parse PR information
         id: pr-info
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           PR_JSON: ${{ needs.release-please.outputs.pr }}
         with:
@@ -59,7 +59,7 @@ jobs:
         run: pnpm build
 
       - name: Commit rebuilt dist files
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const commit = require('./scripts/commit.js');
