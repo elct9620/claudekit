@@ -2,13 +2,6 @@
 import fsAsync from "fs/promises";
 import fs from "fs";
 import { exec } from "child_process";
-//#region ../../packages/config/src/schema.ts
-let CommitLogic = /* @__PURE__ */ function(CommitLogic) {
-	CommitLogic["AND"] = "AND";
-	CommitLogic["OR"] = "OR";
-	return CommitLogic;
-}({});
-//#endregion
 //#region ../../packages/config/src/index.ts
 /**
 * Paths to search for configuration files, in order of precedence.
@@ -172,14 +165,13 @@ if ((await loadHook()).stopHookActive) {
 }
 const maxFilesChanged = config.commit?.threshold.maxFilesChanged ?? 10;
 const maxLinesChanged = config.commit?.threshold.maxLinesChanged ?? 500;
-const conditionLogic = config.commit?.threshold.logic ?? CommitLogic.OR;
+const conditionLogic = config.commit?.threshold.logic ?? "OR";
 const stopReasonTemplate = config.commit?.threshold.blockReason ?? DEFAULT_BLOCK_REASON;
 const changedFiles = await getChangedFilesCount();
 const changedLines = await getChangedLinesCount();
 const untrackedLines = await getUntrackedLinesCount();
 const isExceededFiles = changedFiles >= maxFilesChanged;
 const isExceededLines = changedLines + untrackedLines >= maxLinesChanged;
-const isBlocked = conditionLogic === CommitLogic.AND ? isExceededFiles && isExceededLines : isExceededFiles || isExceededLines;
-console.log(stop(!isBlocked, stopReasonTemplate.replace("{changedFiles}", changedFiles.toString()).replace("{maxChangedFiles}", maxFilesChanged.toString()).replace("{changedLines}", changedLines.toString()).replace("{untrackedLines}", untrackedLines.toString()).replace("{totalChangedLines}", (changedLines + untrackedLines).toString()).replace("{maxChangedLines}", maxLinesChanged.toString())));
+console.log(stop(!(conditionLogic === "AND" ? isExceededFiles && isExceededLines : isExceededFiles || isExceededLines), stopReasonTemplate.replace("{changedFiles}", changedFiles.toString()).replace("{maxChangedFiles}", maxFilesChanged.toString()).replace("{changedLines}", changedLines.toString()).replace("{untrackedLines}", untrackedLines.toString()).replace("{totalChangedLines}", (changedLines + untrackedLines).toString()).replace("{maxChangedLines}", maxLinesChanged.toString())));
 //#endregion
 export {};

@@ -50,13 +50,6 @@ async function loadConfig() {
 	return deepMerge(projectConfig, localConfig);
 }
 //#endregion
-//#region ../../packages/hook/src/input.ts
-let HookEventName = /* @__PURE__ */ function(HookEventName) {
-	HookEventName["Stop"] = "Stop";
-	HookEventName["PostToolUse"] = "PostToolUse";
-	return HookEventName;
-}({});
-//#endregion
 //#region ../../packages/hook/src/output.ts
 const BlockDecision = "block";
 //#endregion
@@ -101,7 +94,7 @@ function postToolUse(isPass = true, reason = "", additionalContext) {
 		reason
 	};
 	if (additionalContext) output.hookSpecificOutput = {
-		hookEventName: HookEventName.PostToolUse,
+		hookEventName: "PostToolUse",
 		additionalContext
 	};
 	return JSON.stringify(output);
