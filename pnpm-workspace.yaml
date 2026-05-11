@@ -3,7 +3,7 @@ packages:
   - plugins/*
 
 catalog:
-  '@types/node': 25.6.0
+  '@types/node': 25.6.2
   prettier: 3.8.3
   rolldown: ^1.0.0-rc.18
   typescript: 6.0.3
