@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/elct9620/claudekit/compare/git-v0.3.0...git-v0.4.0) (2026-05-21)
+
+
+### Features
+
+* **git:** make commit messages stand alone from conversation context ([ec85cd1](https://github.com/elct9620/claudekit/commit/ec85cd1e5bb42d0e28030633a8ca59b4acb80b53))
+
 ## [0.3.0](https://github.com/elct9620/claudekit/compare/git-v0.2.0...git-v0.3.0) (2025-11-22)
 
 
