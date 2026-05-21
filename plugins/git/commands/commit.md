@@ -20,7 +20,15 @@ By the default, follow Conventional Commits specification unless instructed othe
 
 # Commit Message
 
-The commit message should explain why the changes were made, not just what changes were made.
+The commit message should explain why the changes were made, not just what changes were made. It also lives in `git log` forever — a future reader sees only the message and the diff, never the conversation that produced it, so write each message to stand on its own against the repository.
+
+Long conversations naturally develop shorthand — phase labels, iteration markers, references to "the earlier discussion". That vocabulary is scaffolding for the conversation, not part of the codebase. Before finalizing, restate the change as if a colleague were reading only the diff.
+
+**Example:**
+
+Conversation context: *"v3 of the plan: switch the export pipeline from CSV to Parquet for better compression."*
+
+Commit message: `feat(export): switch pipeline output to Parquet`
 
 When not clearly the intent of the changes from the diff, use AskUserQuestion tool to clarify with the user before determining the commit message.
 
