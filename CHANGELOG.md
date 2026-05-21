@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.10.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.9.0...claudekit-v0.10.0) (2026-05-21)
+
+
+### Features
+
+* **dependabot:** add cooldown to delay newly published versions ([cc843b8](https://github.com/elct9620/claudekit/commit/cc843b863062d857fc9250dfbf6947c9e5c08fb2))
+* **git:** make commit messages stand alone from conversation context ([ec85cd1](https://github.com/elct9620/claudekit/commit/ec85cd1e5bb42d0e28030633a8ca59b4acb80b53))
+
+
+### Bug Fixes
+
+* **gha:** pin actions to SHA and revert pnpm/action-setup to v5 ([4bd54bf](https://github.com/elct9620/claudekit/commit/4bd54bf42004fafd82fdd535d482727aa553fe0a))
+
 ## [0.9.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.8.0...claudekit-v0.9.0) (2026-04-04)
 
 
