@@ -7,4 +7,4 @@ catalog:
   prettier: 3.8.3
   rolldown: ^1.0.2
   typescript: 6.0.3
-  vitest: 4.1.7
+  vitest: 4.1.8
