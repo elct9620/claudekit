@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/elct9620/claudekit/compare/dependabot-v0.6.0...dependabot-v0.6.1) (2026-06-29)
+
+
+### Bug Fixes
+
+* **dependabot:** handle repos without branch protection and transient merge status ([d170516](https://github.com/elct9620/claudekit/commit/d170516c2149d10b778c07e163aa292ebb8065dc))
+
 ## [0.6.0](https://github.com/elct9620/claudekit/compare/dependabot-v0.5.0...dependabot-v0.6.0) (2026-03-25)
 
 
