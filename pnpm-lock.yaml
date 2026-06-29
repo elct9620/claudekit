@@ -10,8 +10,8 @@ catalogs:
       specifier: 26.0.0
       version: 26.0.0
     prettier:
-      specifier: 3.8.4
-      version: 3.8.4
+      specifier: 3.9.1
+      version: 3.9.1
     rolldown:
       specifier: ^1.1.2
       version: 1.1.2
@@ -33,7 +33,7 @@ importers:
         version: 26.0.0
       prettier:
         specifier: 'catalog:'
-        version: 3.8.4
+        version: 3.9.1
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -42,7 +42,7 @@ importers:
     dependencies:
       prettier:
         specifier: 'catalog:'
-        version: 3.8.4
+        version: 3.9.1
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -65,7 +65,7 @@ importers:
         version: 26.0.0
       prettier:
         specifier: 'catalog:'
-        version: 3.8.4
+        version: 3.9.1
       rolldown:
         specifier: 'catalog:'
         version: 1.1.2
@@ -87,7 +87,7 @@ importers:
         version: 26.0.0
       prettier:
         specifier: 'catalog:'
-        version: 3.8.4
+        version: 3.9.1
       rolldown:
         specifier: 'catalog:'
         version: 1.1.2
@@ -606,8 +606,8 @@ packages:
     resolution: {integrity: sha512-qif0+jGGZoLWdHey3UFHHWP0H7Gbmsk8T5VEqyYFbWqPr1XqvLGBbk/sl8V5exGmcYJklJOhOQq1pV9IcsiFag==}
     engines: {node: ^10 || ^12 || >=14}
 
-  prettier@3.8.4:
-    resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
+  prettier@3.9.1:
+    resolution: {integrity: sha512-ppiDo2CSwexck1eyZUwJHg/N3nf1+6IRCv7W/VJ5vaLnVCmB7+3CdRfMwoCHBBX6xTrREDTksZ4OZl5SSf4zXA==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1110,7 +1110,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  prettier@3.8.4: {}
+  prettier@3.9.1: {}
 
   rolldown@1.1.2:
     dependencies:
