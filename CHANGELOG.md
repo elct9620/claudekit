@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/elct9620/claudekit/compare/claudekit-v0.10.0...claudekit-v0.10.1) (2026-06-29)
+
+
+### Bug Fixes
+
+* **dependabot:** handle repos without branch protection and transient merge status ([d170516](https://github.com/elct9620/claudekit/commit/d170516c2149d10b778c07e163aa292ebb8065dc))
+
 ## [0.10.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.9.0...claudekit-v0.10.0) (2026-05-21)
 
 
