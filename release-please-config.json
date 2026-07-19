@@ -6,8 +6,8 @@
       "package-name": "@aotoki/claudekit",
       "changelog-path": "CHANGELOG.md",
       "exclude-paths": [
-        "packages/**",
-        "plugins/**"
+        "packages",
+        "plugins"
       ]
     },
     "packages/config": {
