@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/elct9620/claudekit/compare/git-v0.4.0...git-v0.4.1) (2026-07-19)
+
+
+### Bug Fixes
+
+* **git:** classify commit type by observable-contract impact ([90b0665](https://github.com/elct9620/claudekit/commit/90b0665b2d5df6c15d31ee89d0a4ed61ce3e467f))
+
 ## [0.4.0](https://github.com/elct9620/claudekit/compare/git-v0.3.0...git-v0.4.0) (2026-05-21)
 
 
