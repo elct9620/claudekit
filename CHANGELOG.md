@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/elct9620/claudekit/compare/claudekit-v0.10.0...claudekit-v0.10.1) (2026-07-19)
+
+
+### Bug Fixes
+
+* **release:** match exclude-paths as directory prefixes ([df312f7](https://github.com/elct9620/claudekit/commit/df312f7e63ac5b0d71d41d0bc891b74bc6ac31d5))
+
 ## [0.10.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.9.0...claudekit-v0.10.0) (2026-05-21)
 
 
