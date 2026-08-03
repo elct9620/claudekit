@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/elct9620/claudekit/compare/dependabot-v0.6.1...dependabot-v0.6.2) (2026-08-03)
+
+
+### Bug Fixes
+
+* **dependabot:** secure a writable account before approving PRs ([46a6611](https://github.com/elct9620/claudekit/commit/46a66116950b0057896ea50ec62fd4b7b07afe5d))
+
 ## [0.6.1](https://github.com/elct9620/claudekit/compare/dependabot-v0.6.0...dependabot-v0.6.1) (2026-06-29)
 
 
