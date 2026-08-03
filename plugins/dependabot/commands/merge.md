@@ -19,6 +19,19 @@ You are a DevOps automation specialist with expertise in dependency management a
 
 # Definition
 
+<function name="ensure_write_access">
+    <description>Confirm the active account can merge in this repository before any approval or merge is sent, because a review posted from a read-only account stays on the PR and cannot be withdrawn</description>
+    <condition if="Viewer permission is ADMIN, MAINTAIN, or WRITE">
+        <return>"ready"</return>
+    </condition>
+    <step>1. Use `gh auth status` to list the other logged-in accounts</step>
+    <step>2. Try each one with `gh auth switch --user {account}`, re-reading `gh repo view --json viewerPermission`, and keep the first account that can write</step>
+    <condition if="Every logged-in account is read-only">
+        <return>"unavailable"</return>
+    </condition>
+    <return>"ready"</return>
+</function>
+
 <function name="is_major_update">
     <parameters>pr_title</parameters>
     <description>Determine if PR is a major version update</description>
@@ -134,11 +147,16 @@ You are a DevOps automation specialist with expertise in dependency management a
     <condition if="No open Dependabot PRs">
         <return>"No open Dependabot PRs found"</return>
     </condition>
-    <step>1. Process PRs one at a time via <execute procedure="merge">{pr_number}</execute>. Merging is serialized because each merge moves the base branch and can turn the remaining PRs CONFLICTING — for example several dependency PRs all touch the lockfile, so the first one in invalidates the others</step>
-    <step>2. After each successful merge, re-resolve the remaining PRs before merging the next, so a sibling that the last merge invalidated is rebased rather than skipped</step>
-    <step>3. Retry transient failures with exponential backoff (max 5 attempts)</step>
+    <step>1. Secure a writable account via <execute function="ensure_write_access"></execute> before touching any PR</step>
+    <condition if="ensure_write_access returned 'unavailable'">
+        <step>2. Report which accounts were tried and stop here, leaving the PRs untouched</step>
+        <return>"No logged-in account has write access to this repository"</return>
+    </condition>
+    <step>3. Process PRs one at a time via <execute procedure="merge">{pr_number}</execute>. Merging is serialized because each merge moves the base branch and can turn the remaining PRs CONFLICTING — for example several dependency PRs all touch the lockfile, so the first one in invalidates the others</step>
+    <step>4. After each successful merge, re-resolve the remaining PRs before merging the next, so a sibling that the last merge invalidated is rebased rather than skipped</step>
+    <step>5. Retry transient failures with exponential backoff (max 5 attempts)</step>
     <condition if="has skipped PRs due to major updates">
-        <step>4. Use AskUserQuestion to confirm whether to merge skipped major update PRs manually</step>
+        <step>6. Use AskUserQuestion to confirm whether to merge skipped major update PRs manually</step>
     </condition>
     <return>Summary of merge results for all PRs</return>
 </procedure>
