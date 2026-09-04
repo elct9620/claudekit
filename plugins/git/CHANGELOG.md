@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/elct9620/claudekit/compare/git-v0.4.1...git-v0.4.2) (2026-09-04)
+
+
+### Bug Fixes
+
+* **git:** ask when the diff cannot settle a breaking change ([b6546af](https://github.com/elct9620/claudekit/commit/b6546af611f670db7488910d9bbc57a57e00d579))
+
 ## [0.4.1](https://github.com/elct9620/claudekit/compare/git-v0.4.0...git-v0.4.1) (2026-07-19)
 
 
