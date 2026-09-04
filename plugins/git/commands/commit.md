@@ -30,6 +30,8 @@ Choose the type by impact on the observable contract (behaviour, output, interfa
 
 Composite change: split it; if inseparable, take the highest applicable row. Append `!` when the contract breaks.
 
+A diff shows the interface change but not who depends on the old one, and that dependency is often what decides `!`. When it does, ask with AskUserQuestion rather than settling it yourself.
+
 - Ensure the scope is relevant to the changes made. e.g. monorepo subdirectory, specific feature, bug fix area.
 
 # Commit Message
