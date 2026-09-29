@@ -22,6 +22,13 @@
       "changelog-path": "CHANGELOG.md",
       "component": "@claudekit/hook"
     },
+    "plugins/concise": {
+      "release-type": "simple",
+      "package-name": "@aotoki/claudekit-concise",
+      "changelog-path": "CHANGELOG.md",
+      "component": "concise",
+      "extra-files": [".claude-plugin/plugin.json"]
+    },
     "plugins/dependabot": {
       "release-type": "simple",
       "package-name": "@aotoki/claudekit-dependabot",

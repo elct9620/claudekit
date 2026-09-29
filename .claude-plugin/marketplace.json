@@ -70,6 +70,11 @@
       }
     },
     {
+      "name": "concise",
+      "source": "./plugins/concise",
+      "description": "Skills to write documentation that is fast to read."
+    },
+    {
       "name": "gha",
       "source": "./plugins/gha",
       "description": "Commands to create and manage GitHub Actions workflows."
