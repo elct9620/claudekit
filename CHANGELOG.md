@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/elct9620/claudekit/compare/claudekit-v0.10.1...claudekit-v0.11.0) (2026-09-29)
+
+
+### Features
+
+* **concise:** add concise-docs skill for fast-to-read documentation ([dc53302](https://github.com/elct9620/claudekit/commit/dc53302e3c9bb3ed5736aae20641a9fb5ba6b3eb))
+
 ## [0.10.1](https://github.com/elct9620/claudekit/compare/claudekit-v0.10.0...claudekit-v0.10.1) (2026-07-19)
 
 
