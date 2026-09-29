@@ -1,11 +1,4 @@
 {
-  "commit": {
-    "threshold": {
-      "enabled": true,
-      "maxFilesChanged": 5,
-      "maxLinesChanged": 100
-    }
-  },
   "rubric": {
     "rules": []
   }

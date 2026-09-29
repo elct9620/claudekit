@@ -32,5 +32,4 @@ In `claude` run:
 
 | Plugin | Configurable | Documentation |
 |--------|--------------|---------------|
-| Git    | Yes          | [Configuration](./plugins/git/README.md#configuration) |
 | Rubric | Yes          | [Configuration](./plugins/rubric/README.md#configuration) |

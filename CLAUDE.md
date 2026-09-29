@@ -23,15 +23,13 @@ plugins/
 │   ├── commands/
 │   │   └── merge.md
 │   └── README.md
-├── git/               # Git operations with hooks
+├── git/               # Git operations
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── commands/
 │   │   └── ignore.md
-│   ├── hooks/
-│   │   └── hooks.json
 │   ├── src/
-│   │   ├── commit.ts   # Stop hook implementation
+│   │   ├── commit.ts   # Stop hook implementation (not registered)
 │   │   └── git.ts      # Git status utilities
 │   └── README.md
 ├── license/           # License management
@@ -126,22 +124,18 @@ Example pattern from dependabot plugin:
 
 ## Hook System Architecture
 
-The git plugin implements Claude Code hooks to intercept operations before they execute:
+The rubric plugin implements Claude Code hooks to intercept operations before they execute:
 
 **Hook Flow**:
-1. Claude Code triggers hook event (e.g., `Stop` before commit)
-2. `hooks/hooks.json` defines which executable to run (`dist/commit.js`)
+1. Claude Code triggers hook event (e.g., `PostToolUse` after Edit/Write)
+2. `hooks/hooks.json` defines which executable to run (`dist/review.js`)
 3. Hook receives JSON input via stdin (parsed by `@claudekit/hook`)
-4. Hook logic executes (e.g., check git status, compare against thresholds)
+4. Hook logic executes (e.g., match file paths against rubric rules)
 5. Hook outputs decision: allow (undefined) or block ("block") with reason
 6. Claude Code proceeds or shows block message to user
 
 **Git Plugin Stop Hook** (`src/commit.ts`):
-- Prevents commits exceeding configured thresholds (files changed, lines changed)
-- Reads `claudekit.json` config via `@claudekit/config`
-- Uses `src/git.ts` utilities to count changed/untracked files and lines
-- Supports AND/OR logic for combining thresholds
-- Skips when `stopHookActive: true` (user override)
+- Built but not registered: `hooks/hooks.json` was removed, so it never runs
 
 **Rubric Plugin PostToolUse Hook** (`src/review.ts`):
 - Validates file changes against custom rubrics after Edit/Write operations
@@ -153,8 +147,7 @@ The git plugin implements Claude Code hooks to intercept operations before they 
 **Key Files**:
 - `packages/hook/src/index.ts` - Hook I/O primitives, JSON parsing, decision helpers (includes `postToolUse` helper)
 - `packages/config/src/index.ts` - Config loading from multiple paths with deep merge
-- `plugins/git/hooks/hooks.json` - Git hook registration (Stop event)
-- `plugins/git/src/commit.ts` - Stop hook implementation
+- `plugins/git/src/commit.ts` - Stop hook implementation (not registered)
 - `plugins/git/src/git.ts` - Git operations (status, diff, ls-files)
 - `plugins/rubric/hooks/hooks.json` - Rubric hook registration (PostToolUse event)
 - `plugins/rubric/src/review.ts` - PostToolUse hook implementation
@@ -248,13 +241,6 @@ ClaudeKit uses a hierarchical configuration system via `@claudekit/config`:
 - Primitives use the override value
 
 **Current Config Options**:
-
-Git plugin:
-- `commit.threshold.enabled` - Enable/disable commit size checks
-- `commit.threshold.maxFilesChanged` - File count limit (default: 10)
-- `commit.threshold.maxLinesChanged` - Line count limit (default: 500)
-- `commit.threshold.logic` - "OR" (either) or "AND" (both) for thresholds
-- `commit.threshold.blockReason` - Custom message with placeholders: `{changedFiles}`, `{maxChangedFiles}`, `{changedLines}`, `{untrackedLines}`, `{totalChangedLines}`, `{maxChangedLines}`
 
 Rubric plugin:
 - `rubric.enforce` - Block operations on violations (default: true) or warning mode (false)
