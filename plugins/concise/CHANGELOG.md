@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/elct9620/claudekit/compare/concise-v0.2.0...concise-v0.3.0) (2026-10-02)
+
+
+### Features
+
+* **concise:** add sentence, term, and step guidance from ASD-STE100 ([a108118](https://github.com/elct9620/claudekit/commit/a108118deba99f195d3a54e3533133164d0e903a))
+
 ## [0.2.0](https://github.com/elct9620/claudekit/compare/concise-v0.1.0...concise-v0.2.0) (2026-09-29)
 
 
