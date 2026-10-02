@@ -6,7 +6,8 @@ heading, is one section. A section with no direct content is a grouping heading
 and is skipped. Units are CJK characters plus Latin words; inline code counts
 as one word. Errors fail the check:
 
-  - a section without a visual (fenced block or table)
+  - a section without a visual (fenced block, table, or a numbered list of 3+
+    items; list items still count as prose)
   - section prose over the cap: 100 units Chinese-dominant, 150 English-dominant
     (code blocks, tables, headings, HTML comments and URLs are not counted)
   - CJK characters inside an ASCII diagram (untagged or text fence), which are
@@ -18,6 +19,8 @@ Warnings are soft limits and fail only with --strict:
   - headings that read as questions or exceed 2-3 words
   - a section with a visual but no prose (say why the visual matters)
   - bold (** or __) over 5% of the document's prose; bold in tables is exempt
+  - a sentence over 50 units Chinese-dominant, 25 English-dominant; sentences
+    end at 。！？ or .!? and never span paragraphs or list items
 
 A file opts out with the marker `<!-- concise-docs: off -->` outside code
 blocks, or is skipped with --exclude GLOB.
@@ -41,6 +44,8 @@ DIAGRAM_STROKE = re.compile(r"[|+]|--|->|<-")
 TABLE_ROW = re.compile(r"^\s*\|.*\|\s*$")
 TABLE_SEP = re.compile(r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$")
 LIST_MARKER = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+")
+ORDERED_ITEM = re.compile(r"^\d+[.)]\s+")
+STEP_LIST_MIN = 3
 CJK = re.compile(r"[㐀-䶿一-鿿豈-﫿぀-ヿ]")
 LATIN_WORD = re.compile(r"[A-Za-z0-9]+(?:['’.\-][A-Za-z0-9]+)*")
 QUESTION = re.compile(
@@ -56,6 +61,9 @@ TABLE_MAX_COLS = 4
 CELL_MAX_UNITS = 15
 BOLD_MAX_RATIO = 0.05
 BOLD = re.compile(r"\*\*(.+?)\*\*|__(.+?)__")
+SENTENCE_ZH_MAX = 50
+SENTENCE_EN_MAX = 25
+SENTENCE_END = re.compile(r"(?<=[。！？])|(?<=[.!?])\s+")
 
 
 @dataclass
@@ -64,6 +72,7 @@ class Section:
     title: str
     line: int
     prose: list = field(default_factory=list)
+    prose_lines: list = field(default_factory=list)
     has_visual: bool = False
     cjk_diagrams: list = field(default_factory=list)
     table_rows: list = field(default_factory=list)
@@ -77,6 +86,19 @@ class Section:
 
     def is_empty(self):
         return not self.has_visual and not strip_inline(self.text).strip()
+
+    def sentences(self):
+        """Yield (line, sentence); a blank line or list item ends the block."""
+        block = []
+        for line, text in [*zip(self.prose_lines, self.prose), (None, "")]:
+            if text.strip():
+                block.append((line, text.strip()))
+                continue
+            if block:
+                for sentence in SENTENCE_END.split(" ".join(t for _, t in block)):
+                    if sentence.strip():
+                        yield block[0][0], sentence.strip()
+            block = []
 
 
 def count_units(text):
@@ -118,6 +140,7 @@ def parse(lines):
     off = False
     fence = None
     block = []
+    steps = 0  # consecutive top-level numbered items
     in_front_matter = bool(lines) and lines[0].strip() == "---"
     for i, raw in enumerate(lines, start=1):
         line = raw.rstrip("\n")
@@ -147,6 +170,7 @@ def parse(lines):
         if m:
             sections.append(current)
             current = Section(len(m.group(1)), m.group(2), i)
+            steps = 0
             continue
         if TABLE_ROW.match(line):
             if TABLE_SEP.match(line):
@@ -156,7 +180,17 @@ def parse(lines):
             else:
                 current.table_rows.append([i, split_cells(line), False])
             continue
+        if ORDERED_ITEM.match(line):
+            steps += 1
+            if steps >= STEP_LIST_MIN:
+                current.has_visual = True
+        elif line.strip() and not line[0].isspace():
+            steps = 0  # blank lines and indented continuations keep the list
+        if LIST_MARKER.match(line):
+            current.prose.append("")  # a list item never joins the line above
+            current.prose_lines.append(i)
         current.prose.append(LIST_MARKER.sub("", line))
+        current.prose_lines.append(i)
     sections.append(current)
     return sections, off
 
@@ -208,7 +242,7 @@ def check_file(path, strict):
         if not s.has_visual:
             status.append("no-visual")
             errors.append(
-                f"{path}:{s.line}: error: section has no diagram, table or code block: {s.title!r}"
+                f"{path}:{s.line}: error: section has no diagram, table, code block or 3+ step list: {s.title!r}"
             )
         if units > cap:
             status.append("over")
@@ -220,6 +254,13 @@ def check_file(path, strict):
             warnings.append(
                 f"{path}:{s.line}: warning: section has no prose; add a sentence on why the visual matters: {s.title!r}"
             )
+        sentence_cap = SENTENCE_ZH_MAX if lang == "zh" else SENTENCE_EN_MAX
+        for line, sentence in s.sentences():
+            n, _ = count_units(sentence)
+            if n > sentence_cap:
+                warnings.append(
+                    f"{path}:{line}: warning: sentence has {n} {lang} units, over the {sentence_cap} cap: {sentence[:30]!r}"
+                )
         for line in s.cjk_diagrams:
             status.append("cjk-diagram")
             errors.append(
