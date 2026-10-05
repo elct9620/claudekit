@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Check Markdown documents against the concise-docs rules.
 
-Every heading (including H1) plus the content directly under it, up to the next
-heading, is one section. A section with no direct content is a grouping heading
-and is skipped. Units are CJK characters plus Latin words; inline code counts
-as one word. Errors fail the check:
+Every heading (ATX or Setext, including H1) plus the content directly under it,
+up to the next heading, is one section. A section with no direct content is a
+grouping heading and is skipped. Units are CJK characters plus Latin words;
+inline code counts as one word. Errors fail the check:
 
   - a section without a visual (fenced block, table, or a numbered list of 3+
     items; list items still count as prose)
@@ -38,6 +38,7 @@ from dataclasses import dataclass, field
 
 OFF_MARKER = re.compile(r"<!--\s*concise-docs:\s*off\s*-->")
 HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
+SETEXT = re.compile(r"^ {0,3}(=+|-+)\s*$")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})\s*([\w+-]*)")
 DIAGRAM_LANGS = {"", "text", "txt", "ascii", "plain"}
 DIAGRAM_STROKE = re.compile(r"[|+]|--|->|<-")
@@ -141,6 +142,7 @@ def parse(lines):
     fence = None
     block = []
     steps = 0  # consecutive top-level numbered items
+    para = []  # prose indices of the open paragraph; None inside a list
     in_front_matter = bool(lines) and lines[0].strip() == "---"
     for i, raw in enumerate(lines, start=1):
         line = raw.rstrip("\n")
@@ -150,6 +152,7 @@ def parse(lines):
             continue
         if fence:
             if line.strip().startswith(fence):
+                para = []
                 body = "\n".join(block[1:])
                 if block[0] in DIAGRAM_LANGS and CJK.search(body) and DIAGRAM_STROKE.search(body):
                     current.cjk_diagrams.append(fence_line)
@@ -170,9 +173,19 @@ def parse(lines):
         if m:
             sections.append(current)
             current = Section(len(m.group(1)), m.group(2), i)
-            steps = 0
+            steps, para = 0, []
+            continue
+        m = SETEXT.match(line)
+        if m and para:  # the underline turns the open paragraph into a heading
+            title = " ".join(current.prose[j].strip() for j in para)
+            start = current.prose_lines[para[0]]
+            del current.prose[para[0]:], current.prose_lines[para[0]:]
+            sections.append(current)
+            current = Section(1 if m.group(1)[0] == "=" else 2, title, start)
+            steps, para = 0, []
             continue
         if TABLE_ROW.match(line):
+            para = []
             if TABLE_SEP.match(line):
                 current.has_visual = True
                 if current.table_rows:
@@ -189,6 +202,12 @@ def parse(lines):
         if LIST_MARKER.match(line):
             current.prose.append("")  # a list item never joins the line above
             current.prose_lines.append(i)
+        if not line.strip():
+            para = []
+        elif LIST_MARKER.match(line) or para is None:
+            para = None
+        else:
+            para.append(len(current.prose))
         current.prose.append(LIST_MARKER.sub("", line))
         current.prose_lines.append(i)
     sections.append(current)
