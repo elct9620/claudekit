@@ -22,6 +22,7 @@ A section is any heading (including H1) plus the content directly under it, up t
 | Heading | 2-3 word definite noun phrase (soft) | Headings are the table of contents; each should say what is there |
 
 - Only prose counts. Code, diagrams, tables, headings, and URLs are excluded; list items always count, even when a numbered list is the section's visual. Units are CJK characters plus Latin words, inline code counts as one word, and the dominant language picks the limit.
+- A pointer section needs no visual: when its content lives elsewhere, one sentence with the link is the whole section — a License section linking to `LICENSE`, for example. The script accepts prose within the sentence limit that contains a link.
 - The introduction under H1 is limited too — a bloated opening is just as uneven.
 - A sentence ends at 。！？ or .!?, and every paragraph or list item ends one too. Split a long sentence where a new point starts: a reason, a condition, or an exception usually reads better on its own.
 - A heading with only sub-headings and no direct content is a grouping heading and is not checked.

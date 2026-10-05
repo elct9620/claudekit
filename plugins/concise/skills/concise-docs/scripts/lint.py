@@ -7,7 +7,9 @@ grouping heading and is skipped. Units are CJK characters plus Latin words;
 inline code counts as one word. Errors fail the check:
 
   - a section without a visual (fenced block, table, or a numbered list of 3+
-    items; list items still count as prose)
+    items; list items still count as prose), unless it is a pointer section:
+    prose within one sentence's cap that links elsewhere, such as a License
+    section pointing to the LICENSE file
   - section prose over the cap: 100 units Chinese-dominant, 150 English-dominant
     (code blocks, tables, headings, HTML comments and URLs are not counted)
   - CJK characters inside an ASCII diagram (untagged or text fence), which are
@@ -44,6 +46,7 @@ DIAGRAM_LANGS = {"", "text", "txt", "ascii", "plain"}
 DIAGRAM_STROKE = re.compile(r"[|+]|--|->|<-")
 TABLE_ROW = re.compile(r"^\s*\|.*\|\s*$")
 TABLE_SEP = re.compile(r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$")
+LINK = re.compile(r"\[[^\]]+\](?:\([^)]+\)|\[[^\]]*\])|<https?://[^>]+>|https?://\S+")
 LIST_MARKER = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+")
 ORDERED_ITEM = re.compile(r"^\d+[.)]\s+")
 STEP_LIST_MIN = 3
@@ -84,6 +87,12 @@ class Section:
 
     def units(self):
         return count_units(self.text)
+
+    def is_pointer(self):
+        """A short section whose content lives behind a link needs no visual."""
+        units, lang = self.units()
+        cap = SENTENCE_ZH_MAX if lang == "zh" else SENTENCE_EN_MAX
+        return 0 < units <= cap and bool(LINK.search(self.text))
 
     def is_empty(self):
         return not self.has_visual and not strip_inline(self.text).strip()
@@ -258,7 +267,9 @@ def check_file(path, strict):
         units, lang = s.units()
         cap = ZH_MAX if lang == "zh" else EN_MAX
         status = []
-        if not s.has_visual:
+        if not s.has_visual and s.is_pointer():
+            status.append("pointer")
+        elif not s.has_visual:
             status.append("no-visual")
             errors.append(
                 f"{path}:{s.line}: error: section has no diagram, table, code block or 3+ step list: {s.title!r}"
