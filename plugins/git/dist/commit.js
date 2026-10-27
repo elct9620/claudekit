@@ -2,7 +2,7 @@
 import fsAsync from "fs/promises";
 import fs from "fs";
 import { exec } from "child_process";
-//#region ../../packages/config/src/index.ts
+// ../../packages/config/src/index.ts
 /**
 * Paths to search for configuration files, in order of precedence.
 *
@@ -48,11 +48,9 @@ async function loadConfig() {
 	}
 	return deepMerge(projectConfig, localConfig);
 }
-//#endregion
-//#region ../../packages/hook/src/output.ts
+// ../../packages/hook/src/output.ts
 const BlockDecision = "block";
-//#endregion
-//#region ../../packages/hook/src/index.ts
+// ../../packages/hook/src/index.ts
 /**
 * Convert snake_case keys to camelCase keys in a deeply nested object or array.
 */
@@ -93,8 +91,7 @@ function stop(isPass = true, reason) {
 		reason
 	});
 }
-//#endregion
-//#region src/git.ts
+// src/git.ts
 async function isGitAvailable() {
 	try {
 		return new Promise((resolve) => {
@@ -147,8 +144,7 @@ async function getUntrackedLinesCount() {
 		});
 	});
 }
-//#endregion
-//#region src/commit.ts
+// src/commit.ts
 const DEFAULT_BLOCK_REASON = "There are too many changes {changedFiles}/{maxChangedFiles} changed files and {totalChangedLines}/{maxChangedLines} changed lines in the working directory. Please review and commit your changes before proceeding.";
 const config = await loadConfig();
 if (!(config.commit?.threshold.enabled ?? false)) {
@@ -173,5 +169,4 @@ const untrackedLines = await getUntrackedLinesCount();
 const isExceededFiles = changedFiles >= maxFilesChanged;
 const isExceededLines = changedLines + untrackedLines >= maxLinesChanged;
 console.log(stop(!(conditionLogic === "AND" ? isExceededFiles && isExceededLines : isExceededFiles || isExceededLines), stopReasonTemplate.replace("{changedFiles}", changedFiles.toString()).replace("{maxChangedFiles}", maxFilesChanged.toString()).replace("{changedLines}", changedLines.toString()).replace("{untrackedLines}", untrackedLines.toString()).replace("{totalChangedLines}", (changedLines + untrackedLines).toString()).replace("{maxChangedLines}", maxLinesChanged.toString())));
-//#endregion
 export {};

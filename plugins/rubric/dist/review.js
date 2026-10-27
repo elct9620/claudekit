@@ -3,7 +3,7 @@ import fsAsync from "fs/promises";
 import fs from "fs";
 import * as fs$1 from "node:fs";
 import * as path from "node:path";
-//#region ../../packages/config/src/index.ts
+// ../../packages/config/src/index.ts
 /**
 * Paths to search for configuration files, in order of precedence.
 *
@@ -49,11 +49,9 @@ async function loadConfig() {
 	}
 	return deepMerge(projectConfig, localConfig);
 }
-//#endregion
-//#region ../../packages/hook/src/output.ts
+// ../../packages/hook/src/output.ts
 const BlockDecision = "block";
-//#endregion
-//#region ../../packages/hook/src/index.ts
+// ../../packages/hook/src/index.ts
 /**
 * Convert snake_case keys to camelCase keys in a deeply nested object or array.
 */
@@ -99,8 +97,7 @@ function postToolUse(isPass = true, reason = "", additionalContext) {
 	};
 	return JSON.stringify(output);
 }
-//#endregion
-//#region src/core.ts
+// src/core.ts
 function createRule(name, pattern, path) {
 	return {
 		name,
@@ -112,8 +109,7 @@ function createRule(name, pattern, path) {
 function matchRules(rules, filePath) {
 	return rules.filter((rule) => rule.pattern.test(filePath));
 }
-//#endregion
-//#region src/rules.ts
+// src/rules.ts
 const RULES_DIR = ".claude/rules";
 /**
 * Split comma-separated glob patterns while respecting brace boundaries.
@@ -208,16 +204,14 @@ function discoverRules() {
 	scanDir(RULES_DIR);
 	return rules;
 }
-//#endregion
-//#region src/rubric.ts
+// src/rubric.ts
 /**
 * Load rules from rubric config
 */
 function loadRubricRules(config) {
 	return (config.rubric?.rules ?? []).map((rule) => createRule(rule.name || "Unnamed Rule", new RegExp(rule.pattern), rule.path));
 }
-//#endregion
-//#region src/review.ts
+// src/review.ts
 const SUPPORTED_TOOL_NAMES = ["Edit", "Write"];
 const DEFAULT_REVIEW_MESSAGE = "Ensure review changes against {references} and resolve violations until reached criteria requirements defined in the rubric.";
 const hook = await loadHook();
@@ -235,5 +229,4 @@ const references = matchedRules.map((rule) => rule.reference);
 const reviewMessage = (config.rubric?.reviewMessage || DEFAULT_REVIEW_MESSAGE).replace("{references}", references.join(", "));
 if (config.rubric?.enforce ?? true) console.log(postToolUse(false, reviewMessage));
 else console.log(postToolUse(true, "The changes match rubric rules.", reviewMessage));
-//#endregion
 export {};
