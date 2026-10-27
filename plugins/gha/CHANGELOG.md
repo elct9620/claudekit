@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/elct9620/claudekit/compare/gha-v0.3.0...gha-v0.3.1) (2026-10-27)
+
+
+### Bug Fixes
+
+* **gha:** pin actions from full version tags ([75a405a](https://github.com/elct9620/claudekit/commit/75a405aa9a49e7e7c67f61e821a8e34042ac1a72))
+
 ## [0.3.0](https://github.com/elct9620/claudekit/compare/gha-v0.2.1...gha-v0.3.0) (2026-03-23)
 
 
