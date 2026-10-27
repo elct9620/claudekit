@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/elct9620/claudekit/compare/concise-v0.4.0...concise-v0.4.1) (2026-10-27)
+
+
+### Bug Fixes
+
+* **concise:** exclude section numbers from heading length ([c34e313](https://github.com/elct9620/claudekit/commit/c34e3132e7ab5b4ffa6e8fa7ab7d51c67afc0997))
+
 ## [0.4.0](https://github.com/elct9620/claudekit/compare/concise-v0.3.0...concise-v0.4.0) (2026-10-05)
 
 
