@@ -22,21 +22,21 @@ You are a CI/CD specialist helping to set up GitHub Actions workflows for projec
 </function>
 
 <function name="find_latest_version">
-    <description>Find the latest released major version tag of a GitHub Action. Always perform a fresh lookup; do not rely on prior knowledge of version numbers.</description>
+    <description>Find the latest released full version tag of a GitHub Action. Always perform a fresh lookup; do not rely on prior knowledge of version numbers.</description>
     <parameters name="action">The GitHub Action name (e.g., ruby/setup-ruby)</parameters>
     <step>1. Use WebSearch with query `"{action}" latest release site:github.com` to find the latest release of the action</step>
-    <step>2. Extract the latest major version tag (e.g., v4, v5)</step>
-    <return>Latest major version tag</return>
+    <step>2. Extract the latest full version tag (e.g., v4.2.1), because Dependabot reads the most specific tag on the pinned SHA as the current version and only offers updates at that precision</step>
+    <return>Latest full version tag</return>
 </function>
 
 <function name="resolve_action_sha">
     <description>Resolve a GitHub Action version tag to a pinned commit SHA to prevent supply chain attacks</description>
     <parameters name="action">The GitHub Action name (e.g., ruby/setup-ruby)</parameters>
-    <parameters name="version">The version tag to resolve (e.g., v4)</parameters>
+    <parameters name="version">The version tag to resolve (e.g., v4.2.1)</parameters>
     <step>1. Use `gh api repos/{owner}/{repo}/git/ref/tags/{version}` to resolve the version tag to a full commit SHA</step>
     <step>2. If the tag is an annotated tag (object.type is "tag"), follow up with `gh api repos/{owner}/{repo}/git/tags/{sha}` to get the underlying commit SHA</step>
     <step>3. Verify the commit SHA is a full 40-character hash</step>
-    <return>Pinned reference with version comment (e.g., actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4)</return>
+    <return>Pinned reference with version comment (e.g., actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2)</return>
 </function>
 
 <function name="confirm_action">
