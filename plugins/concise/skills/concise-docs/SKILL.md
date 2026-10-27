@@ -19,7 +19,7 @@ A section is any heading (including H1) plus the content directly under it, up t
 | Diagram labels | English only inside ASCII diagrams | CJK characters are double-width and break alignment |
 | Table | At most 4 columns; at most 15 units per cell | Wide or wordy tables squeeze columns until they stop scanning |
 | Emphasis | Bold near 5% of prose (soft); table bold exempt | Emphasis works only when rare; everywhere means nowhere |
-| Heading | 2-3 word definite noun phrase (soft) | Headings are the table of contents; each should say what is there |
+| Heading | 2-3 word definite noun phrase (soft); section numbers like `1.1.` not counted | Headings are the table of contents; each should say what is there |
 
 - Only prose counts. Code, diagrams, tables, headings, and URLs are excluded; list items always count, even when a numbered list is the section's visual. Units are CJK characters plus Latin words, inline code counts as one word, and the dominant language picks the limit.
 - A pointer section needs no visual: when its content lives elsewhere, one sentence with the link is the whole section — a License section linking to `LICENSE`, for example. The script accepts prose within the sentence limit that contains a link.

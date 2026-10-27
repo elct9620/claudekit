@@ -18,7 +18,8 @@ inline code counts as one word. Errors fail the check:
 
 Warnings are soft limits and fail only with --strict:
 
-  - headings that read as questions or exceed 2-3 words
+  - headings that read as questions or exceed 2-3 words; a leading section
+    number such as `1.` or `1.1.` is not counted
   - a section with a visual but no prose (say why the visual matters)
   - bold (** or __) over 5% of the document's prose; bold in tables is exempt
   - a sentence over 50 units Chinese-dominant, 25 English-dominant; sentences
@@ -40,6 +41,7 @@ from dataclasses import dataclass, field
 
 OFF_MARKER = re.compile(r"<!--\s*concise-docs:\s*off\s*-->")
 HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
+SECTION_NUMBER = re.compile(r"^\d+(?:\.\d+)*\.?\s+")
 SETEXT = re.compile(r"^ {0,3}(=+|-+)\s*$")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})\s*([\w+-]*)")
 DIAGRAM_LANGS = {"", "text", "txt", "ascii", "plain"}
@@ -224,7 +226,7 @@ def parse(lines):
 
 
 def check_heading(section):
-    title = strip_inline(section.title)
+    title = SECTION_NUMBER.sub("", strip_inline(section.title))  # "1.1. " is numbering, not words
     issues = []
     if QUESTION.search(title):
         issues.append("heading reads as a question/process; use a definite noun phrase")
