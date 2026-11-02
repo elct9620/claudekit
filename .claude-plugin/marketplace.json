@@ -72,7 +72,7 @@
     {
       "name": "concise",
       "source": "./plugins/concise",
-      "description": "Skills to write documentation that is fast to read."
+      "description": "Skills to write documentation and diagrams that are fast to read."
     },
     {
       "name": "gha",
