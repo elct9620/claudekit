@@ -7,20 +7,24 @@ grouping heading and is skipped. Units are CJK characters plus Latin words;
 inline code counts as one word. Errors fail the check:
 
   - a section without a visual (fenced block, table, or a numbered list of 3+
-    items; list items still count as prose), unless it is a pointer section:
-    prose within one sentence's cap that links elsewhere, such as a License
-    section pointing to the LICENSE file
+    items; list items still count as prose), unless its prose reads at a
+    glance: at most two paragraphs, each within one sentence's cap
   - section prose over the cap: 100 units Chinese-dominant, 150 English-dominant
     (code blocks, tables, headings, HTML comments and URLs are not counted)
-  - CJK characters inside an ASCII diagram (untagged or text fence), which are
-    double-width and break alignment
+  - a diagram (untagged or text fence) with characters that are not one column
+    wide everywhere, such as CJK or box drawing, which break alignment; a file
+    tree is a listing, not a diagram, and is exempt
   - a table wider than 4 columns, or a table cell over 15 units
 
 Warnings are soft limits and fail only with --strict:
 
   - headings that read as questions or exceed 2-3 words; a leading section
     number such as `1.` or `1.1.` is not counted
+  - a section without a visual whose prose reads at a glance, unless it is a
+    pointer: one sentence linking to where the content lives, such as a
+    License section pointing to the LICENSE file
   - a section with a visual but no prose (say why the visual matters)
+  - an unordered list over 6 items, which scans better as a table
   - bold (** or __) over 5% of the document's prose; bold in tables is exempt
   - a sentence over 50 units Chinese-dominant, 25 English-dominant; sentences
     end at 。！？ or .!? and never span paragraphs or list items
@@ -37,6 +41,7 @@ import fnmatch
 import os
 import re
 import sys
+import unicodedata
 from dataclasses import dataclass, field
 
 OFF_MARKER = re.compile(r"<!--\s*concise-docs:\s*off\s*-->")
@@ -45,12 +50,16 @@ SECTION_NUMBER = re.compile(r"^\d+(?:\.\d+)*\.?\s+")
 SETEXT = re.compile(r"^ {0,3}(=+|-+)\s*$")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})\s*([\w+-]*)")
 DIAGRAM_LANGS = {"", "text", "txt", "ascii", "plain"}
-DIAGRAM_STROKE = re.compile(r"[|+]|--|->|<-")
+DIAGRAM_STROKE = re.compile(r"[|+\u2500-\u257f]|--|->|<-")
+TREE_BRANCH = re.compile(r"^[\s│|]*(├──|└──|\|--|`--)", re.M)
 TABLE_ROW = re.compile(r"^\s*\|.*\|\s*$")
 TABLE_SEP = re.compile(r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$")
 LINK = re.compile(r"\[[^\]]+\](?:\([^)]+\)|\[[^\]]*\])|<https?://[^>]+>|https?://\S+")
 LIST_MARKER = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+")
 ORDERED_ITEM = re.compile(r"^\d+[.)]\s+")
+BULLET_ITEM = re.compile(r"^[-*+]\s+")
+LIST_MAX = 6
+GLANCE_PARAGRAPHS = 2
 STEP_LIST_MIN = 3
 CJK = re.compile(r"[㐀-䶿一-鿿豈-﫿぀-ヿ]")
 LATIN_WORD = re.compile(r"[A-Za-z0-9]+(?:['’.\-][A-Za-z0-9]+)*")
@@ -80,7 +89,8 @@ class Section:
     prose: list = field(default_factory=list)
     prose_lines: list = field(default_factory=list)
     has_visual: bool = False
-    cjk_diagrams: list = field(default_factory=list)
+    wide_diagrams: list = field(default_factory=list)
+    long_lists: list = field(default_factory=list)
     table_rows: list = field(default_factory=list)
 
     @property
@@ -90,27 +100,42 @@ class Section:
     def units(self):
         return count_units(self.text)
 
+    def sentence_cap(self):
+        return SENTENCE_ZH_MAX if self.units()[1] == "zh" else SENTENCE_EN_MAX
+
+    def is_glanceable(self):
+        """Prose short enough to read at a glance can stand without a visual."""
+        blocks = list(self.paragraphs())
+        cap = self.sentence_cap()
+        return 0 < len(blocks) <= GLANCE_PARAGRAPHS and all(
+            count_units(text)[0] <= cap for _, text in blocks
+        )
+
     def is_pointer(self):
-        """A short section whose content lives behind a link needs no visual."""
-        units, lang = self.units()
-        cap = SENTENCE_ZH_MAX if lang == "zh" else SENTENCE_EN_MAX
-        return 0 < units <= cap and bool(LINK.search(self.text))
+        """One sentence linking to where the content lives needs no visual."""
+        units, _ = self.units()
+        return 0 < units <= self.sentence_cap() and bool(LINK.search(self.text))
 
     def is_empty(self):
         return not self.has_visual and not strip_inline(self.text).strip()
 
-    def sentences(self):
-        """Yield (line, sentence); a blank line or list item ends the block."""
+    def paragraphs(self):
+        """Yield (line, text); a blank line or list item ends the paragraph."""
         block = []
         for line, text in [*zip(self.prose_lines, self.prose), (None, "")]:
             if text.strip():
                 block.append((line, text.strip()))
                 continue
             if block:
-                for sentence in SENTENCE_END.split(" ".join(t for _, t in block)):
-                    if sentence.strip():
-                        yield block[0][0], sentence.strip()
+                yield block[0][0], " ".join(t for _, t in block)
             block = []
+
+    def sentences(self):
+        """Yield (line, sentence); sentences never span paragraphs."""
+        for line, text in self.paragraphs():
+            for sentence in SENTENCE_END.split(text):
+                if sentence.strip():
+                    yield line, sentence.strip()
 
 
 def count_units(text):
@@ -118,6 +143,16 @@ def count_units(text):
     cjk = len(CJK.findall(text))
     words = len(LATIN_WORD.findall(CJK.sub(" ", text)))
     return cjk + words, "zh" if cjk >= words else "en"
+
+
+def is_tree(body):
+    """A file tree branches from the left and has no box corners."""
+    return bool(TREE_BRANCH.search(body)) and not any(c in "┌┐┘╭╮╯" for c in body)
+
+
+def is_wide(char):
+    """CJK is double-width; ambiguous-width characters vary by locale and font."""
+    return unicodedata.east_asian_width(char) in ("W", "F", "A")
 
 
 def split_cells(row):
@@ -153,6 +188,7 @@ def parse(lines):
     fence = None
     block = []
     steps = 0  # consecutive top-level numbered items
+    bullets = [0, 0]  # consecutive top-level unordered items, first line
     para = []  # prose indices of the open paragraph; None inside a list
     in_front_matter = bool(lines) and lines[0].strip() == "---"
     for i, raw in enumerate(lines, start=1):
@@ -165,8 +201,8 @@ def parse(lines):
             if line.strip().startswith(fence):
                 para = []
                 body = "\n".join(block[1:])
-                if block[0] in DIAGRAM_LANGS and CJK.search(body) and DIAGRAM_STROKE.search(body):
-                    current.cjk_diagrams.append(fence_line)
+                if block[0] in DIAGRAM_LANGS and DIAGRAM_STROKE.search(body) and not is_tree(body) and any(map(is_wide, body)):
+                    current.wide_diagrams.append(fence_line)
                 fence = None
             else:
                 block.append(line)
@@ -180,14 +216,20 @@ def parse(lines):
             continue
         if OFF_MARKER.search(line):
             off = True
+        if BULLET_ITEM.match(line):
+            bullets = [bullets[0] + 1, bullets[1] or i]
+        elif line.strip() and not line[0].isspace():
+            close_list(current, bullets)
         m = HEADING.match(line)
         if m:
+            close_list(current, bullets)
             sections.append(current)
             current = Section(len(m.group(1)), m.group(2), i)
             steps, para = 0, []
             continue
         m = SETEXT.match(line)
         if m and para:  # the underline turns the open paragraph into a heading
+            close_list(current, bullets)
             title = " ".join(current.prose[j].strip() for j in para)
             start = current.prose_lines[para[0]]
             del current.prose[para[0]:], current.prose_lines[para[0]:]
@@ -221,8 +263,16 @@ def parse(lines):
             para.append(len(current.prose))
         current.prose.append(LIST_MARKER.sub("", line))
         current.prose_lines.append(i)
+    close_list(current, bullets)
     sections.append(current)
     return sections, off
+
+
+def close_list(section, bullets):
+    """Record an unordered list run that ran past the cap, then reset it."""
+    if bullets[0] > LIST_MAX:
+        section.long_lists.append((bullets[1], bullets[0]))
+    bullets[:] = [0, 0]
 
 
 def check_heading(section):
@@ -271,6 +321,11 @@ def check_file(path, strict):
         status = []
         if not s.has_visual and s.is_pointer():
             status.append("pointer")
+        elif not s.has_visual and s.is_glanceable():
+            status.append("glance")
+            warnings.append(
+                f"{path}:{s.line}: warning: section has no visual; short enough to read, but a visual still helps: {s.title!r}"
+            )
         elif not s.has_visual:
             status.append("no-visual")
             errors.append(
@@ -286,17 +341,21 @@ def check_file(path, strict):
             warnings.append(
                 f"{path}:{s.line}: warning: section has no prose; add a sentence on why the visual matters: {s.title!r}"
             )
-        sentence_cap = SENTENCE_ZH_MAX if lang == "zh" else SENTENCE_EN_MAX
+        sentence_cap = s.sentence_cap()
         for line, sentence in s.sentences():
             n, _ = count_units(sentence)
             if n > sentence_cap:
                 warnings.append(
                     f"{path}:{line}: warning: sentence has {n} {lang} units, over the {sentence_cap} cap: {sentence[:30]!r}"
                 )
-        for line in s.cjk_diagrams:
-            status.append("cjk-diagram")
+        for line in s.wide_diagrams:
+            status.append("wide-diagram")
             errors.append(
-                f"{path}:{line}: error: ASCII diagram contains CJK characters; use English labels to keep alignment"
+                f"{path}:{line}: error: diagram contains CJK, box-drawing or other non-single-width characters; use ASCII to keep alignment"
+            )
+        for line, count in s.long_lists:
+            warnings.append(
+                f"{path}:{line}: warning: list has {count} items, over {LIST_MAX}; consider a table"
             )
         rows.append((s, units, lang, ",".join(status) or "ok"))
     prose = "\n".join(s.text for s in sections)

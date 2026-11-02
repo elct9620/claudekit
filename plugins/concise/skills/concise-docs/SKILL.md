@@ -16,13 +16,13 @@ A section is any heading (including H1) plus the content directly under it, up t
 | Visual | At least one ASCII diagram, table, code block, or numbered list of 3+ steps | Structure reads faster as a visual; the visual anchors the section |
 | Length | At most 100 Chinese characters; 150 English words | A section that swells breaks the reading rhythm |
 | Sentence | At most 50 Chinese characters; 25 English words (soft) | Each extra clause is one more thing to hold in mind |
-| Diagram labels | English only inside ASCII diagrams | CJK characters are double-width and break alignment |
+| List | At most 6 unordered items (soft) | Readers lose their place past six; a table scans by column |
 | Table | At most 4 columns; at most 15 units per cell | Wide or wordy tables squeeze columns until they stop scanning |
 | Emphasis | Bold near 5% of prose (soft); table bold exempt | Emphasis works only when rare; everywhere means nowhere |
 | Heading | 2-3 word definite noun phrase (soft); section numbers like `1.1.` not counted | Headings are the table of contents; each should say what is there |
 
 - Only prose counts. Code, diagrams, tables, headings, and URLs are excluded; list items always count, even when a numbered list is the section's visual. Units are CJK characters plus Latin words, inline code counts as one word, and the dominant language picks the limit.
-- A pointer section needs no visual: when its content lives elsewhere, one sentence with the link is the whole section — a License section linking to `LICENSE`, for example. The script accepts prose within the sentence limit that contains a link.
+- Prose that reads at a glance can stand without a visual: at most two paragraphs, each within the sentence limit. A visual still helps, so the script warns instead of failing — except for a pointer section, one sentence linking to where its content lives, such as a License section linking to `LICENSE`.
 - The introduction under H1 is limited too — a bloated opening is just as uneven.
 - A sentence ends at 。！？ or .!?, and every paragraph or list item ends one too. Split a long sentence where a new point starts: a reason, a condition, or an exception usually reads better on its own.
 - A heading with only sub-headings and no direct content is a grouping heading and is not checked.
@@ -41,7 +41,7 @@ Paragraphs inside a section are fine, but each should carry one idea; two or thr
 
 A table cell holds a term, a value, or a short phrase — not a sentence. When a cell needs a full explanation, move it into the prose or into a sub-section, and keep the cell as the short label. More than four columns usually means two tables, or a list per row.
 
-A list whose items read "term: description" is a two-column table; write it as one so each description keeps to a cell.
+An unordered list that runs past six items, or whose items read "term: description", is a table; write it as one so readers scan by column and each description keeps to a cell.
 
 ### Direct Statements
 
@@ -103,15 +103,15 @@ When they conflict, dependency wins — a document that skips prerequisites cann
 ## Workflow
 
 1. Outline: write only the heading tree, order it by the principles above, and make each heading a 2-3 word noun phrase.
-2. Pick visuals: decide a diagram, table, code block, or step list for each section. If none comes to mind, the section's topic is usually not concrete enough and should be re-cut.
-3. Write prose: state things directly; prose adds only what the visual cannot show (reasons, constraints, trade-offs); do not restate the visual. Keep ASCII diagram labels in English even in a Chinese document; explain them in the surrounding prose if needed.
+2. Pick visuals: decide a diagram, table, code block, or step list for each section. If none comes to mind, the section's topic is usually not concrete enough and should be re-cut. Draw diagrams by the `concise-diagram` skill, in ASCII so they align in any editor.
+3. Write prose: state things directly; prose adds only what the visual cannot show (reasons, constraints, trade-offs); do not restate the visual.
 4. Check: run the script, fix every error, and use `--outline` to review ordering and section balance. Then reread for what the script cannot see — ordering, problem-then-fix phrasing, and one name per concept.
 
 ```bash
 python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py docs/ README.md --outline
 ```
 
-Output is `path:line: error|warning: ...`; the exit code is 1 when any error exists. Warnings (heading style, sections without prose, bold ratio, sentence length) are soft limits that need judgement; `--strict` turns them into errors. Finish with zero errors.
+Output is `path:line: error|warning: ...`; the exit code is 1 when any error exists. Warnings (heading style, short sections without a visual, sections without prose, long lists, bold ratio, sentence length) are soft limits that need judgement; `--strict` turns them into errors. Finish with zero errors.
 
 ## Excluding Files
 
