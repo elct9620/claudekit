@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/elct9620/claudekit/compare/concise-v0.4.1...concise-v0.5.0) (2026-11-02)
+
+
+### Features
+
+* **concise:** add concise-diagram skill ([65ba297](https://github.com/elct9620/claudekit/commit/65ba2971c11fbbf8a22d57163d9697a4f7712b8d))
+* **concise:** exempt glanceable sections and flag long lists ([d9ba4d2](https://github.com/elct9620/claudekit/commit/d9ba4d2aededdca232e7f91f4c86dd7d38a4b929))
+
 ## [0.4.1](https://github.com/elct9620/claudekit/compare/concise-v0.4.0...concise-v0.4.1) (2026-10-27)
 
 
