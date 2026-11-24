@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/elct9620/claudekit/compare/concise-v0.5.0...concise-v0.6.0) (2026-11-24)
+
+
+### Features
+
+* **concise:** default text diagrams to Unicode box drawing ([a78f7b4](https://github.com/elct9620/claudekit/commit/a78f7b477fdd8a011168db7d2b5d77bb75a46b55))
+
 ## [0.5.0](https://github.com/elct9620/claudekit/compare/concise-v0.4.1...concise-v0.5.0) (2026-11-02)
 
 
