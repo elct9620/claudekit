@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fsAsync from "fs/promises";
-import fs from "fs";
-import * as fs$1 from "node:fs";
+import fs$1 from "fs";
+import * as fs from "node:fs";
 import * as path from "node:path";
 // ../../packages/config/src/index.ts
 /**
@@ -17,7 +17,7 @@ const CONFIG_SEARCH_PATHS = [
 ];
 const LOCAL_CONFIG_SEARCH_PATHS = ["claudekit.local.json", ".claude/claudekit.local.json"];
 function isConfigExists(path) {
-	return fs.existsSync(path);
+	return fs$1.existsSync(path);
 }
 function deepMerge(target, source) {
 	if (Array.isArray(target) && Array.isArray(source)) return source;
@@ -186,15 +186,15 @@ function globToRegex(glob) {
 * Discover rules from .claude/rules/ directory
 */
 function discoverRules() {
-	if (!fs$1.existsSync(RULES_DIR)) return [];
+	if (!fs.existsSync(RULES_DIR)) return [];
 	const rules = [];
 	function scanDir(dir) {
-		const entries = fs$1.readdirSync(dir, { withFileTypes: true });
+		const entries = fs.readdirSync(dir, { withFileTypes: true });
 		for (const entry of entries) {
 			const fullPath = path.join(dir, entry.name);
 			if (entry.isDirectory()) scanDir(fullPath);
 			else if (entry.isFile() && entry.name.endsWith(".md")) {
-				const frontmatter = parseFrontmatter(fs$1.readFileSync(fullPath, "utf-8"));
+				const frontmatter = parseFrontmatter(fs.readFileSync(fullPath, "utf-8"));
 				const name = frontmatter.name || path.basename(fullPath, ".md");
 				if (frontmatter.paths === null) rules.push(createRule(name, /.*/, fullPath));
 				else for (const pattern of frontmatter.paths) rules.push(createRule(name, globToRegex(pattern), fullPath));
