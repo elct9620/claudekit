@@ -11,8 +11,8 @@ inline code counts as one word. Errors fail the check:
     glance: at most two paragraphs, each within one sentence's cap
   - section prose over the cap: 100 units Chinese-dominant, 150 English-dominant
     (code blocks, tables, headings, HTML comments and URLs are not counted)
-  - a diagram (untagged or text fence) with characters that are not one column
-    wide everywhere, such as CJK or box drawing, which break alignment; a file
+  - a diagram (untagged or text fence) with characters wider than one column,
+    such as CJK, which break alignment; box drawing is allowed; a file
     tree is a listing, not a diagram, and is exempt
   - a table wider than 4 columns, or a table cell over 15 units
 
@@ -151,8 +151,8 @@ def is_tree(body):
 
 
 def is_wide(char):
-    """CJK is double-width; ambiguous-width characters vary by locale and font."""
-    return unicodedata.east_asian_width(char) in ("W", "F", "A")
+    """CJK and full-width characters take two columns and break alignment."""
+    return unicodedata.east_asian_width(char) in ("W", "F")
 
 
 def split_cells(row):
@@ -351,7 +351,7 @@ def check_file(path, strict):
         for line in s.wide_diagrams:
             status.append("wide-diagram")
             errors.append(
-                f"{path}:{line}: error: diagram contains CJK, box-drawing or other non-single-width characters; use ASCII to keep alignment"
+                f"{path}:{line}: error: diagram contains CJK or other double-width characters; use English labels to keep alignment"
             )
         for line, count in s.long_lists:
             warnings.append(

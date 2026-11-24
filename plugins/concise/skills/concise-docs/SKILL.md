@@ -13,7 +13,7 @@ A section is any heading (including H1) plus the content directly under it, up t
 
 | Rule | Limit | Why |
 |------|-------|-----|
-| Visual | At least one ASCII diagram, table, code block, or numbered list of 3+ steps | Structure reads faster as a visual; the visual anchors the section |
+| Visual | At least one text diagram, table, code block, or numbered list of 3+ steps | Structure reads faster as a visual; the visual anchors the section |
 | Length | At most 100 Chinese characters; 150 English words | A section that swells breaks the reading rhythm |
 | Sentence | At most 50 Chinese characters; 25 English words (soft) | Each extra clause is one more thing to hold in mind |
 | List | At most 6 unordered items (soft) | Readers lose their place past six; a table scans by column |
@@ -103,7 +103,7 @@ When they conflict, dependency wins — a document that skips prerequisites cann
 ## Workflow
 
 1. Outline: write only the heading tree, order it by the principles above, and make each heading a 2-3 word noun phrase.
-2. Pick visuals: decide a diagram, table, code block, or step list for each section. If none comes to mind, the section's topic is usually not concrete enough and should be re-cut. Draw diagrams by the `concise-diagram` skill, in ASCII so they align in any editor.
+2. Pick visuals: decide a diagram, table, code block, or step list for each section. If none comes to mind, the section's topic is usually not concrete enough and should be re-cut. Draw diagrams by the `concise-diagram` skill.
 3. Write prose: state things directly; prose adds only what the visual cannot show (reasons, constraints, trade-offs); do not restate the visual.
 4. Check: run the script, fix every error, and use `--outline` to review ordering and section balance. Then reread for what the script cannot see — ordering, problem-then-fix phrasing, and one name per concept.
 

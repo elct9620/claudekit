@@ -4,8 +4,8 @@
 A Markdown file is checked through its fenced diagrams (untagged or text
 fences that contain strokes); any other file is one diagram. Errors:
 
-  - a character wider than one column: anything outside ASCII by default;
-    CJK and full-width characters with --unicode, which allows box drawing
+  - a character wider than one column: CJK and full-width characters by
+    default; anything outside ASCII with --ascii
   - a box whose borders do not line up: the right border must follow the left
     one down every row, and both must end on a corner in the same row
 
@@ -18,7 +18,7 @@ Warnings:
     gaps of two or more spaces
 
 Usage:
-  lint.py [--unicode] PATH ...
+  lint.py [--ascii] PATH ...
 """
 
 import argparse
@@ -46,8 +46,8 @@ UNICODE_BOX = {
 }
 
 
-def wide(char, unicode):
-    if not unicode:
+def wide(char, ascii):
+    if ascii:
         return ord(char) > 127
     return unicodedata.east_asian_width(char) in ("W", "F")
 
@@ -138,35 +138,36 @@ def check_boxes(rows, box):
                     break
 
 
-def check(path, unicode):
+def check(path, ascii):
     with open(path, encoding="utf-8") as f:
         lines = f.readlines()
     errors, warnings = [], []
-    box = UNICODE_BOX if unicode else ASCII_BOX
+    boxes = [ASCII_BOX] if ascii else [UNICODE_BOX, ASCII_BOX]
     for start, rows in diagrams(path, lines):
         for r, row in enumerate(rows):
-            bad = sorted({c for c in row if wide(c, unicode)})
+            bad = sorted({c for c in row if wide(c, ascii)})
             if bad:
-                errors.append(f"{path}:{start + r}: error: characters not one column wide: {''.join(bad)}")
+                errors.append(f"{path}:{start + r}: error: {'characters outside ASCII' if ascii else 'characters not one column wide'}: {''.join(bad)}")
             for label in LABEL_GAP.split(row):
                 words = WORD.findall(label)
                 if len(words) > LABEL_MAX_WORDS:
                     warnings.append(
                         f"{path}:{start + r}: warning: label has {len(words)} words, over {LABEL_MAX_WORDS}; move detail into a note: {label.strip()!r}"
                     )
-        for r, msg in check_boxes(rows, box):
-            errors.append(f"{path}:{start + r}: error: {msg}")
+        for box in boxes:
+            for r, msg in check_boxes(rows, box):
+                errors.append(f"{path}:{start + r}: error: {msg}")
     return errors, warnings
 
 
 def main():
     ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n\n")[0])
     ap.add_argument("paths", nargs="+")
-    ap.add_argument("--unicode", action="store_true", help="allow box drawing for terminal output")
+    ap.add_argument("--ascii", action="store_true", help="allow only ASCII, for diagrams the user asked to draw in ASCII")
     args = ap.parse_args()
     total = 0
     for path in args.paths:
-        errors, warnings = check(path, args.unicode)
+        errors, warnings = check(path, args.ascii)
         for msg in errors + warnings:
             print(msg, file=sys.stderr)
         total += len(errors)

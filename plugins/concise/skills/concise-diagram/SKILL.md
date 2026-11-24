@@ -1,6 +1,6 @@
 ---
 name: concise-diagram
-description: Draw diagrams that read at a glance — architecture, layers, flows, sequences, containment — as Unicode text in a terminal reply, ASCII in Markdown, or inline SVG in HTML, with one concept per node, short labels, and lettered notes below; bundled scripts check text diagram alignment and fetch Lucide or brand icons. Use this skill whenever you are about to draw any diagram, box-and-arrow sketch, or ASCII art, including the diagrams inside documents written with concise-docs, even if the user only asks to "explain the structure" or "show how it fits together". 畫架構圖、流程圖、分層圖、時序圖或任何示意圖時使用。
+description: Draw diagrams that read at a glance — architecture, layers, flows, sequences, containment — as Unicode box-drawing text in a terminal reply or Markdown (ASCII only when asked), or inline SVG in HTML, with one concept per node, short labels, and lettered notes below; bundled scripts check text diagram alignment and fetch Lucide or brand icons. Use this skill whenever you are about to draw any diagram, box-and-arrow sketch, or ASCII art, including the diagrams inside documents written with concise-docs, even if the user only asks to "explain the structure" or "show how it fits together". 畫架構圖、流程圖、分層圖、時序圖或任何示意圖時使用。
 ---
 
 # Concise Diagram
@@ -25,9 +25,9 @@ An edge label says what flows or happens — `queries`, `publishes`, `renders` �
 When a node or edge needs more than its label, mark it with a letter and explain it in a list below the diagram, outside the drawing — a list, because Markdown joins plain lines into one paragraph. Notes are prose, so write them in the reader's language:
 
 ```
-+----------+  queries  +-----------+
-| Main (a) |---------->| Store (b) |
-+----------+           +-----------+
+┌──────────┐  queries  ┌───────────┐
+│ Main (a) │──────────▶│ Store (b) │
+└──────────┘           └───────────┘
 ```
 
 - (a) The main application serving HTTP requests.
@@ -52,11 +52,10 @@ The note list is also the diagram's key: explain any notation whose meaning is n
 
 | Output | Characters | Reference |
 |--------|-----------|-----------|
-| Terminal reply | Unicode box drawing | `references/terminal.md` |
-| Markdown document | ASCII `+ - \| > v` | `references/terminal.md` |
+| Terminal reply or Markdown document | Unicode box drawing | `references/terminal.md` |
 | HTML page | Inline SVG | `references/html.md` |
 
-Markdown is opened in editors and on GitHub with fonts and locales you do not control; ASCII is one column wide everywhere, while box drawing and CJK are not. A text diagram always sits in a code fence, since the terminal renders Markdown too and collapses spacing outside one. A file tree is a listing, not a diagram, and keeps its usual form. Read the reference for the output before drawing.
+Box drawing reads cleaner than ASCII and renders one column wide in current terminals, editors, and GitHub; draw in ASCII `+ - | > v` only when the user asks for it. A text diagram always sits in a code fence, since the terminal renders Markdown too and collapses spacing outside one. A file tree is a listing, not a diagram, and keeps its usual form. Read the reference for the output before drawing.
 
 ## Workflow
 
@@ -66,8 +65,8 @@ Markdown is opened in editors and on GitHub with fonts and locales you do not co
 4. Check text diagrams with the script and SVG by rendering a screenshot, then fix every error and every label that touches a line or border.
 
 ```bash
-python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py docs/architecture.md        # ASCII in Markdown
-python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py --unicode /tmp/diagram.txt  # terminal reply
+python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py docs/architecture.md /tmp/diagram.txt  # Markdown or a terminal reply
+python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py --ascii docs/architecture.md           # ASCII on request
 ```
 
 For a terminal reply, write the diagram to a scratch file first and check it there. Output is `path:line: error|warning: ...`; the exit code is 1 when any error exists.

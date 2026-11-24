@@ -4,7 +4,7 @@ A text diagram aligns only when every character takes exactly one column. Keep l
 
 ## Character Sets
 
-| Purpose | Unicode (terminal) | ASCII (Markdown) |
+| Purpose | Unicode (default) | ASCII (on request) |
 |---------|--------------------|------------------|
 | Box corners | `┌ ┐ └ ┘` | `+` |
 | Lines | `─ │` | `- \|` |
@@ -12,7 +12,7 @@ A text diagram aligns only when every character takes exactly one column. Keep l
 | Arrows | `▶ ◀ ▲ ▼` | `> < ^ v` |
 | Dashed line | `┄ ┆` | `. :` |
 
-Use one set per diagram. Box drawing is ambiguous-width in Unicode — most terminals draw it one column wide, but some CJK locales and fonts draw it two — so it suits a terminal reply read once, and ASCII suits a document read anywhere.
+Use one set per diagram: Unicode unless the user asks for ASCII.
 
 ## Layout
 
@@ -31,16 +31,16 @@ Flow, Unicode:
 └────────┘         └────────┘          └────────┘
 ```
 
-Layers, ASCII:
+Layers, Unicode:
 
 ```
-+---------------------------+
-| Interface                 |
-+---------------------------+
-| Application               |
-+---------------------------+
-| Domain                    |
-+---------------------------+
+┌───────────────────────────┐
+│ Interface                 │
+├───────────────────────────┤
+│ Application               │
+├───────────────────────────┤
+│ Domain                    │
+└───────────────────────────┘
 ```
 
 Sequence, ASCII:
@@ -68,8 +68,8 @@ Containment, Unicode:
 ## Checking
 
 ```bash
-python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py README.md           # fenced text diagrams, ASCII
-python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py --unicode reply.txt # a terminal reply
+python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py README.md reply.txt  # fenced diagrams, or a terminal reply
+python3 ${CLAUDE_SKILL_DIR}/scripts/lint.py --ascii README.md    # ASCII on request
 ```
 
-The script reports boxes whose borders do not line up, characters wider than one column, and labels longer than three words.
+The script reports boxes whose borders do not line up, characters wider than one column (anything outside ASCII with `--ascii`), and labels longer than three words.
